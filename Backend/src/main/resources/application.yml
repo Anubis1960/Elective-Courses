@@ -2,17 +2,21 @@ server:
   port: 8080
 
 spring:
+
   datasource:
     url: jdbc:postgresql://localhost:8005/testing
     username: postgres
     password: 2003
+
   jpa:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
 
+
   main:
     web-application-type: servlet
+
   api-docs:
     enabled: true
     path: /api-docs

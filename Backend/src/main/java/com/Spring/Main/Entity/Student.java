@@ -1,48 +1,50 @@
 package com.Spring.Main.Entity;
-
+import com.Spring.Main.Audit.Auditable;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 
-import java.util.List;
-
 @Entity
-@Table(name = "Student")
-public class Student{
+@Table(name = "Students")
+public class Student extends Auditable<String> {
+
     @Id
-    @Column(name = "student_id")
-    private Integer studentId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "student_id", nullable = false)
+    private Long studentId;
 
-    @Column(name = "student_name")
-    private String studentName;
-
-    @Column(name = "grade")
+    @Column(name = "grade", nullable = false)
     private Float grade;
 
-    @Column(name = "faculty_section")
+    @Column(name = "faculty_section", nullable = false)
     private String facultySection;
 
-    @Column(name = "year")
-    private int year;
+    @Column(name = "year_of_study", nullable = false)
+    private Integer year;
 
-    @OneToOne
-    @JoinColumn(name = "student_id")
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(unique = true)
     @MapsId
-    private Users user;
+    private User user;
 
-    public Integer getStudentId() {
-        return studentId;
+    public User getUser() {
+        return user;
     }
 
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
+    public Student(Float grade, String facultySection, Integer year) {
+        this.grade = grade;
+        this.facultySection = facultySection;
+        this.year = year;
     }
 
-    public String getStudentName() {
-        return studentName;
+    public Student(Float grade, String facultySection, Integer year, User user) {
+        this.grade = grade;
+        this.facultySection = facultySection;
+        this.year = year;
+        this.user = user;
     }
 
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
+    public Student() {
+
     }
 
     public Float getGrade() {
@@ -61,31 +63,20 @@ public class Student{
         this.facultySection = facultySection;
     }
 
-    public int getYear() {
+
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
-    public Users getUser() {
+    public User getUsers() {
         return user;
     }
 
-    public void setUser(Users user) {
+    public void setUsers(User user) {
         this.user = user;
-    }
-
-    public Student(Integer studentId, String studentName, Float grade, String facultySection, int year, Users user) {
-        this.studentId = studentId;
-        this.studentName = studentName;
-        this.grade = grade;
-        this.facultySection = facultySection;
-        this.year = year;
-        this.user = user;
-    }
-
-    public Student() {
     }
 }

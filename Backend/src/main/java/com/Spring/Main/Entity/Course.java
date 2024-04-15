@@ -1,32 +1,35 @@
 package com.Spring.Main.Entity;
-
-import jakarta.persistence.*;
-
-import java.util.List;
+import com.Spring.Main.Audit.Auditable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Course")
-public class Course {
+@Table(name = "Courses")
+public class Course extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
-    private Integer courseId;
+    @Column(name = "course_id", nullable = false)
+    private Long courseId;
 
-    @Column(name = "course_name")
+    @Column(name = "course_name", nullable = false)
     private String courseName;
 
-    @Column(name = "category")
+    @Column(name = "category", nullable = false)
     private String category;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "year")
-    private int year;
+    @Column(name = "year_of_study", nullable = false)
+    private Integer year;
 
-    @Column(name = "maximum_students_allowed")
-    private int maximumStudentsAllowed;
+    @Column(name = "maximum_students_allowed", nullable = false)
+    private Integer maximumStudentsAllowed;
 
-    @Column(name = "faculty_section")
+    @Column(name = "faculty_section", nullable = false)
     private String facultySection;
 
     @Column(name = "teacher_name")
@@ -36,7 +39,7 @@ public class Course {
 
     }
 
-    public Course(Integer courseId, String courseName, String category, String description, int year, int maximumStudentsAllowed, String facultySection, String teacherName) {
+    public Course(Long courseId, String courseName, String category, String description, Integer year, Integer maximumStudentsAllowed, String facultySection, String teacherName) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.category = category;
@@ -47,11 +50,21 @@ public class Course {
         this.teacherName = teacherName;
     }
 
-    public Integer getCourseId() {
+    public Course(String courseName, String category, String description, Integer year, Integer maximumStudentsAllowed, String facultySection, String teacherName) {
+        this.courseName = courseName;
+        this.category = category;
+        this.description = description;
+        this.year = year;
+        this.maximumStudentsAllowed = maximumStudentsAllowed;
+        this.facultySection = facultySection;
+        this.teacherName = teacherName;
+    }
+
+    public Long getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(Integer courseId) {
+    public void setCourseId(Long courseId) {
         this.courseId = courseId;
     }
 
@@ -79,19 +92,19 @@ public class Course {
         this.description = description;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
-    public int getMaximumStudentsAllowed() {
+    public Integer getMaximumStudentsAllowed() {
         return maximumStudentsAllowed;
     }
 
-    public void setMaximumStudentsAllowed(int maximumStudentsAllowed) {
+    public void setMaximumStudentsAllowed(Integer maximumStudentsAllowed) {
         this.maximumStudentsAllowed = maximumStudentsAllowed;
     }
 

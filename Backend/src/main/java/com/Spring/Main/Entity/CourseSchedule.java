@@ -1,54 +1,75 @@
 package com.Spring.Main.Entity;
 
-import jakarta.persistence.*;
+import com.Spring.Main.Audit.Auditable;
+import com.Spring.Main.Enums.Day;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
-import java.sql.Date;
+import java.time.LocalTime;
 
 @Entity
-@Table(name = "CourseSchedule")
-public class CourseSchedule {
+@Table(name = "CourseSchedules")
+public class CourseSchedule extends Auditable<String> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "course_id")
-    private Integer courseId;
+    @Column(name = "course_id", nullable = false)
+    private Long courseId;
 
-    @Column(name = "start_time")
-    private java.sql.Date startTime;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "day", nullable = false)
+    private Day day;
 
-    @Column(name = "end_time")
-    private java.sql.Date endTime;
+    @Column(name = "start_time", nullable = false)
+    private LocalTime startTime;
 
-    @OneToOne
+    @Column(name = "end_time", nullable = false)
+    private LocalTime endTime;
+
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "course_id")
     @MapsId
     private Course course;
 
-    public Integer getCourseId() {
+    public CourseSchedule() {
+    }
+
+    public Long getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(Integer courseId) {
+    public void setCourseId(Long courseId) {
         this.courseId = courseId;
     }
 
-    public CourseSchedule() {
-
+    public Day getDay() {
+        return day;
     }
 
-    public Date getStartTime() {
+    public void setDay(Day day) {
+        this.day = day;
+    }
+
+    public LocalTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public LocalTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
 
@@ -60,8 +81,16 @@ public class CourseSchedule {
         this.course = course;
     }
 
-    public CourseSchedule(Integer courseId, Date startTime, Date endTime, Course course) {
+    public CourseSchedule(Course course, Day day, LocalTime startTime, LocalTime endTime) {
+        this.day = day;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.course = course;
+    }
+
+    public CourseSchedule(Long courseId, Day day, LocalTime startTime, LocalTime endTime, Course course) {
         this.courseId = courseId;
+        this.day = day;
         this.startTime = startTime;
         this.endTime = endTime;
         this.course = course;
