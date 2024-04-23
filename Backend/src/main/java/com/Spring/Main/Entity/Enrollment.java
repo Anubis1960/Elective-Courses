@@ -1,7 +1,7 @@
-package com.Spring.Main.Entity;
+package com.Spring.Main.entity;
 
-import com.Spring.Main.Audit.Auditable;
-import com.Spring.Main.Enums.Status;
+import com.Spring.Main.audit.Auditable;
+import com.Spring.Main.enums.Status;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -12,22 +12,23 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GenerationType;
 
 @Entity
-@Table(name = "Enrollments")
+@Table(name = "Enrollment")
 public class Enrollment extends Auditable<String> {
     @Id
     @Column(name = "enrollment_id", nullable = false)
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long enrollmentId;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "student_id", nullable = false)
-    private Student studentId;
+    private Student student;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "course_id", nullable = false)
-    private Course courseId;
+    private Course course;
 
     @Column(name = "priority", nullable = false)
     private Integer priority;
@@ -48,20 +49,20 @@ public class Enrollment extends Auditable<String> {
         this.enrollmentId = enrollmentId;
     }
 
-    public Student getStudentId() {
-        return studentId;
+    public Student getStudent() {
+        return student;
     }
 
-    public void setStudentId(Student studentId) {
-        this.studentId = studentId;
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
-    public Course getCourseId() {
-        return courseId;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setCourseId(Course courseId) {
-        this.courseId = courseId;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public Integer getPriority() {
@@ -80,18 +81,11 @@ public class Enrollment extends Auditable<String> {
         this.status = status;
     }
 
-    public Enrollment(Student studentId, Course courseId, Integer priority, Status status) {
-        this.studentId = studentId;
-        this.courseId = courseId;
+    public Enrollment(Student student, Course course, Integer priority, Status status) {
+        this.student = student;
+        this.course = course;
         this.priority = priority;
         this.status = status;
     }
 
-    public Enrollment(Long enrollmentId, Student studentId, Course courseId, Integer priority, Status status) {
-        this.enrollmentId = enrollmentId;
-        this.studentId = studentId;
-        this.courseId = courseId;
-        this.priority = priority;
-        this.status = status;
-    }
 }

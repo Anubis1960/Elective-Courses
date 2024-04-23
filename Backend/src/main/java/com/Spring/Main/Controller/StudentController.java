@@ -1,10 +1,7 @@
-package com.Spring.Main.Controller;
+package com.Spring.Main.controller;
 
-import com.Spring.Main.Entity.Enrollment;
-import com.Spring.Main.Enums.Status;
-import com.Spring.Main.Service.Impl.CourseScheduleServiceImpl;
-import com.Spring.Main.Service.Impl.CourseServiceImpl;
-import com.Spring.Main.Service.Impl.EnrollmentServiceImpl;
+import com.Spring.Main.entity.Student;
+import com.Spring.Main.service.impl.StudentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,39 +10,35 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@RestController("/student")
 
 public class StudentController {
     @Autowired
-    EnrollmentServiceImpl enrollmentService;
-    @Autowired
-    CourseScheduleServiceImpl courseScheduleService;
-    @Autowired
-    CourseServiceImpl courseService;
+    private StudentServiceImpl studentService;
 
-    @PostMapping("/enroll")
-    public ResponseEntity<String> enroll(Long studentId, Long courseId, Integer priority) {
-        return enrollmentService.addEnrollment(studentId, courseId, priority, Status.PENDING.toString());
+    @PostMapping("/addStudent")
+    public ResponseEntity<String> addStudent(String name, String role, Float grade, String facultySection, Integer year) {
+        return studentService.addStudent(name, role, grade, facultySection, year);
     }
 
-    @PostMapping("/updateEnrollment")
-    public ResponseEntity<String> updateEnrollment(Long enrollmentId,Long studentId, Long courseId, Integer priority) {
-        return enrollmentService.updateEnrollment(enrollmentId,studentId, courseId, priority, Status.PENDING.toString());
+    @PostMapping("/updateStudent")
+    public ResponseEntity<String> updateStudent(Long userId, String name, String role, Float grade, String facultySection, Integer year) {
+        return studentService.updateStudent(userId, name, role, grade, facultySection, year);
     }
 
-    @PostMapping("/deleteEnrollment")
-    public ResponseEntity<String> deleteEnrollment(Long enrollmentId) {
-        return enrollmentService.deleteEnrollment(enrollmentId);
+    @PostMapping("/deleteStudent")
+    public ResponseEntity<String> deleteStudent(Long id) {
+        return studentService.deleteStudent(id);
     }
 
-    @GetMapping("/getEnrollmentById")
-    public ResponseEntity<Enrollment> getEnrollmentById(Long enrollmentId) {
-        return enrollmentService.getEnrollmentById(enrollmentId);
+    @GetMapping("/getStudentById")
+    public ResponseEntity<Student> getStudentById(Long id) {
+        return studentService.getStudentById(id);
     }
 
-    @GetMapping("/getAllEnrollments")
-    public ResponseEntity<List<Enrollment>> getAllEnrollments() {
-        return enrollmentService.getAllEnrollments();
+    @GetMapping("/getAllStudents")
+    public ResponseEntity<List<Student>> getAllStudents() {
+        return studentService.getAllStudents();
     }
 
 }

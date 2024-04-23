@@ -1,4 +1,4 @@
-package com.Spring.Main.Enums;
+package com.Spring.Main.enums;
 
 public enum Day {
     MONDAY("MONDAY"),

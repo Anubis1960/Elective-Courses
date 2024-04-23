@@ -1,6 +1,6 @@
-package com.Spring.Main.Repository;
+package com.Spring.Main.repository;
 
-import com.Spring.Main.Entity.Enrollment;
+import com.Spring.Main.entity.Enrollment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {

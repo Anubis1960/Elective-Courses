@@ -1,6 +1,6 @@
-package com.Spring.Main.Service;
+package com.Spring.Main.service;
 
-import com.Spring.Main.Entity.Enrollment;
+import com.Spring.Main.entity.Enrollment;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

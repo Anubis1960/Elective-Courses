@@ -1,4 +1,4 @@
-package com.Spring.Main.Audit;
+package com.Spring.Main.audit;
 
 import org.springframework.data.domain.AuditorAware;
 

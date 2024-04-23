@@ -1,7 +1,7 @@
-package com.Spring.Main.Entity;
+package com.Spring.Main.entity;
 
-import com.Spring.Main.Audit.Auditable;
-import com.Spring.Main.Enums.Day;
+import com.Spring.Main.audit.Auditable;
+import com.Spring.Main.enums.Day;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -16,7 +16,7 @@ import jakarta.persistence.Enumerated;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "CourseSchedules")
+@Table(name = "CourseSchedule")
 public class CourseSchedule extends Auditable<String> {
 
     @Id
@@ -33,7 +33,7 @@ public class CourseSchedule extends Auditable<String> {
     @Column(name = "end_time", nullable = false)
     private LocalTime endTime;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "course_id")
     @MapsId
     private Course course;

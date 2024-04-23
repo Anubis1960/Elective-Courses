@@ -4,7 +4,7 @@ server:
 spring:
 
   datasource:
-    url: jdbc:postgresql://localhost:8005/testing
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: 2003
 
@@ -12,7 +12,6 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
-
 
   main:
     web-application-type: servlet

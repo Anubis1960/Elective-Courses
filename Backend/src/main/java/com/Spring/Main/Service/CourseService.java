@@ -1,6 +1,6 @@
-package com.Spring.Main.Service;
+package com.Spring.Main.service;
 
-import com.Spring.Main.Entity.Course;
+import com.Spring.Main.entity.Course;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

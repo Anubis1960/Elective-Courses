@@ -1,13 +1,13 @@
-package com.Spring.Main.Service.Impl;
+package com.Spring.Main.service.impl;
 
-import com.Spring.Main.Entity.Course;
-import com.Spring.Main.Entity.Enrollment;
-import com.Spring.Main.Entity.Student;
-import com.Spring.Main.Enums.Status;
-import com.Spring.Main.Repository.CourseRepository;
-import com.Spring.Main.Repository.EnrollmentRepository;
-import com.Spring.Main.Repository.StudentRepository;
-import com.Spring.Main.Service.EnrollmentService;
+import com.Spring.Main.entity.Course;
+import com.Spring.Main.entity.Enrollment;
+import com.Spring.Main.entity.Student;
+import com.Spring.Main.enums.Status;
+import com.Spring.Main.repository.CourseRepository;
+import com.Spring.Main.repository.EnrollmentRepository;
+import com.Spring.Main.repository.StudentRepository;
+import com.Spring.Main.service.EnrollmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -69,8 +69,8 @@ public class EnrollmentServiceImpl implements EnrollmentService{
                 return ResponseEntity.badRequest().body("Course not found");
             }
 
-            enrollment.setStudentId(student);
-            enrollment.setCourseId(course);
+            enrollment.setStudent(student);
+            enrollment.setCourse(course);
             enrollment.setPriority(priority);
             enrollment.setStatus(Status.valueOf(status));
             enrollmentRepository.save(enrollment);

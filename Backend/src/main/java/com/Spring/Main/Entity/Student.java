@@ -1,16 +1,12 @@
-package com.Spring.Main.Entity;
-import com.Spring.Main.Audit.Auditable;
+package com.Spring.Main.entity;
+import com.Spring.Main.enums.Role;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
+
+import java.util.List;
 
 @Entity
-@Table(name = "Students")
-public class Student extends Auditable<String> {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "student_id", nullable = false)
-    private Long studentId;
+@Table(name = "Student")
+public class Student extends User {
 
     @Column(name = "grade", nullable = false)
     private Float grade;
@@ -21,26 +17,24 @@ public class Student extends Auditable<String> {
     @Column(name = "year_of_study", nullable = false)
     private Integer year;
 
-    @OneToOne(orphanRemoval = true)
-    @JoinColumn(unique = true)
-    @MapsId
-    private User user;
+    @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Enrollment> enrollments;
 
-    public User getUser() {
-        return user;
-    }
-
-    public Student(Float grade, String facultySection, Integer year) {
+    public Student(Long userId, String name, Role role, Float grade, String facultySection, Integer year) {
         this.grade = grade;
         this.facultySection = facultySection;
         this.year = year;
+        this.id = userId;
+        this.name = name;
+        this.role = role;
     }
 
-    public Student(Float grade, String facultySection, Integer year, User user) {
+    public Student(String name, Role role, Float grade, String facultySection, Integer year) {
         this.grade = grade;
         this.facultySection = facultySection;
         this.year = year;
-        this.user = user;
+        this.name = name;
+        this.role = role;
     }
 
     public Student() {
@@ -70,13 +64,5 @@ public class Student extends Auditable<String> {
 
     public void setYear(Integer year) {
         this.year = year;
-    }
-
-    public User getUsers() {
-        return user;
-    }
-
-    public void setUsers(User user) {
-        this.user = user;
     }
 }

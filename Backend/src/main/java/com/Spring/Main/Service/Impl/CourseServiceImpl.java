@@ -1,8 +1,8 @@
-package com.Spring.Main.Service.Impl;
+package com.Spring.Main.service.impl;
 
-import com.Spring.Main.Entity.Course;
-import com.Spring.Main.Repository.CourseRepository;
-import com.Spring.Main.Service.CourseService;
+import com.Spring.Main.entity.Course;
+import com.Spring.Main.repository.CourseRepository;
+import com.Spring.Main.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

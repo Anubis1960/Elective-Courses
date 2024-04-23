@@ -1,16 +1,14 @@
-package com.Spring.Main.Entity;
-import com.Spring.Main.Audit.Auditable;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+package com.Spring.Main.entity;
+import com.Spring.Main.audit.Auditable;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
-@Table(name = "Courses")
+@Table(name = "Course")
 public class Course extends Auditable<String> {
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id", nullable = false)
     private Long courseId;
 
@@ -34,6 +32,12 @@ public class Course extends Auditable<String> {
 
     @Column(name = "teacher_name")
     private String teacherName;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Enrollment> enrollments;
+
+    @OneToOne(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private CourseSchedule courseSchedule;
 
     public Course() {
 

@@ -1,10 +1,9 @@
-package com.Spring.Main.Service.Impl;
+package com.Spring.Main.service.impl;
 
-import com.Spring.Main.Entity.Student;
-import com.Spring.Main.Entity.User;
-import com.Spring.Main.Repository.StudentRepository;
-import com.Spring.Main.Repository.UserRepository;
-import com.Spring.Main.Service.StudentService;
+import com.Spring.Main.entity.Student;
+import com.Spring.Main.enums.Role;
+import com.Spring.Main.repository.StudentRepository;
+import com.Spring.Main.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,21 +16,11 @@ public class StudentServiceImpl implements StudentService{
     @Autowired
     private StudentRepository studentRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Override
-    public ResponseEntity<String> addStudent(Long id, Float grade, String facultySection, Integer year) {
+    public ResponseEntity<String> addStudent(String name, String role, Float grade, String facultySection, Integer year) {
         try{
-            User user = userRepository.findById(id).orElse(null);
-
-            if (user == null) {
-                return ResponseEntity.badRequest().body("User not found");
-            }
-
-            Student student = new Student(grade, facultySection, year, user);
+            Student student = new Student(name, Role.valueOf(role), grade, facultySection, year);
             studentRepository.save(student);
-
             return ResponseEntity.ok("Student added successfully");
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,19 +29,18 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public ResponseEntity<String> updateStudent(Long id, Float grade, String facultySection, Integer year) {
+    public ResponseEntity<String> updateStudent(Long userId, String name, String role, Float grade, String facultySection, Integer year) {
         try {
-            Student student = studentRepository.findById(id).orElse(null);
-
+            Student student = studentRepository.findById(userId).orElse(null);
             if (student == null) {
                 return ResponseEntity.badRequest().body("Student not found");
             }
-
+            student.setName(name);
+            student.setRole(Role.valueOf(role));
             student.setGrade(grade);
             student.setFacultySection(facultySection);
             student.setYear(year);
             studentRepository.save(student);
-
             return ResponseEntity.ok("Student updated successfully");
         } catch (Exception e) {
             e.printStackTrace();

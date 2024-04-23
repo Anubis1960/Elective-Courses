@@ -1,7 +1,6 @@
-package com.Spring.Main.Audit;
+package com.Spring.Main.audit;
 
 import jakarta.persistence.*;
-import org.apache.catalina.User;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
