@@ -12,7 +12,6 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-
 import java.time.LocalTime;
 
 @Entity

@@ -1,7 +1,11 @@
 package com.Spring.Main.entity;
-import com.Spring.Main.enums.Role;
-import jakarta.persistence.*;
 
+import com.Spring.Main.enums.Role;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
 import java.util.List;
 
 @Entity

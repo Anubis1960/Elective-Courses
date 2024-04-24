@@ -1,11 +1,7 @@
 package com.Spring.Main.controller;
 
 import com.Spring.Main.entity.Admin;
-import com.Spring.Main.service.AdminService;
 import com.Spring.Main.service.impl.AdminServiceImpl;
-import com.Spring.Main.service.impl.CourseScheduleServiceImpl;
-import com.Spring.Main.service.impl.CourseServiceImpl;
-import com.Spring.Main.service.impl.StudentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController("/admin")
+@RestController
+@RequestMapping("/admin")
 public class AdminController {
     @Autowired
     private AdminServiceImpl adminService;
