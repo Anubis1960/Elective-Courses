@@ -9,36 +9,37 @@ import com.Spring.Main.service.impl.StudentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@RestController("/admin")
 public class AdminController {
     @Autowired
     private AdminServiceImpl adminService;
 
-    @PostMapping("/addAdmin")
+    @PostMapping("/addadmin")
     public ResponseEntity<String> addAdmin(String adminName) {
         return adminService.addAdmin(adminName);
     }
 
-    @PostMapping("/updateAdmin")
+    @PostMapping("/updateadmin")
     public ResponseEntity<String> updateAdmin(Long adminId, String adminName) {
         return adminService.updateAdmin(adminId, adminName);
     }
 
-    @PostMapping("/deleteAdmin")
+    @PostMapping("/deleteadmin")
     public ResponseEntity<String> deleteAdmin(Long adminId) {
         return adminService.deleteAdmin(adminId);
     }
 
-    @PostMapping("/getAdminById")
+    @PostMapping("/getadminbyid")
     public ResponseEntity<Admin> getAdminById(Long adminId) {
         return adminService.getAdminById(adminId);
     }
 
-    @PostMapping("/getAllAdmins")
+    @PostMapping("/getalladmins")
     public ResponseEntity<List<Admin>> getAllAdmins() {
         return adminService.getAllAdmins();
     }

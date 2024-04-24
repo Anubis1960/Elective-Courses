@@ -16,27 +16,27 @@ public class StudentController {
     @Autowired
     private StudentServiceImpl studentService;
 
-    @PostMapping("/addStudent")
+    @PostMapping("/addstudent")
     public ResponseEntity<String> addStudent(String name, String role, Float grade, String facultySection, Integer year) {
         return studentService.addStudent(name, role, grade, facultySection, year);
     }
 
-    @PostMapping("/updateStudent")
+    @PostMapping("/updatestudent")
     public ResponseEntity<String> updateStudent(Long userId, String name, String role, Float grade, String facultySection, Integer year) {
         return studentService.updateStudent(userId, name, role, grade, facultySection, year);
     }
 
-    @PostMapping("/deleteStudent")
+    @PostMapping("/deletestudent")
     public ResponseEntity<String> deleteStudent(Long id) {
         return studentService.deleteStudent(id);
     }
 
-    @GetMapping("/getStudentById")
+    @GetMapping("/getstudentsyid")
     public ResponseEntity<Student> getStudentById(Long id) {
         return studentService.getStudentById(id);
     }
 
-    @GetMapping("/getAllStudents")
+    @GetMapping("/getallstudents")
     public ResponseEntity<List<Student>> getAllStudents() {
         return studentService.getAllStudents();
     }

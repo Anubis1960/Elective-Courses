@@ -16,27 +16,27 @@ public class CourseController {
     @Autowired
     private CourseServiceImpl courseService;
 
-    @PostMapping("/addCourse")
+    @PostMapping("/addcourse")
     public ResponseEntity<String> addCourse(String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) {
         return courseService.addCourse(courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
     }
 
-    @PostMapping("/updateCourse")
+    @PostMapping("/updatecourse")
     public ResponseEntity<String> updateCourse(Long courseId, String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) {
         return courseService.updateCourse(courseId, courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
     }
 
-    @PostMapping("/deleteCourse")
+    @PostMapping("/deletecourse")
     public ResponseEntity<String> deleteCourse(Long courseId) {
         return courseService.deleteCourse(courseId);
     }
 
-    @GetMapping("/getCourseById")
+    @GetMapping("/getcoursebyid")
     public ResponseEntity<Course> getCourseById(Long courseId) {
         return courseService.getCourseById(courseId);
     }
 
-    @GetMapping("/getAllCourses")
+    @GetMapping("/getallcourses")
     public ResponseEntity<List<Course>> getAllCourses() {
         return courseService.getAllCourses();
     }
