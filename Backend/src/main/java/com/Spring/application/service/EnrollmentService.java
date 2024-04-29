@@ -1,14 +1,14 @@
 package com.Spring.application.service;
 
 import com.Spring.application.entity.Enrollment;
-import org.springframework.http.ResponseEntity;
+import com.Spring.application.exceptions.ObjectNotFound;
 
 import java.util.List;
 
 public interface EnrollmentService {
-    ResponseEntity<String> addEnrollment(Long studentId, Long courseId, Integer priority, String status);
-    ResponseEntity<String> updateEnrollment(Long enrollmentId, Long studentId, Long courseId, Integer priority, String status);
-    ResponseEntity<String> deleteEnrollment(Long enrollmentId);
-    ResponseEntity<Enrollment> getEnrollmentById(Long enrollmentId);
-    ResponseEntity<List<Enrollment>> getAllEnrollments();
+    Enrollment addEnrollment(Long studentId, Long courseId, Integer priority) throws ObjectNotFound;
+    Enrollment updateEnrollment(Long enrollmentId, Long studentId, Long courseId, Integer priority, String status) throws ObjectNotFound;
+    Enrollment deleteEnrollment(Long enrollmentId) throws ObjectNotFound;
+    Enrollment getEnrollmentById(Long enrollmentId) throws ObjectNotFound;
+    List<Enrollment> getAllEnrollments();
 }

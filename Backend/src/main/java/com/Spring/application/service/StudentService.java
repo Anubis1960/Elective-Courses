@@ -1,14 +1,14 @@
 package com.Spring.application.service;
 
 import com.Spring.application.entity.Student;
-import org.springframework.http.ResponseEntity;
+import com.Spring.application.exceptions.ObjectNotFound;
 
 import java.util.List;
 
 public interface StudentService {
-    ResponseEntity<String> addStudent(String name, String role, Float grade, String facultySection, Integer year);
-    ResponseEntity<String> updateStudent(Long userId, String name, String role, Float grade, String facultySection, Integer year);
-    ResponseEntity<String> deleteStudent(Long id);
-    ResponseEntity<Student> getStudentById(Long id);
-    ResponseEntity<List<Student>> getAllStudents();
+    Student addStudent(String name, Float grade, String facultySection, Integer year);
+    Student updateStudent(Long userId, String name, String role, Float grade, String facultySection, Integer year) throws ObjectNotFound;
+    Student deleteStudent(Long id) throws ObjectNotFound;
+    Student getStudentById(Long id) throws ObjectNotFound;
+    List<Student> getAllStudents();
 }

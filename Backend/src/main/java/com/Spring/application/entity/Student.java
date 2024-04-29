@@ -6,10 +6,13 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
+import org.hibernate.annotations.OnDelete;
+
 import java.util.List;
 
 @Entity
 @Table(name = "Student")
+@OnDelete(action = org.hibernate.annotations.OnDeleteAction.CASCADE)
 public class Student extends User {
 
     @Column(name = "grade", nullable = false)
@@ -21,17 +24,14 @@ public class Student extends User {
     @Column(name = "year_of_study", nullable = false)
     private Integer year;
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Enrollment> enrollments;
-
-    public Student(Long userId, String name, Role role, Float grade, String facultySection, Integer year) {
+    public Student(String name, Float grade, String facultySection, Integer year) {
         this.grade = grade;
         this.facultySection = facultySection;
         this.year = year;
-        this.id = userId;
         this.name = name;
-        this.role = role;
+        this.role = Role.STUDENT;
     }
+
 
     public Student(String name, Role role, Float grade, String facultySection, Integer year) {
         this.grade = grade;

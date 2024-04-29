@@ -6,11 +6,12 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: 2003
+    password: postgres
 
   jpa:
     hibernate:
       ddl-auto: create-drop
+      dialect: org.hibernate.dialect.PostgresSQLDialect
     show-sql: true
 
   main:

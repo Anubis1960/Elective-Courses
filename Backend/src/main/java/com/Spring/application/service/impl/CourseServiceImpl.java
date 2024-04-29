@@ -1,10 +1,13 @@
 package com.Spring.application.service.impl;
 
 import com.Spring.application.entity.Course;
+import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.repository.CourseRepository;
+import com.Spring.application.repository.CourseScheduleRepository;
+import com.Spring.application.repository.EnrollmentRepository;
 import com.Spring.application.service.CourseService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,77 +17,59 @@ public class CourseServiceImpl implements CourseService{
 
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired
+    private CourseScheduleRepository courseScheduleRepository;
+    @Autowired
+    private EnrollmentRepository enrollmentRepository;
 
     @Override
-    public ResponseEntity<String> addCourse(String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) {
-        try {
-            Course course = new Course(courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
-            courseRepository.save(course);
-            return ResponseEntity.ok("Course added successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.ok("Error adding course");
+    public Course addCourse(String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) {
+        Course course = new Course(courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
+        courseRepository.save(course);
+        return course;
     }
 
     @Override
-    public ResponseEntity<String> updateCourse(Long courseId, String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) {
-        try {
-            Course course = courseRepository.findById(courseId).orElse(null);
-            if (course == null) {
-                return ResponseEntity.ok("Course not found");
-            }
-
-            course.setCourseName(courseName);
-            course.setCategory(category);
-            course.setDescription(description);
-            course.setYear(year);
-            course.setMaximumStudentsAllowed(maxStudentsAllowed);
-            course.setFacultySection(facultySection);
-            course.setTeacherName(teacherName);
-            courseRepository.save(course);
-
-            return ResponseEntity.ok("Course updated successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
+    public Course updateCourse(Long courseId, String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) throws ObjectNotFound {
+        Course course = courseRepository.findById(courseId).orElse(null);
+        if (course == null) {
+            throw new ObjectNotFound("Course not found");
         }
-        return ResponseEntity.ok("Error updating course");
+        course.setCourseName(courseName);
+        course.setCategory(category);
+        course.setDescription(description);
+        course.setYear(year);
+        course.setMaximumStudentsAllowed(maxStudentsAllowed);
+        course.setFacultySection(facultySection);
+        course.setTeacherName(teacherName);
+        courseRepository.save(course);
+        return course;
     }
 
     @Override
-    public ResponseEntity<String> deleteCourse(Long courseId) {
-        try {
-            courseRepository.deleteById(courseId);
-            return ResponseEntity.ok("Course deleted successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
+    @Transactional
+    public Course deleteCourse(Long courseId) throws ObjectNotFound {
+        Course course = courseRepository.findById(courseId).orElse(null);
+        if (course == null) {
+            throw new ObjectNotFound("Course not found");
         }
-        return ResponseEntity.ok("Error deleting course");
+        courseScheduleRepository.deleteById(courseId);
+        enrollmentRepository.deleteByCourseId(courseId);
+        courseRepository.deleteById(courseId);
+        return course;
     }
 
     @Override
-    public ResponseEntity<Course> getCourseById(Long courseId) {
-        try {
-            Course course = courseRepository.findById(courseId).orElse(null);
-            if (course == null) {
-                return ResponseEntity.badRequest().body(null);
-            }
-
-            return ResponseEntity.ok(course);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public Course getCourseById(Long courseId) throws ObjectNotFound {
+        Course course = courseRepository.findById(courseId).orElse(null);
+        if (course == null) {
+            throw new ObjectNotFound("Course not found");
         }
-        return ResponseEntity.ok(null);
+        return course;
     }
 
     @Override
-    public ResponseEntity<List<Course>> getAllCourses() {
-        try {
-            List<Course> courses = courseRepository.findAll();
-            return ResponseEntity.ok(courses);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.badRequest().body(null);
+    public List<Course> getAllCourses() {
+        return courseRepository.findAll();
     }
 }

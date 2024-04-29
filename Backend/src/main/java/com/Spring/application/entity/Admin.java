@@ -13,6 +13,17 @@ public class Admin extends User{
         this.role = role;
     }
 
+    public Admin(Long userId, String name) {
+        this.id = userId;
+        this.name = name;
+        this.role = Role.ADMIN;
+    }
+
+    public Admin(String name) {
+        this.name = name;
+        this.role = Role.ADMIN;
+    }
+
     public Admin(String name, Role role) {
         this.name = name;
         this.role = role;

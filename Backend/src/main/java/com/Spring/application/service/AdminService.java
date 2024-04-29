@@ -1,14 +1,14 @@
 package com.Spring.application.service;
 
 import com.Spring.application.entity.Admin;
-import org.springframework.http.ResponseEntity;
+import com.Spring.application.exceptions.ObjectNotFound;
 
 import java.util.List;
 
 public interface AdminService {
-    ResponseEntity<String> addAdmin(Long adminId, String adminName, String role);
-    ResponseEntity<String> updateAdmin(Long adminId, String adminName, String role);
-    ResponseEntity<String> deleteAdmin(Long adminId);
-    ResponseEntity<Admin> getAdminById(Long adminId);
-    ResponseEntity<List<Admin>> getAllAdmins();
+    Admin addAdmin(String adminName);
+    Admin updateAdmin(Long adminId, String adminName) throws ObjectNotFound;
+    Admin deleteAdmin(Long adminId) throws ObjectNotFound;
+    Admin getAdminById(Long adminId) throws ObjectNotFound;
+    List<Admin> getAllAdmins();
 }

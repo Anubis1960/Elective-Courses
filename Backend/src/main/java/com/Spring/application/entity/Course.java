@@ -42,25 +42,8 @@ public class Course extends Auditable<String> {
     @Column(name = "teacher_name")
     private String teacherName;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Enrollment> enrollments;
-
-    @OneToOne(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    private CourseSchedule courseSchedule;
-
     public Course() {
 
-    }
-
-    public Course(Long courseId, String courseName, String category, String description, Integer year, Integer maximumStudentsAllowed, String facultySection, String teacherName) {
-        this.courseId = courseId;
-        this.courseName = courseName;
-        this.category = category;
-        this.description = description;
-        this.year = year;
-        this.maximumStudentsAllowed = maximumStudentsAllowed;
-        this.facultySection = facultySection;
-        this.teacherName = teacherName;
     }
 
     public Course(String courseName, String category, String description, Integer year, Integer maximumStudentsAllowed, String facultySection, String teacherName) {

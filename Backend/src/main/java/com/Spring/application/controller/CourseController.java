@@ -1,8 +1,10 @@
 package com.Spring.application.controller;
 
 import com.Spring.application.entity.Course;
+import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.service.impl.CourseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,28 +16,42 @@ public class CourseController {
     @Autowired
     private CourseServiceImpl courseService;
 
-    @PostMapping("/addcourse")
-    public ResponseEntity<String> addCourse(String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) {
-        return courseService.addCourse(courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
+    @PostMapping("/")
+    public ResponseEntity<Course> addCourse(@RequestParam String courseName,
+                                            @RequestParam String category,
+                                            @RequestParam String description,
+                                            @RequestParam Integer year,
+                                            @RequestParam Integer maxStudentsAllowed,
+                                            @RequestParam String facultySection,
+                                            @RequestParam String teacherName) throws ObjectNotFound {
+        Course course = courseService.addCourse(courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
+        return new ResponseEntity<>(course, HttpStatus.CREATED);
     }
 
-    @PutMapping("/updatecourse")
-    public ResponseEntity<String> updateCourse(Long courseId, String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) {
-        return courseService.updateCourse(courseId, courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
+    @PutMapping("/{id}")
+    public ResponseEntity<Course> updateCourse(@PathVariable("id") Long courseId, String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) throws ObjectNotFound {
+        Course course = courseService.updateCourse(courseId, courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
+        return new ResponseEntity<>(course, HttpStatus.OK);
     }
 
-    @DeleteMapping("/deletecourse")
-    public ResponseEntity<String> deleteCourse(Long courseId) {
-        return courseService.deleteCourse(courseId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Course> deleteCourse(@PathVariable("id") Long courseId) throws ObjectNotFound {
+        Course course = courseService.deleteCourse(courseId);
+        return new ResponseEntity<>(course, HttpStatus.OK);
     }
 
-    @GetMapping("/getcoursebyid")
-    public ResponseEntity<Course> getCourseById(Long courseId) {
-        return courseService.getCourseById(courseId);
+    @GetMapping("/{id}")
+    public ResponseEntity<Course> getCourseById(@PathVariable("id") Long courseId) throws ObjectNotFound {
+        Course course = courseService.getCourseById(courseId);
+        return new ResponseEntity<>(course, HttpStatus.OK);
     }
 
-    @GetMapping("/getallcourses")
+    @GetMapping("/")
     public ResponseEntity<List<Course>> getAllCourses() {
-        return courseService.getAllCourses();
+        List<Course> courses = courseService.getAllCourses();
+        if (courses.isEmpty()) {
+            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(courses, HttpStatus.OK);
     }
 }

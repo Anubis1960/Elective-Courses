@@ -4,12 +4,12 @@ import com.Spring.application.entity.Course;
 import com.Spring.application.entity.Enrollment;
 import com.Spring.application.entity.Student;
 import com.Spring.application.enums.Status;
+import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.repository.CourseRepository;
 import com.Spring.application.repository.EnrollmentRepository;
 import com.Spring.application.repository.StudentRepository;
 import com.Spring.application.service.EnrollmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,102 +25,63 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     private CourseRepository courseRepository;
 
     @Override
-    public ResponseEntity<String> addEnrollment(Long studentId, Long courseId, Integer priority, String status) {
-        try{
-            Student student = studentRepository.findById(studentId).orElse(null);
-            if (student == null) {
-                return ResponseEntity.badRequest().body("Student not found");
-            }
-
-            Course course = courseRepository.findById(courseId).orElse(null);
-            if (course == null) {
-                return ResponseEntity.badRequest().body("Course not found");
-            }
-
-            Enrollment enrollment = new Enrollment(student, course, priority, Status.valueOf(status));
-            enrollmentRepository.save(enrollment);
-
-            return ResponseEntity.ok("Enrollment added successfully");
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body("Invalid status");
+    public Enrollment addEnrollment(Long studentId, Long courseId, Integer priority) throws ObjectNotFound {
+        Student student = studentRepository.findById(studentId).orElse(null);
+        if (student == null) {
+            throw new ObjectNotFound("Student not found");
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        Course course = courseRepository.findById(courseId).orElse(null);
+        if (course == null) {
+            throw new ObjectNotFound("Course not found");
         }
-        return ResponseEntity.ok("Error adding enrollment");
+        Enrollment enrollment = new Enrollment(student, course, priority, Status.valueOf("PENDING"));
+        enrollmentRepository.save(enrollment);
+        return enrollment;
     }
 
     @Override
-    public ResponseEntity<String> updateEnrollment(Long enrollmentId, Long studentId, Long courseId, Integer priority, String status) {
-        try {
-            Enrollment enrollment = enrollmentRepository.findById(enrollmentId).orElse(null);
-            if (enrollment == null) {
-                return ResponseEntity.badRequest().body("Enrollment not found");
-            }
-
-            Student student = studentRepository.findById(studentId).orElse(null);
-            if (student == null) {
-                return ResponseEntity.badRequest().body("Student not found");
-            }
-
-            Course course = courseRepository.findById(courseId).orElse(null);
-            if (course == null) {
-                return ResponseEntity.badRequest().body("Course not found");
-            }
-
-            enrollment.setStudent(student);
-            enrollment.setCourse(course);
-            enrollment.setPriority(priority);
-            enrollment.setStatus(Status.valueOf(status));
-            enrollmentRepository.save(enrollment);
-
-            return ResponseEntity.ok("Enrollment updated successfully");
+    public Enrollment updateEnrollment(Long enrollmentId, Long studentId, Long courseId, Integer priority, String status) throws ObjectNotFound {
+        Enrollment enrollment = enrollmentRepository.findById(enrollmentId).orElse(null);
+        if (enrollment == null) {
+            throw new ObjectNotFound("Enrollment not found");
         }
-        catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body("Invalid status");
+        Student student = studentRepository.findById(studentId).orElse(null);
+        if (student == null) {
+            throw new ObjectNotFound("Student not found");
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        Course course = courseRepository.findById(courseId).orElse(null);
+        if (course == null) {
+            throw new ObjectNotFound("Course not found");
         }
-        return ResponseEntity.ok("Error updating enrollment");
+        enrollment.setStudent(student);
+        enrollment.setCourse(course);
+        enrollment.setPriority(priority);
+        enrollment.setStatus(Status.valueOf(status));
+        enrollmentRepository.save(enrollment);
+        return enrollment;
     }
 
     @Override
-    public ResponseEntity<String> deleteEnrollment(Long enrollmentId) {
-        try {
-            enrollmentRepository.deleteById(enrollmentId);
-            return ResponseEntity.ok("Enrollment deleted successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
+    public Enrollment deleteEnrollment(Long enrollmentId) throws ObjectNotFound {
+        Enrollment enrollment = enrollmentRepository.findById(enrollmentId).orElse(null);
+        if (enrollment == null) {
+            throw new ObjectNotFound("Enrollment not found");
         }
-        return ResponseEntity.ok("Error deleting enrollment");
+        enrollmentRepository.deleteById(enrollmentId);
+        return enrollment;
     }
 
     @Override
-    public ResponseEntity<Enrollment> getEnrollmentById(Long enrollmentId) {
-        try {
-            Enrollment enrollment = enrollmentRepository.findById(enrollmentId).orElse(null);
-            if (enrollment == null) {
-                return ResponseEntity.badRequest().body(null);
-            }
-
-            return ResponseEntity.ok(enrollment);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public Enrollment getEnrollmentById(Long enrollmentId) throws ObjectNotFound {
+        Enrollment enrollment = enrollmentRepository.findById(enrollmentId).orElse(null);
+        if (enrollment == null) {
+            throw new ObjectNotFound("Enrollment not found");
         }
-        return ResponseEntity.ok(null);
+        return enrollment;
     }
 
     @Override
-    public ResponseEntity<List<Enrollment>> getAllEnrollments() {
-        try {
-            List<Enrollment> enrollments = enrollmentRepository.findAll();
-            return ResponseEntity.ok(enrollments);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.ok(null);
+    public List<Enrollment> getAllEnrollments() {
+        return enrollmentRepository.findAll();
     }
 }

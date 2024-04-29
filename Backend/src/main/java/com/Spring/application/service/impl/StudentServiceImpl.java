@@ -2,10 +2,11 @@ package com.Spring.application.service.impl;
 
 import com.Spring.application.entity.Student;
 import com.Spring.application.enums.Role;
+import com.Spring.application.exceptions.ObjectNotFound;
+import com.Spring.application.repository.EnrollmentRepository;
 import com.Spring.application.repository.StudentRepository;
 import com.Spring.application.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,73 +16,53 @@ public class StudentServiceImpl implements StudentService{
 
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private EnrollmentRepository enrollmentRepository;
 
     @Override
-    public ResponseEntity<String> addStudent(String name, String role, Float grade, String facultySection, Integer year) {
-        try{
-            Student student = new Student(name, Role.valueOf(role), grade, facultySection, year);
-            studentRepository.save(student);
-            return ResponseEntity.ok("Student added successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.badRequest().body("Error adding student");
+    public Student addStudent(String name, Float grade, String facultySection, Integer year) {
+        Student student = new Student(name, Role.STUDENT, grade, facultySection, year);
+        studentRepository.save(student);
+        return student;
     }
 
     @Override
-    public ResponseEntity<String> updateStudent(Long userId, String name, String role, Float grade, String facultySection, Integer year) {
-        try {
-            Student student = studentRepository.findById(userId).orElse(null);
-            if (student == null) {
-                return ResponseEntity.badRequest().body("Student not found");
-            }
-            student.setName(name);
-            student.setRole(Role.valueOf(role));
-            student.setGrade(grade);
-            student.setFacultySection(facultySection);
-            student.setYear(year);
-            studentRepository.save(student);
-            return ResponseEntity.ok("Student updated successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
+    public Student updateStudent(Long userId, String name, String role, Float grade, String facultySection, Integer year) throws ObjectNotFound {
+        Student student = studentRepository.findById(userId).orElse(null);
+        if (student == null) {
+            throw new ObjectNotFound("Student not found");
         }
-        return ResponseEntity.badRequest().body("Error updating student");
+        student.setName(name);
+        student.setRole(Role.valueOf(role));
+        student.setGrade(grade);
+        student.setFacultySection(facultySection);
+        student.setYear(year);
+        studentRepository.save(student);
+        return student;
     }
 
     @Override
-    public ResponseEntity<String> deleteStudent(Long id) {
-        try{
-            studentRepository.deleteById(id);
-            return ResponseEntity.ok("Student deleted successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
+    public Student deleteStudent(Long id) throws ObjectNotFound {
+        Student student = studentRepository.findById(id).orElse(null);
+        if (student == null) {
+            throw new ObjectNotFound("Student not found");
         }
-        return ResponseEntity.badRequest().body("Error deleting student");
+        enrollmentRepository.deleteByStudentId(id);
+        studentRepository.deleteById(id);
+        return student;
     }
 
     @Override
-    public ResponseEntity<Student> getStudentById(Long id) {
-        try{
-            Student student = studentRepository.findById(id).orElse(null);
-            if (student == null) {
-                return ResponseEntity.badRequest().body(null);
-            }
-
-            return ResponseEntity.ok(student);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public Student getStudentById(Long id) throws ObjectNotFound {
+        Student student = studentRepository.findById(id).orElse(null);
+        if (student == null) {
+            throw new ObjectNotFound("Student not found");
         }
-        return ResponseEntity.badRequest().body(null);
+        return student;
     }
 
     @Override
-    public ResponseEntity<List<Student>> getAllStudents() {
-        try{
-            List<Student> students = studentRepository.findAll();
-            return ResponseEntity.ok(students);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.badRequest().body(null);
+    public List<Student> getAllStudents() {
+        return studentRepository.findAll();
     }
 }
