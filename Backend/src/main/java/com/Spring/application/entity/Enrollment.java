@@ -2,6 +2,8 @@ package com.Spring.application.entity;
 
 import com.Spring.application.audit.Auditable;
 import com.Spring.application.enums.Status;
+import com.Spring.application.view.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -20,21 +22,26 @@ public class Enrollment extends Auditable<String> {
     @Id
     @Column(name = "enrollment_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(Views.Public.class)
     private Long enrollmentId;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "student_id", nullable = false)
+    @JsonView(Views.Public.class)
     private Student student;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "course_id", nullable = false)
+    @JsonView(Views.Public.class)
     private Course course;
 
     @Column(name = "priority", nullable = false)
+    @JsonView(Views.Public.class)
     private Integer priority;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
+    @JsonView(Views.Public.class)
     private Status status;
 
     public Enrollment() {

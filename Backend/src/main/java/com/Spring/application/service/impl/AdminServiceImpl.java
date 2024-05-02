@@ -14,14 +14,20 @@ import java.util.List;
 public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminRepository adminRepository;
-    public Admin addAdmin(String adminName)
+
+    @Override
+    public Admin addAdmin(String adminName, String email, String password)
     {
         Admin admin = new Admin();
         admin.setName(adminName);
+        admin.setEmail(email);
+        admin.setPassword(password);
         admin.setRole(Role.valueOf("ADMIN"));
         adminRepository.save(admin);
         return admin;
     }
+
+    @Override
     public Admin updateAdmin(Long adminId, String adminName) throws ObjectNotFound {
         Admin admin = adminRepository.findById(adminId).orElse(null);
         if (admin == null) {
@@ -32,6 +38,7 @@ public class AdminServiceImpl implements AdminService {
         return admin;
     }
 
+    @Override
     public Admin deleteAdmin(Long adminId) throws ObjectNotFound {
         Admin admin = adminRepository.findById(adminId).orElse(null);
         if (admin == null) {
@@ -40,6 +47,8 @@ public class AdminServiceImpl implements AdminService {
         adminRepository.delete(admin);
         return admin;
     }
+
+    @Override
     public Admin getAdminById(Long adminId) throws ObjectNotFound {
         Admin admin = adminRepository.findById(adminId).orElse(null);
         if (admin == null) {
@@ -48,7 +57,13 @@ public class AdminServiceImpl implements AdminService {
         return admin;
     }
 
+    @Override
     public List<Admin> getAllAdmins(){
         return adminRepository.findAll();
+    }
+
+    @Override
+    public Admin getAdminByEmailAndPassword(String email, String password) {
+        return adminRepository.findByEmailAndPassword(email, password);
     }
 }

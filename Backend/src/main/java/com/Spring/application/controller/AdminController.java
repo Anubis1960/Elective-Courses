@@ -17,8 +17,8 @@ public class AdminController {
     private AdminServiceImpl adminService;
 
     @PostMapping("/")
-    public ResponseEntity<Admin> addAdmin(@RequestParam String adminName) {
-        Admin admin = adminService.addAdmin(adminName);
+    public ResponseEntity<Admin> addAdmin(@RequestParam String adminName, @RequestParam String email, @RequestParam String password) {
+        Admin admin = adminService.addAdmin(adminName, email, password);
         return new ResponseEntity<>(admin, HttpStatus.CREATED);
     }
 

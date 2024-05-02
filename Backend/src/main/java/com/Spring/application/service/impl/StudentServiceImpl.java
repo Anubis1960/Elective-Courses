@@ -20,8 +20,8 @@ public class StudentServiceImpl implements StudentService{
     private EnrollmentRepository enrollmentRepository;
 
     @Override
-    public Student addStudent(String name, Float grade, String facultySection, Integer year) {
-        Student student = new Student(name, Role.STUDENT, grade, facultySection, year);
+    public Student addStudent(String name, Float grade, String facultySection, Integer year, String email, String password) {
+        Student student = new Student(name, Role.STUDENT, grade, facultySection, year, email, password);
         studentRepository.save(student);
         return student;
     }
@@ -64,5 +64,10 @@ public class StudentServiceImpl implements StudentService{
     @Override
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
+    }
+
+    @Override
+    public Student getStudentByEmailAndPassword(String email, String password) {
+        return studentRepository.findByEmailAndPassword(email, password);
     }
 }

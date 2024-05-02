@@ -1,6 +1,8 @@
 package com.Spring.application.entity;
 
 import com.Spring.application.enums.Role;
+import com.Spring.application.view.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
@@ -16,12 +18,15 @@ import java.util.List;
 public class Student extends User {
 
     @Column(name = "grade", nullable = false)
+    @JsonView(Views.Public.class)
     private Float grade;
 
     @Column(name = "faculty_section", nullable = false)
+    @JsonView(Views.Public.class)
     private String facultySection;
 
     @Column(name = "year_of_study", nullable = false)
+    @JsonView(Views.Public.class)
     private Integer year;
 
     public Student(String name, Float grade, String facultySection, Integer year) {
@@ -33,12 +38,14 @@ public class Student extends User {
     }
 
 
-    public Student(String name, Role role, Float grade, String facultySection, Integer year) {
+    public Student(String name, Role role, Float grade, String facultySection, Integer year, String email, String password) {
         this.grade = grade;
         this.facultySection = facultySection;
         this.year = year;
         this.name = name;
         this.role = role;
+        this.email = email;
+        this.password = password;
     }
 
     public Student() {

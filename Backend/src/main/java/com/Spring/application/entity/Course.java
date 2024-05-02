@@ -1,6 +1,8 @@
 package com.Spring.application.entity;
 
 import com.Spring.application.audit.Auditable;
+import com.Spring.application.view.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -19,27 +21,35 @@ public class Course extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id", nullable = false)
+    @JsonView(Views.Public.class)
     private Long courseId;
 
     @Column(name = "course_name", nullable = false)
+    @JsonView(Views.Public.class)
     private String courseName;
 
     @Column(name = "category", nullable = false)
+    @JsonView(Views.Public.class)
     private String category;
 
     @Column(name = "description")
+    @JsonView(Views.Public.class)
     private String description;
 
     @Column(name = "year_of_study", nullable = false)
+    @JsonView(Views.Public.class)
     private Integer year;
 
     @Column(name = "maximum_students_allowed", nullable = false)
+    @JsonView(Views.Public.class)
     private Integer maximumStudentsAllowed;
 
     @Column(name = "faculty_section", nullable = false)
+    @JsonView(Views.Public.class)
     private String facultySection;
 
     @Column(name = "teacher_name")
+    @JsonView(Views.Public.class)
     private String teacherName;
 
     public Course() {
