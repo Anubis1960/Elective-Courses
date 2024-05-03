@@ -93,12 +93,4 @@ public class CourseSchedule extends Auditable<String> {
         this.endTime = endTime;
         this.course = course;
     }
-
-    public CourseSchedule(Long courseId, Day day, LocalTime startTime, LocalTime endTime, Course course) {
-        this.courseId = courseId;
-        this.day = day;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.course = course;
-    }
 }

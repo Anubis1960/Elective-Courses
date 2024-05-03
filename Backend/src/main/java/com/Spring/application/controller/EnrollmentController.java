@@ -25,14 +25,20 @@ public class EnrollmentController {
 
     @PostMapping("/")
     @JsonView(Views.Public.class)
-    public ResponseEntity<Enrollment> enroll(Long studentId, Long courseId, Integer priority) throws ObjectNotFound {
+    public ResponseEntity<Enrollment> enroll(@RequestParam Long studentId,
+                                             @RequestParam Long courseId,
+                                             @RequestParam Integer priority) throws ObjectNotFound {
         Enrollment enrollment = enrollmentService.addEnrollment(studentId, courseId, priority);
         return new ResponseEntity<>(enrollment, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @JsonView(Views.Public.class)
-    public ResponseEntity<Enrollment> updateEnrollment(@PathVariable("id") Long enrollmentId,Long studentId, Long courseId, Integer priority, String status) throws ObjectNotFound {
+    public ResponseEntity<Enrollment> updateEnrollment(@PathVariable("id") Long enrollmentId,
+                                                       @RequestParam Long studentId,
+                                                       @RequestParam Long courseId,
+                                                       @RequestParam Integer priority,
+                                                       @RequestParam String status) throws ObjectNotFound {
         Enrollment enrollment = enrollmentService.updateEnrollment(enrollmentId, studentId, courseId, priority, status);
         return new ResponseEntity<>(enrollment, HttpStatus.OK);
     }

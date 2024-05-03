@@ -22,14 +22,20 @@ public class CourseScheduleController {
 
     @PostMapping("/")
     @JsonView(Views.Public.class)
-    public ResponseEntity<CourseSchedule> addCourseSchedule(Long courseId, String day, String startTime, String endTime) throws ObjectNotFound, InvalidInput {
+    public ResponseEntity<CourseSchedule> addCourseSchedule(@RequestParam Long courseId,
+                                                            @RequestParam String day,
+                                                            @RequestParam String startTime,
+                                                            @RequestParam String endTime) throws ObjectNotFound, InvalidInput {
         CourseSchedule courseSchedule = courseScheduleService.addCourseSchedule(courseId, day, startTime, endTime);
         return new ResponseEntity<>(courseSchedule, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @JsonView(Views.Public.class)
-    public ResponseEntity<CourseSchedule> updateCourseSchedule(@PathVariable("id")Long id, String day, String startTime, String endTime) throws ObjectNotFound, InvalidInput {
+    public ResponseEntity<CourseSchedule> updateCourseSchedule(@PathVariable("id")Long id,
+                                                               @RequestParam String day,
+                                                               @RequestParam String startTime,
+                                                               @RequestParam String endTime) throws ObjectNotFound, InvalidInput {
         CourseSchedule courseSchedule = courseScheduleService.updateCourseSchedule(id, day, startTime, endTime);
         return new ResponseEntity<>(courseSchedule, HttpStatus.OK);
     }

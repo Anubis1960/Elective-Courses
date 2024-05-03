@@ -3,6 +3,7 @@ package com.Spring.application.controller;
 import com.Spring.application.entity.Admin;
 import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.service.impl.AdminServiceImpl;
+import com.Spring.application.utils.Encrypt;
 import com.Spring.application.view.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RestController
@@ -19,15 +21,17 @@ public class AdminController {
     private AdminServiceImpl adminService;
     @PostMapping("/")
     @JsonView(Views.Public.class)
-    public ResponseEntity<Admin> addAdmin(@RequestParam String adminName, @RequestParam String email, @RequestParam String password) {
-        Admin admin = adminService.addAdmin(adminName, email, password);
+    public ResponseEntity<Admin> addAdmin(@RequestParam String adminName, @RequestParam String email, @RequestParam String password) throws NoSuchAlgorithmException{
+        Admin admin = adminService.addAdmin(adminName, email,password);
         return new ResponseEntity<>(admin, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @JsonView(Views.Public.class)
-    public ResponseEntity<Admin> updateAdmin(@PathVariable(value = "id") Long adminId,@RequestParam String adminName) throws ObjectNotFound {
-        Admin admin = adminService.updateAdmin(adminId, adminName);
+    public ResponseEntity<Admin> updateAdmin(@PathVariable(value = "id") Long adminId,@RequestParam String adminName,
+                                             @RequestParam String email,
+                                             @RequestParam String password) throws ObjectNotFound, NoSuchAlgorithmException {
+        Admin admin = adminService.updateAdmin(adminId, adminName, email, password);
         return new ResponseEntity<>(admin, HttpStatus.OK);
     }
 

@@ -129,4 +129,18 @@ public class Course extends Auditable<String> {
     public void setTeacherName(String teacherName) {
         this.teacherName = teacherName;
     }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "courseId=" + courseId +
+                ", courseName='" + courseName + '\'' +
+                ", category='" + category + '\'' +
+                ", description='" + description + '\'' +
+                ", year=" + year +
+                ", maximumStudentsAllowed=" + maximumStudentsAllowed +
+                ", facultySection='" + facultySection + '\'' +
+                ", teacherName='" + teacherName + '\'' +
+                '}';
+    }
 }

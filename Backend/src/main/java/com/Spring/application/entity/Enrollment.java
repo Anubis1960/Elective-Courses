@@ -95,4 +95,14 @@ public class Enrollment extends Auditable<String> {
         this.status = status;
     }
 
+    @Override
+    public String toString() {
+        return "Enrollment{" +
+                "enrollmentId=" + enrollmentId +
+                ", student=" + student +
+                ", course=" + course +
+                ", priority=" + priority +
+                ", status=" + status +
+                '}';
+    }
 }

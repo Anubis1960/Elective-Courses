@@ -33,7 +33,13 @@ public class CourseController {
 
     @PutMapping("/{id}")
     @JsonView(Views.Public.class)
-    public ResponseEntity<Course> updateCourse(@PathVariable("id") Long courseId, String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) throws ObjectNotFound {
+    public ResponseEntity<Course> updateCourse(@PathVariable("id") Long courseId,@RequestParam String courseName,
+                                               @RequestParam String category,
+                                               @RequestParam String description,
+                                               @RequestParam Integer year,
+                                               @RequestParam Integer maxStudentsAllowed,
+                                               @RequestParam String facultySection,
+                                               @RequestParam String teacherName) throws ObjectNotFound {
         Course course = courseService.updateCourse(courseId, courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
         return new ResponseEntity<>(course, HttpStatus.OK);
     }

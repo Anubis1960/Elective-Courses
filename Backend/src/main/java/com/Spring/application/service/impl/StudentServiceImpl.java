@@ -6,9 +6,11 @@ import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.repository.EnrollmentRepository;
 import com.Spring.application.repository.StudentRepository;
 import com.Spring.application.service.StudentService;
+import com.Spring.application.utils.Encrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Service
@@ -20,14 +22,14 @@ public class StudentServiceImpl implements StudentService{
     private EnrollmentRepository enrollmentRepository;
 
     @Override
-    public Student addStudent(String name, Float grade, String facultySection, Integer year, String email, String password) {
-        Student student = new Student(name, Role.STUDENT, grade, facultySection, year, email, password);
+    public Student addStudent(String name, Float grade, String facultySection, Integer year, String email, String password) throws NoSuchAlgorithmException {
+        Student student = new Student(name, Role.STUDENT, grade, facultySection, year, email, Encrypt.toHexString(Encrypt.encrypt(password)));
         studentRepository.save(student);
         return student;
     }
 
     @Override
-    public Student updateStudent(Long userId, String name, String role, Float grade, String facultySection, Integer year) throws ObjectNotFound {
+    public Student updateStudent(Long userId, String name, String role, Float grade, String facultySection, Integer year, String email, String password) throws ObjectNotFound, NoSuchAlgorithmException {
         Student student = studentRepository.findById(userId).orElse(null);
         if (student == null) {
             throw new ObjectNotFound("Student not found");
@@ -37,6 +39,8 @@ public class StudentServiceImpl implements StudentService{
         student.setGrade(grade);
         student.setFacultySection(facultySection);
         student.setYear(year);
+        student.setEmail(email);
+        student.setPassword(Encrypt.toHexString(Encrypt.encrypt(password)));
         studentRepository.save(student);
         return student;
     }

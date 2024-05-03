@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.time.DateTimeException;
 import java.time.format.DateTimeParseException;
 
@@ -49,5 +52,17 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     public ResponseEntity<Object> handleNonUniqueObjectException(NonUniqueObjectException ex) {
         ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<Object> handleIOException(IOException ex) {
+        ErrorResponse response = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NoSuchAlgorithmException.class)
+    public ResponseEntity<Object> handleNoSuchAlgorithmException(NoSuchAlgorithmException ex) {
+        ErrorResponse response = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

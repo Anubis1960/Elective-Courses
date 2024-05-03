@@ -29,14 +29,6 @@ public class Student extends User {
     @JsonView(Views.Public.class)
     private Integer year;
 
-    public Student(String name, Float grade, String facultySection, Integer year) {
-        this.grade = grade;
-        this.facultySection = facultySection;
-        this.year = year;
-        this.name = name;
-        this.role = Role.STUDENT;
-    }
-
 
     public Student(String name, Role role, Float grade, String facultySection, Integer year, String email, String password) {
         this.grade = grade;
@@ -75,5 +67,19 @@ public class Student extends User {
 
     public void setYear(Integer year) {
         this.year = year;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "grade=" + grade +
+                ", facultySection='" + facultySection + '\'' +
+                ", year=" + year +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", role=" + role +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
