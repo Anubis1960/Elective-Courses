@@ -1,5 +1,4 @@
 package com.Spring.application.entity;
-
 import com.Spring.application.audit.Auditable;
 import com.Spring.application.enums.Role;
 import com.Spring.application.view.Views;

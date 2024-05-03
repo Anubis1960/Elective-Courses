@@ -22,12 +22,12 @@ public class LoginController {
 
     @GetMapping("/")
     @JsonView(Views.Public.class)
-    public ResponseEntity<User> checkCredentials(String username, String password) {
-        User admin = adminService.getAdminByEmailAndPassword(username, password);
+    public ResponseEntity<User> checkCredentials(String email, String password) {
+        User admin = adminService.getAdminByEmailAndPassword(email, password);
         if (admin != null) {
             return new ResponseEntity<>(admin, HttpStatus.OK);
         }
-        User student = studentService.getStudentByEmailAndPassword(username, password);
+        User student = studentService.getStudentByEmailAndPassword(email, password);
         if (student != null) {
             return new ResponseEntity<>(student, HttpStatus.OK);
         }
