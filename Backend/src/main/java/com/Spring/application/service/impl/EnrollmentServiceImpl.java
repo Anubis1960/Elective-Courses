@@ -84,4 +84,9 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     public List<Enrollment> getAllEnrollments() {
         return enrollmentRepository.findAll();
     }
+
+    @Override
+    public List<Enrollment> getAllEnrollmentsWhereStatusIsAccepted(){
+        return enrollmentRepository.findAllWhereStatusIsAccepted();
+    }
 }

@@ -11,4 +11,5 @@ public interface EnrollmentService {
     Enrollment deleteEnrollment(Long enrollmentId) throws ObjectNotFound;
     Enrollment getEnrollmentById(Long enrollmentId) throws ObjectNotFound;
     List<Enrollment> getAllEnrollments();
+    List<Enrollment> getAllEnrollmentsWhereStatusIsAccepted();
 }

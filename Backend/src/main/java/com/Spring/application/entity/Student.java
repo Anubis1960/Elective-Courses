@@ -1,13 +1,10 @@
 package com.Spring.application.entity;
 
+import com.Spring.application.enums.FacultySection;
 import com.Spring.application.enums.Role;
 import com.Spring.application.view.Views;
 import com.fasterxml.jackson.annotation.JsonView;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 
 import java.util.List;
@@ -21,16 +18,17 @@ public class Student extends User {
     @JsonView(Views.Public.class)
     private Float grade;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "faculty_section", nullable = false)
     @JsonView(Views.Public.class)
-    private String facultySection;
+    private FacultySection facultySection;
 
     @Column(name = "year_of_study", nullable = false)
     @JsonView(Views.Public.class)
     private Integer year;
 
 
-    public Student(String name, Role role, Float grade, String facultySection, Integer year, String email, String password) {
+    public Student(String name, Role role, Float grade, FacultySection facultySection, Integer year, String email, String password) {
         this.grade = grade;
         this.facultySection = facultySection;
         this.year = year;
@@ -52,14 +50,13 @@ public class Student extends User {
         this.grade = grade;
     }
 
-    public String getFacultySection() {
+    public FacultySection getFacultySection() {
         return facultySection;
     }
 
-    public void setFacultySection(String facultySection) {
+    public void setFacultySection(FacultySection facultySection) {
         this.facultySection = facultySection;
     }
-
 
     public Integer getYear() {
         return year;

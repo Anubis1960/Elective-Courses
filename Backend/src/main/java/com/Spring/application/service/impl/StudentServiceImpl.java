@@ -1,7 +1,9 @@
 package com.Spring.application.service.impl;
 
 import com.Spring.application.entity.Student;
+import com.Spring.application.enums.FacultySection;
 import com.Spring.application.enums.Role;
+import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.repository.EnrollmentRepository;
 import com.Spring.application.repository.StudentRepository;
@@ -22,22 +24,28 @@ public class StudentServiceImpl implements StudentService{
     private EnrollmentRepository enrollmentRepository;
 
     @Override
-    public Student addStudent(String name, Float grade, String facultySection, Integer year, String email, String password) throws NoSuchAlgorithmException {
-        Student student = new Student(name, Role.STUDENT, grade, facultySection, year, email, Encrypt.toHexString(Encrypt.encrypt(password)));
+    public Student addStudent(String name, Float grade, String facultySection, Integer year, String email, String password) throws NoSuchAlgorithmException, InvalidInput {
+        if (grade <= 0 || grade > 10){
+            throw new InvalidInput("Invalid grade");
+        }
+        Student student = new Student(name, Role.STUDENT, grade, FacultySection.valueOf(facultySection), year, email, Encrypt.toHexString(Encrypt.encrypt(password)));
         studentRepository.save(student);
         return student;
     }
 
     @Override
-    public Student updateStudent(Long userId, String name, String role, Float grade, String facultySection, Integer year, String email, String password) throws ObjectNotFound, NoSuchAlgorithmException {
+    public Student updateStudent(Long userId, String name, String role, Float grade, String facultySection, Integer year, String email, String password) throws ObjectNotFound, NoSuchAlgorithmException, InvalidInput {
         Student student = studentRepository.findById(userId).orElse(null);
         if (student == null) {
             throw new ObjectNotFound("Student not found");
         }
+        if (grade <= 0 || grade > 10){
+            throw new InvalidInput("Invalid grade");
+        }
         student.setName(name);
         student.setRole(Role.valueOf(role));
         student.setGrade(grade);
-        student.setFacultySection(facultySection);
+        student.setFacultySection(FacultySection.valueOf(facultySection));
         student.setYear(year);
         student.setEmail(email);
         student.setPassword(Encrypt.toHexString(Encrypt.encrypt(password)));

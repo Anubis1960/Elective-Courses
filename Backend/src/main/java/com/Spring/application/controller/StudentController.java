@@ -1,6 +1,7 @@
 package com.Spring.application.controller;
 
 import com.Spring.application.entity.Student;
+import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.service.impl.StudentServiceImpl;
 import com.Spring.application.view.Views;
@@ -27,7 +28,7 @@ public class StudentController {
                                               @RequestParam String facultySection,
                                               @RequestParam Integer year,
                                               @RequestParam String email,
-                                              @RequestParam String password) throws NoSuchAlgorithmException{
+                                              @RequestParam String password) throws NoSuchAlgorithmException, InvalidInput {
         Student student = studentService.addStudent(name, grade, facultySection, year, email, password);
         return new ResponseEntity<>(student, HttpStatus.CREATED);
     }
@@ -41,7 +42,7 @@ public class StudentController {
                                                  @RequestParam String facultySection,
                                                  @RequestParam Integer year,
                                                  @RequestParam String email,
-                                                 @RequestParam String password) throws ObjectNotFound, NoSuchAlgorithmException {
+                                                 @RequestParam String password) throws InvalidInput, ObjectNotFound, NoSuchAlgorithmException {
         Student student = studentService.updateStudent(userId, name, role, grade, facultySection, year, email, password);
         return new ResponseEntity<>(student, HttpStatus.OK);
     }

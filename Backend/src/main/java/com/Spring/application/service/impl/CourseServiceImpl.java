@@ -1,6 +1,8 @@
 package com.Spring.application.service.impl;
 
 import com.Spring.application.entity.Course;
+import com.Spring.application.enums.FacultySection;
+import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.repository.CourseRepository;
 import com.Spring.application.repository.CourseScheduleRepository;
@@ -23,24 +25,36 @@ public class CourseServiceImpl implements CourseService{
     private EnrollmentRepository enrollmentRepository;
 
     @Override
-    public Course addCourse(String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) {
-        Course course = new Course(courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
+    public Course addCourse(String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) throws ObjectNotFound, InvalidInput {
+        if (year <= 0){
+            throw new InvalidInput("Invalid year");
+        }
+        if (maxStudentsAllowed <= 0){
+            throw new InvalidInput("Invalid number of students");
+        }
+        Course course = new Course(courseName, category, description, year, maxStudentsAllowed, FacultySection.valueOf(facultySection), teacherName);
         courseRepository.save(course);
         return course;
     }
 
     @Override
-    public Course updateCourse(Long courseId, String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) throws ObjectNotFound {
+    public Course updateCourse(Long courseId, String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) throws InvalidInput, ObjectNotFound {
         Course course = courseRepository.findById(courseId).orElse(null);
         if (course == null) {
             throw new ObjectNotFound("Course not found");
+        }
+        if (year <= 0){
+            throw new InvalidInput("Invalid year");
+        }
+        if (maxStudentsAllowed <= 0){
+            throw new InvalidInput("Invalid number of students");
         }
         course.setCourseName(courseName);
         course.setCategory(category);
         course.setDescription(description);
         course.setYear(year);
         course.setMaximumStudentsAllowed(maxStudentsAllowed);
-        course.setFacultySection(facultySection);
+        course.setFacultySection(FacultySection.valueOf(facultySection));
         course.setTeacherName(teacherName);
         courseRepository.save(course);
         return course;

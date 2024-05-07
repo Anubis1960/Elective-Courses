@@ -1,17 +1,10 @@
 package com.Spring.application.entity;
 
 import com.Spring.application.audit.Auditable;
+import com.Spring.application.enums.FacultySection;
 import com.Spring.application.view.Views;
 import com.fasterxml.jackson.annotation.JsonView;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.*;
 
 import java.util.List;
 
@@ -44,9 +37,10 @@ public class Course extends Auditable<String> {
     @JsonView(Views.Public.class)
     private Integer maximumStudentsAllowed;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "faculty_section", nullable = false)
     @JsonView(Views.Public.class)
-    private String facultySection;
+    private FacultySection facultySection;
 
     @Column(name = "teacher_name")
     @JsonView(Views.Public.class)
@@ -56,7 +50,7 @@ public class Course extends Auditable<String> {
 
     }
 
-    public Course(String courseName, String category, String description, Integer year, Integer maximumStudentsAllowed, String facultySection, String teacherName) {
+    public Course(String courseName, String category, String description, Integer year, Integer maximumStudentsAllowed, FacultySection facultySection, String teacherName) {
         this.courseName = courseName;
         this.category = category;
         this.description = description;
@@ -114,11 +108,11 @@ public class Course extends Auditable<String> {
         this.maximumStudentsAllowed = maximumStudentsAllowed;
     }
 
-    public String getFacultySection() {
+    public FacultySection getFacultySection() {
         return facultySection;
     }
 
-    public void setFacultySection(String facultySection) {
+    public void setFacultySection(FacultySection facultySection) {
         this.facultySection = facultySection;
     }
 

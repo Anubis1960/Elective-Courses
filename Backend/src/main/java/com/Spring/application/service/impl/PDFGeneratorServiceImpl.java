@@ -1,6 +1,8 @@
 package com.Spring.application.service.impl;
 
+import com.Spring.application.entity.CourseSchedule;
 import com.Spring.application.entity.Enrollment;
+import com.Spring.application.repository.CourseRepository;
 import com.Spring.application.repository.CourseScheduleRepository;
 import com.Spring.application.repository.EnrollmentRepository;
 import com.Spring.application.service.PDFGeneratorService;
@@ -23,12 +25,14 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
     private EnrollmentRepository enrollmentRepository;
     @Autowired
     private CourseScheduleRepository courseScheduleRepository;
+    @Autowired
+    private CourseRepository courseRepository;
 
     @Override
     public void exportEnrollmentsToPDF(HttpServletResponse response) throws IOException {
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
-        List<Enrollment> enrollments = enrollmentRepository.findAll();
+        List<Enrollment> enrollments = enrollmentRepository.findAllWhereStatusIsAccepted();
         document.open();
         Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
         font.setSize(12);
@@ -41,6 +45,8 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
 
     @Override
     public void exportScheduleToPDF(HttpServletResponse response) throws IOException{
+        Long id = Long.valueOf(1);
+        List<CourseSchedule> courseSchedules = courseScheduleRepository.findCourseScheduleOfStudent(id);
 
     }
 }

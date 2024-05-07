@@ -1,6 +1,7 @@
 package com.Spring.application.controller;
 
 import com.Spring.application.entity.Course;
+import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.service.impl.CourseServiceImpl;
 import com.Spring.application.view.Views;
@@ -26,7 +27,7 @@ public class CourseController {
                                             @RequestParam Integer year,
                                             @RequestParam Integer maxStudentsAllowed,
                                             @RequestParam String facultySection,
-                                            @RequestParam String teacherName) throws ObjectNotFound {
+                                            @RequestParam String teacherName) throws ObjectNotFound, InvalidInput {
         Course course = courseService.addCourse(courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
         return new ResponseEntity<>(course, HttpStatus.CREATED);
     }
@@ -39,7 +40,7 @@ public class CourseController {
                                                @RequestParam Integer year,
                                                @RequestParam Integer maxStudentsAllowed,
                                                @RequestParam String facultySection,
-                                               @RequestParam String teacherName) throws ObjectNotFound {
+                                               @RequestParam String teacherName) throws ObjectNotFound, InvalidInput {
         Course course = courseService.updateCourse(courseId, courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
         return new ResponseEntity<>(course, HttpStatus.OK);
     }

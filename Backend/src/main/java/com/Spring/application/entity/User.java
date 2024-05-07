@@ -3,13 +3,7 @@ import com.Spring.application.audit.Auditable;
 import com.Spring.application.enums.Role;
 import com.Spring.application.view.Views;
 import com.fasterxml.jackson.annotation.JsonView;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 
 @MappedSuperclass
 public abstract class User extends Auditable<String> {
@@ -28,7 +22,7 @@ public abstract class User extends Auditable<String> {
     @JsonView(Views.Public.class)
     protected Role role;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     @JsonView(Views.Public.class)
     protected String email;
 
