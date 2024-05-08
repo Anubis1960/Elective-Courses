@@ -1,18 +1,21 @@
 package com.Spring.application.controller;
 
-
 import com.Spring.application.entity.Enrollment;
-import com.Spring.application.enums.Status;
 import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.repository.EnrollmentRepository;
 import com.Spring.application.service.impl.EnrollmentServiceImpl;
 import com.Spring.application.view.Views;
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import com.Spring.application.service.PDFGeneratorService;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @RestController
@@ -22,6 +25,8 @@ public class EnrollmentController {
     private EnrollmentServiceImpl enrollmentService;
     @Autowired
     private EnrollmentRepository enrollmentRepository;
+    @Autowired
+    private PDFGeneratorService pdfGeneratorService;
 
     @PostMapping("/")
     @JsonView(Views.Public.class)
@@ -75,5 +80,16 @@ public class EnrollmentController {
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(enrollments, HttpStatus.OK);
+    }
+
+    @GetMapping("/export")
+    public void exportEnrollmentsToPDF(HttpServletResponse response) throws IOException {
+        response.setContentType("application/pdf");
+        DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormater.format(System.currentTimeMillis());
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
+        this.pdfGeneratorService.exportEnrollmentsToPDF(response);
     }
 }
