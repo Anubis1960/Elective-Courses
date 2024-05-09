@@ -26,7 +26,7 @@ public class LoginController {
 
     @GetMapping("/")
     @JsonView(Views.Public.class)
-    public ResponseEntity<User> checkCredentials(@RequestParam String email,@RequestParam String password) throws NoSuchAlgorithmException {
+    public ResponseEntity<User> checkCredentials(String email,String password) throws NoSuchAlgorithmException {
         User admin = adminService.getAdminByEmailAndPassword(email, Encrypt.toHexString(Encrypt.encrypt(password)));
         if (admin != null) {
             return new ResponseEntity<>(admin, HttpStatus.OK);
