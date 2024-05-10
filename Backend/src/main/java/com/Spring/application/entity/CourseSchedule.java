@@ -2,8 +2,6 @@ package com.Spring.application.entity;
 
 import com.Spring.application.audit.Auditable;
 import com.Spring.application.enums.Day;
-import com.Spring.application.view.Views;
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -22,25 +20,20 @@ public class CourseSchedule extends Auditable<String> {
 
     @Id
     @Column(name = "course_id", nullable = false)
-    @JsonView(Views.Public.class)
     private Long courseId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "day", nullable = false)
-    @JsonView(Views.Public.class)
-    private Day day;
-
     @Column(name = "start_time", nullable = false)
-    @JsonView(Views.Public.class)
     private LocalTime startTime;
 
     @Column(name = "end_time", nullable = false)
-    @JsonView(Views.Public.class)
     private LocalTime endTime;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "day", nullable = false)
+    private Day day;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "course_id")
-    @JsonView(Views.Public.class)
     @MapsId
     private Course course;
 

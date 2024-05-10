@@ -6,8 +6,19 @@ import java.util.Optional;
 
 public class AuditorAwareImpl implements AuditorAware<String> {
 
+    private static final ThreadLocal<String> auditorName = new ThreadLocal<>();
+
+    public static void setAuditorName(String name) {
+        auditorName.set(name);
+    }
+
     @Override
     public Optional<String> getCurrentAuditor() {
-        return Optional.of("Roberto");
+        String name = auditorName.get();
+        if (name != null) {
+            return Optional.of(name);
+        } else {
+            return Optional.empty();
+        }
     }
 }

@@ -22,10 +22,10 @@ Values (5, 1, CURRENT_DATE, CURRENT_DATE, nextval('student_user_id_seq'), 'Rober
 
 --Admin
 INSERT INTO admin(created_date, last_modified_date, user_id, created_by, email, last_modified_by, name, password, role)
-VALUES (CURRENT_DATE, CURRENT_DATE, nextval('admin_user_id_seq'), 'Roberto', 'ionel@gmail.com', 'Roberto', 'Ionel', '123', 'ADMIN');
+VALUES (CURRENT_DATE, CURRENT_DATE, nextval('admin_user_id_seq'), 'Roberto', 'ionel@gmail.com', 'Roberto', 'Ionel', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'ADMIN');
 
 INSERT INTO admin(created_date, last_modified_date, user_id, created_by, email, last_modified_by, name, password, role)
-VALUES (CURRENT_DATE, CURRENT_DATE, nextval('admin_user_id_seq'), 'Roberto', 'ion@gmail.com', 'Roberto', 'Ion', '123', 'ADMIN');
+VALUES (CURRENT_DATE, CURRENT_DATE, nextval('admin_user_id_seq'), 'Roberto', 'ion@gmail.com', 'Roberto', 'Ion', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'ADMIN');
 
 --Course
 INSERT INTO course(maximum_students_allowed, year_of_study, course_id, created_date, last_modified_date, category, course_name, created_by, description, faculty_section, last_modified_by, teacher_name)

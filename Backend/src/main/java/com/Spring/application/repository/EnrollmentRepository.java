@@ -23,4 +23,7 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     @Query("SELECT e FROM Enrollment e WHERE e.status = 'ACCEPTED'")
     List<Enrollment> findAllWhereStatusIsAccepted();
 
+    @Query("SELECT e FROM Enrollment e ORDER BY e.student.grade DESC")
+    List<Enrollment> findAllByOrderByStudentGradeDesc();
+
 }

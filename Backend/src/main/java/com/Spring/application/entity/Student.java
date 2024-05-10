@@ -2,8 +2,6 @@ package com.Spring.application.entity;
 
 import com.Spring.application.enums.FacultySection;
 import com.Spring.application.enums.Role;
-import com.Spring.application.view.Views;
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 
@@ -14,19 +12,15 @@ import java.util.List;
 @OnDelete(action = org.hibernate.annotations.OnDeleteAction.CASCADE)
 public class Student extends User {
 
-    @Column(name = "grade", nullable = false)
-    @JsonView(Views.Public.class)
-    private Float grade;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "faculty_section", nullable = false)
-    @JsonView(Views.Public.class)
     private FacultySection facultySection;
 
     @Column(name = "year_of_study", nullable = false)
-    @JsonView(Views.Public.class)
     private Integer year;
 
+    @Column(name = "grade", nullable = false)
+    private Float grade;
 
     public Student(String name, Role role, Float grade, FacultySection facultySection, Integer year, String email, String password) {
         this.grade = grade;

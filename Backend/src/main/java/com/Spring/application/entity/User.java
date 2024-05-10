@@ -1,34 +1,27 @@
 package com.Spring.application.entity;
 import com.Spring.application.audit.Auditable;
 import com.Spring.application.enums.Role;
-import com.Spring.application.view.Views;
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
 @MappedSuperclass
 public abstract class User extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(Views.Public.class)
     @Column(name = "user_id", nullable = false)
     protected Long id;
 
     @Column(name = "name", nullable = false)
-    @JsonView(Views.Public.class)
     protected String name;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
-    @JsonView(Views.Public.class)
-    protected Role role;
-
     @Column(name = "email", nullable = false, unique = true)
-    @JsonView(Views.Public.class)
     protected String email;
 
     @Column(name = "password", nullable = false)
-    @JsonView(Views.InternalView.class)
     protected String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    protected Role role;
 
     public Long getId() {
         return id;

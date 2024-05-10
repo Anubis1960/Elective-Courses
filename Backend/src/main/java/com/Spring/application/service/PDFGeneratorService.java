@@ -5,6 +5,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public interface PDFGeneratorService {
-    void exportEnrollmentsToPDF(HttpServletResponse response) throws IOException;
-    void exportScheduleToPDF(HttpServletResponse response) throws IOException;
+    byte[] exportEnrollmentsToPDF() throws IOException;
+    byte[] exportScheduleToPDF(Long id) throws IOException;
 }

@@ -2,8 +2,6 @@ package com.Spring.application.entity;
 
 import com.Spring.application.audit.Auditable;
 import com.Spring.application.enums.FacultySection;
-import com.Spring.application.view.Views;
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -14,36 +12,28 @@ public class Course extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id", nullable = false)
-    @JsonView(Views.Public.class)
     private Long courseId;
 
     @Column(name = "course_name", nullable = false)
-    @JsonView(Views.Public.class)
     private String courseName;
 
-    @Column(name = "category", nullable = false)
-    @JsonView(Views.Public.class)
-    private String category;
-
     @Column(name = "description")
-    @JsonView(Views.Public.class)
     private String description;
 
-    @Column(name = "year_of_study", nullable = false)
-    @JsonView(Views.Public.class)
-    private Integer year;
+    @Column(name = "category", nullable = false)
+    private String category;
 
     @Column(name = "maximum_students_allowed", nullable = false)
-    @JsonView(Views.Public.class)
     private Integer maximumStudentsAllowed;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "faculty_section", nullable = false)
-    @JsonView(Views.Public.class)
     private FacultySection facultySection;
 
+    @Column(name = "year_of_study", nullable = false)
+    private Integer year;
+
     @Column(name = "teacher_name")
-    @JsonView(Views.Public.class)
     private String teacherName;
 
     public Course() {

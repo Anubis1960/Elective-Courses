@@ -1,15 +1,20 @@
 package com.Spring.application.controller;
 
+import com.Spring.application.dto.CourseDTO;
 import com.Spring.application.entity.Course;
 import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.service.impl.CourseServiceImpl;
-import com.Spring.application.view.Views;
-import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -20,52 +25,40 @@ public class CourseController {
     private CourseServiceImpl courseService;
 
     @PostMapping("/")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<Course> addCourse(@RequestParam String courseName,
-                                            @RequestParam String category,
-                                            @RequestParam String description,
-                                            @RequestParam Integer year,
-                                            @RequestParam Integer maxStudentsAllowed,
-                                            @RequestParam String facultySection,
-                                            @RequestParam String teacherName) throws ObjectNotFound, InvalidInput {
+    public ResponseEntity<CourseDTO> addCourse(String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) throws ObjectNotFound, InvalidInput {
         Course course = courseService.addCourse(courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
-        return new ResponseEntity<>(course, HttpStatus.CREATED);
+        CourseDTO courseDTO = new CourseDTO(course.getCourseId(), course.getCourseName(), course.getDescription(), course.getCategory(), course.getMaximumStudentsAllowed(), course.getFacultySection().toString(), course.getYear(), course.getTeacherName());
+        return new ResponseEntity<>(courseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<Course> updateCourse(@PathVariable("id") Long courseId,@RequestParam String courseName,
-                                               @RequestParam String category,
-                                               @RequestParam String description,
-                                               @RequestParam Integer year,
-                                               @RequestParam Integer maxStudentsAllowed,
-                                               @RequestParam String facultySection,
-                                               @RequestParam String teacherName) throws ObjectNotFound, InvalidInput {
+    public ResponseEntity<CourseDTO> updateCourse(@PathVariable("id") Long courseId,String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) throws ObjectNotFound, InvalidInput {
         Course course = courseService.updateCourse(courseId, courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
-        return new ResponseEntity<>(course, HttpStatus.OK);
+        CourseDTO courseDTO = new CourseDTO(course.getCourseId(), course.getCourseName(), course.getDescription(), course.getCategory(), course.getMaximumStudentsAllowed(), course.getFacultySection().toString(), course.getYear(), course.getTeacherName());
+        return new ResponseEntity<>(courseDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<Course> deleteCourse(@PathVariable("id") Long courseId) throws ObjectNotFound {
+    public ResponseEntity<CourseDTO> deleteCourse(@PathVariable("id") Long courseId) throws ObjectNotFound {
         Course course = courseService.deleteCourse(courseId);
-        return new ResponseEntity<>(course, HttpStatus.OK);
+        CourseDTO courseDTO = new CourseDTO(course.getCourseId(), course.getCourseName(), course.getDescription(), course.getCategory(), course.getMaximumStudentsAllowed(), course.getFacultySection().toString(), course.getYear(), course.getTeacherName());
+        return new ResponseEntity<>(courseDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<Course> getCourseById(@PathVariable("id") Long courseId) throws ObjectNotFound {
+    public ResponseEntity<CourseDTO> getCourseById(@PathVariable("id") Long courseId) throws ObjectNotFound {
         Course course = courseService.getCourseById(courseId);
-        return new ResponseEntity<>(course, HttpStatus.OK);
+        CourseDTO courseDTO = new CourseDTO(course.getCourseId(), course.getCourseName(), course.getDescription(), course.getCategory(), course.getMaximumStudentsAllowed(), course.getFacultySection().toString(), course.getYear(), course.getTeacherName());
+        return new ResponseEntity<>(courseDTO, HttpStatus.OK);
     }
 
     @GetMapping("/")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<List<Course>> getAllCourses() {
+    public ResponseEntity<List<CourseDTO>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
         if (courses.isEmpty()) {
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(courses, HttpStatus.OK);
+        List<CourseDTO> courseDTOs = CourseDTO.convertToDTO(courses);
+        return new ResponseEntity<>(courseDTOs, HttpStatus.OK);
     }
 }

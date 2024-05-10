@@ -1,17 +1,21 @@
 package com.Spring.application.controller;
 
-import com.Spring.application.entity.Course;
+import com.Spring.application.dto.CourseScheduleDTO;
 import com.Spring.application.entity.CourseSchedule;
 import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.service.impl.CourseScheduleServiceImpl;
-import com.Spring.application.view.Views;
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import com.Spring.application.service.PDFGeneratorService;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -27,57 +31,51 @@ public class CourseScheduleController {
     private PDFGeneratorService pdfGeneratorService;
 
     @PostMapping("/")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<CourseSchedule> addCourseSchedule(@RequestParam Long courseId,
-                                                            @RequestParam String day,
-                                                            @RequestParam String startTime,
-                                                            @RequestParam String endTime) throws ObjectNotFound, InvalidInput {
+    public ResponseEntity<CourseScheduleDTO> addCourseSchedule(Long courseId, String day, String startTime, String endTime) throws ObjectNotFound, InvalidInput {
         CourseSchedule courseSchedule = courseScheduleService.addCourseSchedule(courseId, day, startTime, endTime);
-        return new ResponseEntity<>(courseSchedule, HttpStatus.CREATED);
+        CourseScheduleDTO courseScheduleDTO = new CourseScheduleDTO(courseSchedule.getCourseId(), courseSchedule.getDay().toString(), courseSchedule.getStartTime().toString(), courseSchedule.getEndTime().toString());
+        return new ResponseEntity<>(courseScheduleDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<CourseSchedule> updateCourseSchedule(@PathVariable("id")Long id,
-                                                               @RequestParam String day,
-                                                               @RequestParam String startTime,
-                                                               @RequestParam String endTime) throws ObjectNotFound, InvalidInput {
+    public ResponseEntity<CourseScheduleDTO> updateCourseSchedule(@PathVariable("id")Long id, String day, String startTime, String endTime) throws ObjectNotFound, InvalidInput {
         CourseSchedule courseSchedule = courseScheduleService.updateCourseSchedule(id, day, startTime, endTime);
-        return new ResponseEntity<>(courseSchedule, HttpStatus.OK);
+        CourseScheduleDTO courseScheduleDTO = new CourseScheduleDTO(courseSchedule.getCourseId(), courseSchedule.getDay().toString(), courseSchedule.getStartTime().toString(), courseSchedule.getEndTime().toString());
+        return new ResponseEntity<>(courseScheduleDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<CourseSchedule> deleteCourseSchedule(@PathVariable("id") Long id) throws ObjectNotFound {
+    public ResponseEntity<CourseScheduleDTO> deleteCourseSchedule(@PathVariable("id") Long id) throws ObjectNotFound {
         CourseSchedule courseSchedule = courseScheduleService.deleteCourseSchedule(id);
-        return new ResponseEntity<>(courseSchedule, HttpStatus.OK);
+        CourseScheduleDTO courseScheduleDTO = new CourseScheduleDTO(courseSchedule.getCourseId(), courseSchedule.getDay().toString(), courseSchedule.getStartTime().toString(), courseSchedule.getEndTime().toString());
+        return new ResponseEntity<>(courseScheduleDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<CourseSchedule> getCourseScheduleById(@PathVariable("id") Long id) throws ObjectNotFound {
+    public ResponseEntity<CourseScheduleDTO> getCourseScheduleById(@PathVariable("id") Long id) throws ObjectNotFound {
         CourseSchedule courseSchedule = courseScheduleService.getCourseScheduleById(id);
-        return new ResponseEntity<>(courseSchedule, HttpStatus.OK);
+        CourseScheduleDTO courseScheduleDTO = new CourseScheduleDTO(courseSchedule.getCourseId(), courseSchedule.getDay().toString(), courseSchedule.getStartTime().toString(), courseSchedule.getEndTime().toString());
+        return new ResponseEntity<>(courseScheduleDTO, HttpStatus.OK);
     }
 
     @GetMapping("/")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<List<CourseSchedule>> getAllCourseSchedules() {
+    public ResponseEntity<List<CourseScheduleDTO>> getAllCourseSchedules() {
         List<CourseSchedule> courseSchedules = courseScheduleService.getAllCourseSchedules();
         if (courseSchedules.isEmpty()) {
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(courseSchedules, HttpStatus.OK);
+        List<CourseScheduleDTO> courseScheduleDTOs = CourseScheduleDTO.convertToDTO(courseSchedules);
+        return new ResponseEntity<>(courseScheduleDTOs, HttpStatus.OK);
     }
 
     @GetMapping("/export")
-    public void exportScheduleToPDF(HttpServletResponse response) throws IOException {
+    public void exportScheduleToPDF(HttpServletResponse response, Long id) throws IOException {
         response.setContentType("application/pdf");
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormater.format(System.currentTimeMillis());
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=schedule_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
-        this.pdfGeneratorService.exportScheduleToPDF(response);
+        response.getOutputStream().write(pdfGeneratorService.exportScheduleToPDF(id));
     }
 }

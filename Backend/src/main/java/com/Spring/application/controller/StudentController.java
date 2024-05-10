@@ -1,17 +1,20 @@
 package com.Spring.application.controller;
 
+import com.Spring.application.dto.StudentDTO;
 import com.Spring.application.entity.Student;
 import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.service.impl.StudentServiceImpl;
-import com.Spring.application.view.Views;
-import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import com.Spring.application.utils.Encrypt;
-
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
@@ -22,53 +25,41 @@ public class StudentController {
     private StudentServiceImpl studentService;
 
     @PostMapping("/")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<Student> addStudent(@RequestParam String name,
-                                              @RequestParam Float grade,
-                                              @RequestParam String facultySection,
-                                              @RequestParam Integer year,
-                                              @RequestParam String email,
-                                              @RequestParam String password) throws NoSuchAlgorithmException, InvalidInput {
+    public ResponseEntity<StudentDTO> addStudent(String name, Float grade, String facultySection, Integer year, String email, String password) throws NoSuchAlgorithmException, InvalidInput {
         Student student = studentService.addStudent(name, grade, facultySection, year, email, password);
-        return new ResponseEntity<>(student, HttpStatus.CREATED);
+        StudentDTO studentDTO = new StudentDTO(student.getId(), student.getName(), student.getEmail(), student.getRole().toString(), student.getFacultySection().toString(), student.getYear(), student.getGrade());
+        return new ResponseEntity<>(studentDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<Student> updateStudent(@PathVariable("id") Long userId,
-                                                 @RequestParam String name,
-                                                 @RequestParam String role,
-                                                 @RequestParam Float grade,
-                                                 @RequestParam String facultySection,
-                                                 @RequestParam Integer year,
-                                                 @RequestParam String email,
-                                                 @RequestParam String password) throws InvalidInput, ObjectNotFound, NoSuchAlgorithmException {
+    public ResponseEntity<StudentDTO> updateStudent(@PathVariable("id") Long userId, String name, String role, Float grade, String facultySection, Integer year, String email, String password) throws InvalidInput, ObjectNotFound, NoSuchAlgorithmException {
         Student student = studentService.updateStudent(userId, name, role, grade, facultySection, year, email, password);
-        return new ResponseEntity<>(student, HttpStatus.OK);
+        StudentDTO studentDTO = new StudentDTO(student.getId(), student.getName(), student.getEmail(), student.getRole().toString(), student.getFacultySection().toString(), student.getYear(), student.getGrade());
+        return new ResponseEntity<>(studentDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<Student> deleteStudent(@PathVariable("id")  Long id) throws ObjectNotFound {
+    public ResponseEntity<StudentDTO> deleteStudent(@PathVariable("id")  Long id) throws ObjectNotFound {
         Student student = studentService.deleteStudent(id);
-        return new ResponseEntity<>(student, HttpStatus.OK);
+        StudentDTO studentDTO = new StudentDTO(student.getId(), student.getName(), student.getEmail(), student.getRole().toString(), student.getFacultySection().toString(), student.getYear(), student.getGrade());
+        return new ResponseEntity<>(studentDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<Student> getStudentById(@PathVariable("id")  Long id) throws ObjectNotFound {
+    public ResponseEntity<StudentDTO> getStudentById(@PathVariable("id")  Long id) throws ObjectNotFound {
         Student student = studentService.getStudentById(id);
-        return new ResponseEntity<>(student, HttpStatus.OK);
+        StudentDTO studentDTO = new StudentDTO(student.getId(), student.getName(), student.getEmail(), student.getRole().toString(), student.getFacultySection().toString(), student.getYear(), student.getGrade());
+        return new ResponseEntity<>(studentDTO, HttpStatus.OK);
     }
 
     @GetMapping("/")
-    @JsonView(Views.Public.class)
-    public ResponseEntity<List<Student>> getAllStudents() {
+    public ResponseEntity<List<StudentDTO>> getAllStudents() {
         List<Student> students = studentService.getAllStudents();
         if (students.isEmpty()) {
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(students, HttpStatus.OK);
+        List<StudentDTO> studentDTOs = StudentDTO.convertToDTO(students);
+        return new ResponseEntity<>(studentDTOs, HttpStatus.OK);
     }
 
 }
