@@ -15,4 +15,5 @@ export class LoginService {
   getUser(email: string, password: string): Observable<User> {
     return this.http.get<User>(`${this.baseUrl}/`, {params: {email, password}});
   }
+  
 }

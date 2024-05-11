@@ -8,6 +8,7 @@ import { StudentComponent } from './component/student/student.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { CourseComponent } from './component/course/course.component';
+import { TopBarComponent } from './component/top-bar/top-bar.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { CourseComponent } from './component/course/course.component';
     LoginComponent,
     StudentComponent,
     CourseComponent,
+    TopBarComponent,
   ],
   imports: [
     BrowserModule,
