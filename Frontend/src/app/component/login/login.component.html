@@ -2,14 +2,13 @@
 <form>
 <div class="input-box">
     <label>Email</label>
-    <input type = "email"  required> 
+    <input type = "email"  [(ngModel)]="email" name="Email" required> 
 </div>
 <div class="input-box">
     <label>Password</label>
-    <input type = "password" required>
-   
+    <input type = "password" [(ngModel)]="password" name="Password" required>
 </div>
-</form>
 <a routerLink="/student">
-    Login
+    <button type="buton" (click)="onLogin()">Login</button>
 </a>
+</form>
