@@ -18,7 +18,7 @@ export class CourseScheduleService {
   }
 
   createCourseSchedule(courseSchedule: CourseSchedule): Observable<any> {
-    return this.http.post(this.baseUrl, courseSchedule);
+    return this.http.post(`${this.baseUrl}/`, courseSchedule);
   }
 
   updateCourseSchedule(id: number, courseSchedule: CourseSchedule): Observable<any> {
@@ -30,7 +30,7 @@ export class CourseScheduleService {
   }
 
   getCourseSchedulesList(): Observable<any> {
-    return this.http.get(this.baseUrl);
+    return this.http.get(`${this.baseUrl}/`);
   }
 
   exportCourseSchedules(): Observable<any> {

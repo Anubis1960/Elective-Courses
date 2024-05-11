@@ -18,7 +18,7 @@ export class CourseService {
   }
 
   createCourse(course: Course): Observable<any> {
-    return this.http.post(this.baseUrl, course);
+    return this.http.post(`${this.baseUrl}/`, course);
   }
 
   updateCourse(id: number, course: Course): Observable<any> {
@@ -30,6 +30,6 @@ export class CourseService {
   }
 
   getCoursesList(): Observable<any> {
-    return this.http.get(this.baseUrl);
+    return this.http.get(`${this.baseUrl}/`);
   }
 }

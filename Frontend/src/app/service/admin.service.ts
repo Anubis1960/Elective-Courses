@@ -18,7 +18,7 @@ export class AdminService {
   }
 
   createUser(name: string, email: string, password: string): Observable<any> {
-    return this.http.post(this.baseUrl, { name, email, password });
+    return this.http.post(`${this.baseUrl}/`, { name, email, password });
   }
 
   updateUser(id: number, name: string, email: string, password: string): Observable<any> {
@@ -30,6 +30,6 @@ export class AdminService {
   }
 
   getUsersList(): Observable<any> {
-    return this.http.get(this.baseUrl);
+    return this.http.get(`${this.baseUrl}/`);
   }
 }

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Enrollment } from '../model/enrollment.model';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +19,7 @@ export class EnrollmentService {
   }
 
   createEnrollment(enrollment: Enrollment): Observable<any> {
-    return this.http.post(this.baseUrl, enrollment);
+    return this.http.post(`${this.baseUrl}/`, enrollment);
   }
 
   updateEnrollment(id: number, enrollment: Enrollment): Observable<any> {
@@ -30,7 +31,7 @@ export class EnrollmentService {
   }
 
   getEnrollmentsList(): Observable<any> {
-    return this.http.get(this.baseUrl);
+    return this.http.get(`${this.baseUrl}/`);
   }
 
   exportEnrollments(): Observable<any> {

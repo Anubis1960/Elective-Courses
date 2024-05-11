@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './component/login/login.component';
 import { StudentComponent } from './component/student/student.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { CourseComponent } from './component/course/course.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     StudentComponent,
+    CourseComponent,
   ],
   imports: [
     BrowserModule,
@@ -21,7 +23,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     HttpClientModule,
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
+    provideHttpClient(withFetch())
   ],
   bootstrap: [AppComponent]
 })

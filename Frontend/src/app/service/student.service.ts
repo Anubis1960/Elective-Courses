@@ -18,7 +18,7 @@ export class StudentService {
   }
 
   createStudent(name: string, grade: number, faculty_section: string, year: number, email: string, password: string): Observable<any> {
-    return this.http.post(this.baseUrl, { name, grade, faculty_section, year, email, password });
+    return this.http.post(`${this.baseUrl}/`, { name, grade, faculty_section, year, email, password });
   }
 
   updateStudent(id: number, name: string, grade: number, faculty_section: string, year: number, email: string, password: string): Observable<any> {
@@ -30,6 +30,6 @@ export class StudentService {
   }
 
   getStudentsList(): Observable<any> {
-    return this.http.get(this.baseUrl);
+    return this.http.get(`${this.baseUrl}/`);
   }
 }
