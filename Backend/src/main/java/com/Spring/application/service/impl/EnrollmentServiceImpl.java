@@ -89,4 +89,14 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     public List<Enrollment> getAllEnrollmentsWhereStatusIsAccepted(){
         return enrollmentRepository.findAllWhereStatusIsAccepted();
     }
+
+    @Override
+    public Integer countByCourseId(Long courseId){
+        return enrollmentRepository.countByCourseId(courseId);
+    }
+
+    @Override
+    public List<Enrollment> sortEnrollmentsByStudentGradeAsc(){
+        return enrollmentRepository.findAllByOrderByStudentGradeAsc();
+    }
 }

@@ -26,4 +26,7 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     @Query("SELECT e FROM Enrollment e ORDER BY e.student.grade DESC")
     List<Enrollment> findAllByOrderByStudentGradeDesc();
 
+    @Query("SELECT count(e) FROM Enrollment e WHERE e.course.courseId = :courseId GROUP BY e.course.courseId")
+    Integer countByCourseId(Long courseId);
+
 }

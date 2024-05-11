@@ -6,14 +6,14 @@ import com.Spring.application.entity.User;
 import com.Spring.application.service.impl.AdminServiceImpl;
 import com.Spring.application.service.impl.StudentServiceImpl;
 import com.Spring.application.utils.Encrypt;
-import com.fasterxml.jackson.annotation.JsonView;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.NoSuchAlgorithmException;
 

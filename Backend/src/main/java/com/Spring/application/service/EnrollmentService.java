@@ -12,4 +12,6 @@ public interface EnrollmentService {
     Enrollment getEnrollmentById(Long enrollmentId) throws ObjectNotFound;
     List<Enrollment> getAllEnrollments();
     List<Enrollment> getAllEnrollmentsWhereStatusIsAccepted();
+    Integer countByCourseId(Long courseId);
+    List<Enrollment> sortEnrollmentsByStudentGradeAsc();
 }

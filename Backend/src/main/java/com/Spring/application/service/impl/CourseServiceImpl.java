@@ -86,4 +86,29 @@ public class CourseServiceImpl implements CourseService{
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
     }
+
+    @Override
+    public List<String> findAllCategoriesByYear(int year) {
+        return courseRepository.findAllCategoriesByYear(year);
+    }
+
+    @Override
+    public List<Course> findAllCoursesByCategoryAndYear(String category, int year) {
+        return courseRepository.findAllCoursesByCategoryAndYear(category, year);
+    }
+
+    @Override
+    public List<Course> findAllCoursesByYearAndFacultySection(int year, String facultySection) {
+        return courseRepository.findAllCoursesByYearAndFacultySection(year, facultySection);
+    }
+
+    @Override
+    public List<Course> findAllCoursesOrderByASC(String field, String order) {
+        return courseRepository.findAllCoursesOrderByASC(field, order);
+    }
+
+    @Override
+    public List<Course> findAllCoursesOrderByDESC(String field, String order) {
+        return courseRepository.findAllCoursesOrderByDESC(field, order);
+    }
 }

@@ -14,8 +14,9 @@ public class CourseDTO {
     private String facultySection;
     private Integer year;
     private String teacherName;
+    private Integer numberOfStudents;
 
-    public CourseDTO(Long id, String name, String description, String category, Integer maximumStudentsAllowed, String facultySection, Integer year, String teacherName) {
+    public CourseDTO(Long id, String name, String description, String category, Integer maximumStudentsAllowed, String facultySection, Integer year, String teacherName, Integer numberOfStudents) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -24,14 +25,19 @@ public class CourseDTO {
         this.facultySection = facultySection;
         this.year = year;
         this.teacherName = teacherName;
+        this.numberOfStudents = numberOfStudents;
     }
 
     public CourseDTO() {
     }
 
-    public static List<CourseDTO> convertToDTO(List<Course> courses) {
+    public static List<CourseDTO> convertToDTO(List<Course> courses, List<Integer> numberOfStudents) {
         List<CourseDTO> courseDTOS = new ArrayList<>();
-        courses.forEach(course -> courseDTOS.add(new CourseDTO(course.getCourseId(), course.getCourseName(), course.getDescription(), course.getCategory(), course.getMaximumStudentsAllowed(), course.getFacultySection().toString(), course.getYear(), course.getTeacherName())));
+        for (int i = 0; i < courses.size(); i++) {
+            Course course = courses.get(i);
+            CourseDTO courseDTO = new CourseDTO(course.getCourseId(), course.getCourseName(), course.getDescription(), course.getCategory(), course.getMaximumStudentsAllowed(), course.getFacultySection().toString(), course.getYear(), course.getTeacherName(), numberOfStudents.get(i));
+            courseDTOS.add(courseDTO);
+        }
         return courseDTOS;
     }
 
@@ -97,5 +103,13 @@ public class CourseDTO {
 
     public void setTeacherName(String teacherName) {
         this.teacherName = teacherName;
+    }
+
+    public Integer getNumberOfStudents() {
+        return numberOfStudents;
+    }
+
+    public void setNumberOfStudents(Integer numberOfStudents) {
+        this.numberOfStudents = numberOfStudents;
     }
 }
