@@ -10,15 +10,20 @@ import { User } from '../../model/user.model';
 export class LoginComponent { 
   email: string;
   password: string;
-  loginActual: User | undefined;
+  user: User | undefined;
   constructor(private http: HttpClient, private loginService: LoginService) {
     this.email = '';
     this.password = '';
   }
   onLogin(){
-    this.loginService.getUser(this.email, this.password).subscribe(data => {
-      this.loginActual = data;
-      console.log(this.loginActual)
-    });
+    this.loginService.getUser(this.email, this.password).subscribe(
+    (response) => {
+      this.user = response;
+      console.log(this.user)
+    },
+    (error) => {
+      console.log("Loggin failed",error);
+    }
+  );
   }
 }
