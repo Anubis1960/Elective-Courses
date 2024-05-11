@@ -12,6 +12,6 @@ export class LoginService {
   constructor(private http: HttpClient) { }
 
   getUser(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/`, { email, password });
+    return this.http.get(`${this.baseUrl}/`, {params: {email, password}});
   }
 }

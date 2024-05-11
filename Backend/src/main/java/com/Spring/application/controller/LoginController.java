@@ -12,13 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.security.NoSuchAlgorithmException;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/login")
 public class LoginController {
@@ -30,7 +29,7 @@ public class LoginController {
     private AdminServiceImpl adminService;
 
     @GetMapping("/")
-    public ResponseEntity<UserDTO> checkCredentials(String email, String password) throws NoSuchAlgorithmException {
+    public ResponseEntity<UserDTO> checkCredentials(@RequestParam  String email,@RequestParam String password) throws NoSuchAlgorithmException {
         User admin = adminService.getAdminByEmailAndPassword(email, Encrypt.toHexString(Encrypt.encrypt(password)));
         if (admin != null) {
             AuditorAwareImpl.setAuditorName(admin.getName());
