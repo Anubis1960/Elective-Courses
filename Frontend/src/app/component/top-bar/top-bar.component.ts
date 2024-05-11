@@ -10,7 +10,7 @@ export class TopBarComponent {
   constructor(private router:Router ) { }
   onLogout(){
     localStorage.removeItem('user');
-    this.router.navigateByUrl('/login');
+    
 
   }
 }
