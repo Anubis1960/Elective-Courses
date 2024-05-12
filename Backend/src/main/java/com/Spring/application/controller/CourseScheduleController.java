@@ -26,16 +26,14 @@ public class CourseScheduleController {
     private PDFGeneratorService pdfGeneratorService;
 
     @PostMapping("/")
-    public ResponseEntity<CourseScheduleDTO> addCourseSchedule(Long courseId, String day, String startTime, String endTime) throws ObjectNotFound, InvalidInput {
-        CourseSchedule courseSchedule = courseScheduleService.addCourseSchedule(courseId, day, startTime, endTime);
-        CourseScheduleDTO courseScheduleDTO = new CourseScheduleDTO(courseSchedule.getCourseId(), courseSchedule.getDay().toString(), courseSchedule.getStartTime().toString(), courseSchedule.getEndTime().toString());
+    public ResponseEntity<CourseScheduleDTO> addCourseSchedule(@RequestBody CourseScheduleDTO courseScheduleDTO) throws ObjectNotFound, InvalidInput {
+        courseScheduleService.addCourseSchedule(courseScheduleDTO.getId(), courseScheduleDTO.getDay(), courseScheduleDTO.getStartTime(), courseScheduleDTO.getEndTime());
         return new ResponseEntity<>(courseScheduleDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CourseScheduleDTO> updateCourseSchedule(@PathVariable("id")Long id, String day, String startTime, String endTime) throws ObjectNotFound, InvalidInput {
-        CourseSchedule courseSchedule = courseScheduleService.updateCourseSchedule(id, day, startTime, endTime);
-        CourseScheduleDTO courseScheduleDTO = new CourseScheduleDTO(courseSchedule.getCourseId(), courseSchedule.getDay().toString(), courseSchedule.getStartTime().toString(), courseSchedule.getEndTime().toString());
+    public ResponseEntity<CourseScheduleDTO> updateCourseSchedule(@PathVariable("id")Long id, @RequestBody CourseScheduleDTO courseScheduleDTO) throws ObjectNotFound, InvalidInput {
+        courseScheduleService.updateCourseSchedule(id, courseScheduleDTO.getDay(), courseScheduleDTO.getStartTime(), courseScheduleDTO.getEndTime());
         return new ResponseEntity<>(courseScheduleDTO, HttpStatus.OK);
     }
 

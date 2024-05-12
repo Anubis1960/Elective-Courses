@@ -14,24 +14,24 @@ export class EnrollmentService {
 
   constructor(private http: HttpClient) { }
 
-  getEnrollment(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${id}`);
+  getEnrollment(id: number): Observable<Enrollment> {
+    return this.http.get<Enrollment>(`${this.baseUrl}/${id}`);
   }
 
-  createEnrollment(enrollment: Enrollment): Observable<any> {
-    return this.http.post(`${this.baseUrl}/`, enrollment);
+  createEnrollment(student_id: number, course_id: number, priority: number): Observable<Enrollment> {
+    return this.http.post<Enrollment>(`${this.baseUrl}/`, { student_id, course_id, priority });
   }
 
-  updateEnrollment(id: number, enrollment: Enrollment): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${id}`, enrollment);
+  updateEnrollment(enrollment: Enrollment): Observable<Enrollment> {
+    return this.http.put<Enrollment>(`${this.baseUrl}/${enrollment.id}`, enrollment);
   }
 
-  deleteEnrollment(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+  deleteEnrollment(id: number): Observable<Enrollment> {
+    return this.http.delete<Enrollment>(`${this.baseUrl}/${id}`);
   }
 
-  getEnrollmentsList(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/`);
+  getEnrollmentsList(): Observable<Enrollment[]> {
+    return this.http.get<Enrollment[]>(`${this.baseUrl}/`);
   }
 
   exportEnrollments(): Observable<any> {

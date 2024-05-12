@@ -54,10 +54,20 @@ public class CourseController {
     @GetMapping("/")
     public ResponseEntity<List<CourseDTO>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
+        return getListResponseEntity(courses);
+    }
+
+    @GetMapping("/{facultySection}/{year}")
+    public ResponseEntity<List<CourseDTO>> getAllCoursesByFacultySectionAndYear(@PathVariable("facultySection") String facultySection, @PathVariable("year") int year) {
+        List<Course> courses = courseService.findAllCoursesByYearAndFacultySection(year, facultySection);
+        return getListResponseEntity(courses);
+    }
+
+    private ResponseEntity<List<CourseDTO>> getListResponseEntity(List<Course> courses) {
         List<Integer> numberOfStudents = new ArrayList<>();
         courses.forEach(course -> numberOfStudents.add(enrollmentServiceImpl.countByCourseId(course.getCourseId())));
         if (courses.isEmpty()) {
-            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
         List<CourseDTO> courseDTOs = CourseDTO.convertToDTO(courses, numberOfStudents);
         return new ResponseEntity<>(courseDTOs, HttpStatus.OK);

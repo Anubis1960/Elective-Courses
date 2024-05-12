@@ -13,24 +13,24 @@ export class CourseScheduleService {
 
   constructor(private http: HttpClient) { }
 
-  getCourseSchedule(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${id}`);
+  getCourseSchedule(id: number): Observable<CourseSchedule> {
+    return this.http.get<CourseSchedule>(`${this.baseUrl}/${id}`);
   }
 
-  createCourseSchedule(courseSchedule: CourseSchedule): Observable<any> {
-    return this.http.post(`${this.baseUrl}/`, courseSchedule);
+  createCourseSchedule(course_schedule: CourseSchedule): Observable<CourseSchedule> {
+    return this.http.post<CourseSchedule>(`${this.baseUrl}/`, course_schedule);
   }
 
-  updateCourseSchedule(id: number, courseSchedule: CourseSchedule): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${id}`, courseSchedule);
+  updateCourseSchedule(course_schedule: CourseSchedule): Observable<CourseSchedule> {
+    return this.http.put<CourseSchedule>(`${this.baseUrl}/${course_schedule.id}`, course_schedule);
   }
 
-  deleteCourseSchedule(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+  deleteCourseSchedule(id: number): Observable<CourseSchedule> {
+    return this.http.delete<CourseSchedule>(`${this.baseUrl}/${id}`);
   }
 
-  getCourseSchedulesList(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/`);
+  getCourseSchedulesList(): Observable<CourseSchedule> {
+    return this.http.get<CourseSchedule>(`${this.baseUrl}/`);
   }
 
   exportCourseSchedules(): Observable<any> {

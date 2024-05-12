@@ -35,9 +35,8 @@ public class EnrollmentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EnrollmentDTO> updateEnrollment(@PathVariable("id") Long enrollmentId, Long studentId, Long courseId, Integer priority, String status) throws ObjectNotFound {
-        Enrollment enrollment = enrollmentService.updateEnrollment(enrollmentId, studentId, courseId, priority, status);
-        EnrollmentDTO enrollmentDTO = new EnrollmentDTO(enrollment.getEnrollmentId(), enrollment.getStudent().getId(), enrollment.getCourse().getCourseId(), enrollment.getPriority(), enrollment.getStatus().toString());
+    public ResponseEntity<EnrollmentDTO> updateEnrollment(@PathVariable("id") Long enrollmentId, @RequestBody EnrollmentDTO enrollmentDTO) throws ObjectNotFound {
+        enrollmentService.updateEnrollment(enrollmentId, enrollmentDTO.getStudentId(), enrollmentDTO.getCourseId(), enrollmentDTO.getPriority(), enrollmentDTO.getStatus());
         return new ResponseEntity<>(enrollmentDTO, HttpStatus.OK);
     }
 

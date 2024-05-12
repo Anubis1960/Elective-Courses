@@ -22,8 +22,6 @@ import java.security.NoSuchAlgorithmException;
 @RequestMapping("/login")
 public class LoginController {
     @Autowired
-    private AuditorAwareImpl auditorAware;
-    @Autowired
     private StudentServiceImpl studentService;
     @Autowired
     private AdminServiceImpl adminService;

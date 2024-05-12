@@ -8,8 +8,9 @@ export class Course {
     faculty_section: string | undefined;
     year: number | undefined;
     teacher_name: string | undefined;
+    number_of_students: number | undefined;
 
-    constructor(id: number, name: string, description: string, category: string, maximum_students: number, faculty_section: string, year: number, teacher_name: string) {
+    constructor(id: number, name: string, description: string, category: string, maximum_students: number, faculty_section: string, year: number, teacher_name: string, number_of_students: number) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -18,5 +19,6 @@ export class Course {
         this.faculty_section = faculty_section;
         this.year = year;
         this.teacher_name = teacher_name;
+        this.number_of_students = number_of_students;
     }
 }
