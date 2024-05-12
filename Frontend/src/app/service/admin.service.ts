@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../model/user.model';
 
@@ -13,23 +13,31 @@ export class AdminService {
 
   constructor(private http: HttpClient) { }
 
-  getUser(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${id}`);
+  getAdmin(id: number): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/${id}`);
   }
 
-  createUser(name: string, email: string, password: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/`, { name, email, password });
+  createAdmin(name: string, email: string, password: string): Observable<User> {
+    const params = new HttpParams()
+    .set('name', name)
+    .set('email', email)
+    .set('password', password);
+    return this.http.post<User>(`${this.baseUrl}/`, params);
   }
 
-  updateUser(id: number, name: string, email: string, password: string): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${id}`, { name, email, password });
+  updateAdmin(id: number, name: string, email: string, password: string): Observable<User> {
+    const params = new HttpParams()
+    .set('name', name)
+    .set('email', email)
+    .set('password', password);
+    return this.http.put<User>(`${this.baseUrl}/${id}`, params);
   }
 
-  deleteUser(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+  deleteAdmin(id: number): Observable<User> {
+    return this.http.delete<User>(`${this.baseUrl}/${id}`);
   }
 
-  getUsersList(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/`);
+  getAdminList(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.baseUrl}/`);
   }
 }

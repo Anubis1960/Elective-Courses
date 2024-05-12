@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Enrollment } from '../model/enrollment.model';
 
@@ -19,7 +19,11 @@ export class EnrollmentService {
   }
 
   createEnrollment(student_id: number, course_id: number, priority: number): Observable<Enrollment> {
-    return this.http.post<Enrollment>(`${this.baseUrl}/`, { student_id, course_id, priority });
+    const params = new HttpParams()
+    .set('studentId', student_id)
+    .set('courseId', course_id)
+    .set('priority', priority);
+    return this.http.post<Enrollment>(`${this.baseUrl}/`, params);
   }
 
   updateEnrollment(enrollment: Enrollment): Observable<Enrollment> {

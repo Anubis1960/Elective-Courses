@@ -17,16 +17,16 @@ export class CourseScheduleService {
     return this.http.get<CourseSchedule>(`${this.baseUrl}/${id}`);
   }
 
-  createCourseSchedule(course_schedule: CourseSchedule): Observable<CourseSchedule> {
-    return this.http.post<CourseSchedule>(`${this.baseUrl}/`, course_schedule);
+  createCourseSchedule(courseSchedule: CourseSchedule): Observable<CourseSchedule> {
+    return this.http.post<CourseSchedule>(`${this.baseUrl}/`, courseSchedule);
   }
 
-  updateCourseSchedule(course_schedule: CourseSchedule): Observable<CourseSchedule> {
-    return this.http.put<CourseSchedule>(`${this.baseUrl}/${course_schedule.id}`, course_schedule);
+  updateCourseSchedule(courseSchedule: CourseSchedule): Observable<CourseSchedule> {
+    return this.http.put<CourseSchedule>(`${this.baseUrl}/${courseSchedule.id}`, courseSchedule);
   }
 
   deleteCourseSchedule(id: number): Observable<CourseSchedule> {
-    return this.http.delete<CourseSchedule>(`${this.baseUrl}/${id}`);
+    return this.http.delete<CourseSchedule>(`${this.baseUrl}/${id}`)
   }
 
   getCourseSchedulesList(): Observable<CourseSchedule> {

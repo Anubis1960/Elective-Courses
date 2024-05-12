@@ -1,6 +1,7 @@
 package com.Spring.application.controller;
 
 import com.Spring.application.dto.EnrollmentDTO;
+import com.Spring.application.dto.EnrollmentRequest;
 import com.Spring.application.entity.Enrollment;
 import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.repository.EnrollmentRepository;
@@ -28,14 +29,20 @@ public class EnrollmentController {
     private PDFGeneratorService pdfGeneratorService;
 
     @PostMapping("/")
-    public ResponseEntity<EnrollmentDTO> enroll(Long studentId, Long courseId, Integer priority) throws ObjectNotFound {
+    public ResponseEntity<EnrollmentDTO> enroll(
+            @RequestParam Long studentId,
+            @RequestParam Long courseId,
+            @RequestParam Integer priority) throws ObjectNotFound {
+        System.out.println("studentId: " + studentId + " courseId: " + courseId + " priority: " + priority);
         Enrollment enrollment = enrollmentService.addEnrollment(studentId, courseId, priority);
         EnrollmentDTO enrollmentDTO = new EnrollmentDTO(enrollment.getEnrollmentId(), enrollment.getStudent().getId(), enrollment.getCourse().getCourseId(), enrollment.getPriority(), enrollment.getStatus().toString());
         return new ResponseEntity<>(enrollmentDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EnrollmentDTO> updateEnrollment(@PathVariable("id") Long enrollmentId, @RequestBody EnrollmentDTO enrollmentDTO) throws ObjectNotFound {
+    public ResponseEntity<EnrollmentDTO> updateEnrollment(
+            @PathVariable("id") Long enrollmentId,
+            @RequestBody EnrollmentDTO enrollmentDTO) throws ObjectNotFound {
         enrollmentService.updateEnrollment(enrollmentId, enrollmentDTO.getStudentId(), enrollmentDTO.getCourseId(), enrollmentDTO.getPriority(), enrollmentDTO.getStatus());
         return new ResponseEntity<>(enrollmentDTO, HttpStatus.OK);
     }

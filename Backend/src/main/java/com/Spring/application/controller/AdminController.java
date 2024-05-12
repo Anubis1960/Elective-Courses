@@ -18,14 +18,21 @@ public class AdminController {
     @Autowired
     private AdminServiceImpl adminService;
     @PostMapping("/")
-    public ResponseEntity<UserDTO> addAdmin(String adminName, String email, String password) throws NoSuchAlgorithmException{
+    public ResponseEntity<UserDTO> addAdmin(
+            @RequestParam String adminName,
+            @RequestParam String email,
+            @RequestParam String password) throws NoSuchAlgorithmException{
         Admin admin = adminService.addAdmin(adminName, email,password);
         UserDTO userDTO = new UserDTO(admin.getId(), admin.getName(), admin.getEmail(), admin.getRole().toString());
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateAdmin(@PathVariable(value = "id") Long adminId, String adminName, String email, String password) throws ObjectNotFound, NoSuchAlgorithmException {
+    public ResponseEntity<UserDTO> updateAdmin(
+            @PathVariable(value = "id") Long adminId,
+            @RequestParam String adminName,
+            @RequestParam String email,
+            @RequestParam String password) throws ObjectNotFound, NoSuchAlgorithmException {
         Admin admin = adminService.updateAdmin(adminId, adminName, email, password);
         UserDTO userDTO = new UserDTO(admin.getId(), admin.getName(), admin.getEmail(), admin.getRole().toString());
         return new ResponseEntity<>(userDTO, HttpStatus.OK);

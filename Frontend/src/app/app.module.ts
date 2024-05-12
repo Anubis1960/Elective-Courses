@@ -13,9 +13,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import {  MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { CourseDetailsComponent } from './component/course-details/course-details.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-
 
 @NgModule({
   declarations: [
@@ -24,6 +24,7 @@ import { MatCardModule } from '@angular/material/card';
     StudentComponent,
     CourseComponent,
     TopBarComponent,
+    CourseDetailsComponent,
   ],
   imports: [
     BrowserModule,

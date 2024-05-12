@@ -26,6 +26,7 @@ public class EnrollmentServiceImpl implements EnrollmentService{
 
     @Override
     public Enrollment addEnrollment(Long studentId, Long courseId, Integer priority) throws ObjectNotFound {
+        System.out.println("studentId: " + studentId+ " courseId: " + courseId + " priority: " + priority);
         Student student = studentRepository.findById(studentId).orElse(null);
         if (student == null) {
             throw new ObjectNotFound("Student not found");
