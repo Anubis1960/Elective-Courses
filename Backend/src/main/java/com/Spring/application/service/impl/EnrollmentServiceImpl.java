@@ -100,4 +100,9 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     public List<Enrollment> sortEnrollmentsByStudentGradeAsc(){
         return enrollmentRepository.findAllByOrderByStudentGradeAsc();
     }
+
+    @Override
+    public Integer countByStudentId(Long studentId){
+        return enrollmentRepository.countByStudentId(studentId);
+    }
 }

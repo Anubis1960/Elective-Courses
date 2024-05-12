@@ -1,0 +1,23 @@
+.student-info {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .student-info h2 {
+    margin-top: 0;
+  }
+  
+  .info {
+    margin-top: 10px;
+  }
+  
+  .info p {
+    margin: 5px 0;
+  }
+  
+  .info p strong {
+    margin-right: 5px;
+  }
+  

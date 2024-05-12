@@ -14,4 +14,5 @@ public interface EnrollmentService {
     List<Enrollment> getAllEnrollmentsWhereStatusIsAccepted();
     Integer countByCourseId(Long courseId);
     List<Enrollment> sortEnrollmentsByStudentGradeAsc();
+    Integer countByStudentId(Long studentId);
 }

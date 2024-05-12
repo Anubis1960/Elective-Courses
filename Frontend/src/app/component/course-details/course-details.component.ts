@@ -46,7 +46,7 @@ export class CourseDetailsComponent implements OnInit{
     if (this.course && user.id && this.course.id) {
       console.log(user.id);
       console.log(this.course.id);
-      this.enrollmentService.createEnrollment(user.id, this.course.id, 1).subscribe({
+      this.enrollmentService.createEnrollment(user.id, this.course.id).subscribe({
         next: (data: Enrollment) => {
           console.log(data);
         },

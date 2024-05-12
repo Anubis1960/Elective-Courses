@@ -18,11 +18,10 @@ export class EnrollmentService {
     return this.http.get<Enrollment>(`${this.baseUrl}/${id}`);
   }
 
-  createEnrollment(student_id: number, course_id: number, priority: number): Observable<Enrollment> {
+  createEnrollment(student_id: number, course_id: number): Observable<Enrollment> {
     const params = new HttpParams()
     .set('studentId', student_id)
-    .set('courseId', course_id)
-    .set('priority', priority);
+    .set('courseId', course_id);
     return this.http.post<Enrollment>(`${this.baseUrl}/`, params);
   }
 

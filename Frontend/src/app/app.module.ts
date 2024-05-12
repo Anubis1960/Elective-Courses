@@ -16,6 +16,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { CourseDetailsComponent } from './component/course-details/course-details.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { ProfileComponent } from './component/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { MatCardModule } from '@angular/material/card';
     CourseComponent,
     TopBarComponent,
     CourseDetailsComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
