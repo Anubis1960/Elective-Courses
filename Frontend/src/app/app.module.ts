@@ -10,10 +10,13 @@ import { HttpClient, HttpClientModule, provideHttpClient, withFetch } from '@ang
 import { CourseComponent } from './component/course/course.component';
 import { TopBarComponent } from './component/top-bar/top-bar.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { MatTableModule } from '@angular/material/table';
+import {  MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { CourseDetailsComponent } from './component/course-details/course-details.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +31,13 @@ import { CourseDetailsComponent } from './component/course-details/course-detail
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatButtonModule,
+    MatCardModule,
+
+
   ],
   providers: [
     provideClientHydration(),
