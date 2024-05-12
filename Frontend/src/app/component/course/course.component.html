@@ -1,11 +1,73 @@
 <app-top-bar></app-top-bar>
-@for (course of courses; track $index) {
-    <div class="col-md-4">
-        <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">{{ course.name }}</h5>
-            </div>
-        </div>
-    </div>
-}
 
+<mat-card>
+    <mat-card-header>
+        <mat-card-title> Courses </mat-card-title>
+        <mat-card-subtitle> List of courses </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+<table mat-table [dataSource]="dataSource">
+
+
+    <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description </th>
+        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef> Category </th>
+        <td mat-cell *matCellDef="let element"> {{element.category}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="facultySection">
+        <th mat-header-cell *matHeaderCellDef> FacultySection </th>
+        <td mat-cell *matCellDef="let element"> {{element.facultySection}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="maximumStudentsAllowed">
+        <th mat-header-cell *matHeaderCellDef> MaxStudents </th>
+        <td mat-cell *matCellDef="let element"> {{element.maximumStudentsAllowed}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="numberOfStudents">
+        <th mat-header-cell *matHeaderCellDef> Students enrolled </th>
+        <td mat-cell *matCellDef="let element"> {{element.numberOfStudents}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="teacherName">
+        <th mat-header-cell *matHeaderCellDef> Teacher </th>
+        <td mat-cell *matCellDef="let element"> {{element.teacherName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="year">
+        <th mat-header-cell *matHeaderCellDef> Year </th>
+        <td mat-cell *matCellDef="let element"> {{element.year}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-raised-button color="primary"> Edit </button>
+            <button mat-raised-button color="warn"> Delete </button>
+        </td>
+
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displyedColumns"></tr>
+    <tr mat-row *matRowDef="let row;columns:displyedColumns"></tr>
+</table>
+</mat-card-content>
+<mat-card-footer>
+    <mat-paginator [pageSizeOptions]="[1,2,3]" showFirstLastButtons></mat-paginator>
+</mat-card-footer>
+</mat-card>
