@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Course } from '../model/course.model';
 
@@ -13,23 +13,44 @@ export class CourseService {
 
   constructor(private http: HttpClient) { }
 
-  getCourse(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${id}`);
+  getCourse(id: number): Observable<Course> {
+    return this.http.get<Course>(`${this.baseUrl}/${id}`);
   }
 
-  createCourse(course: Course): Observable<any> {
-    return this.http.post(`${this.baseUrl}/`, course);
+  createCourse(name: string, description: string, category: string, maximum_students: number, year: number, teacher_name: string): Observable<Course> {
+    const params = new HttpParams()
+    .set('name', name)
+    .set('description', description)
+    .set('category', category)
+    .set('maximumStudents', maximum_students)
+    .set('year', year)
+    .set('teacherName', teacher_name);
+    return this.http.post<Course>(`${this.baseUrl}/`, params);
   }
 
-  updateCourse(id: number, course: Course): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${id}`, course);
+  updateCourse(id: number, name: string, description: string, category: string, maximumStudents: number, year: number, teacherName: string): Observable<Course> {
+    const params = new HttpParams()
+    .set('name', name)
+    .set('description', description)
+    .set('category', category)
+    .set('maximumStudents', maximumStudents)
+    .set('year', year)
+    .set('teacherName', teacherName);
+    return this.http.put<Course>(`${this.baseUrl}/${id}`, params);
   }
 
-  deleteCourse(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+  deleteCourse(id: number): Observable<Course> {
+    return this.http.delete<Course>(`${this.baseUrl}/${id}`);
   }
 
-  getCoursesList(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/`);
+  getCoursesList(): Observable<Course[]> {
+    return this.http.get<Course[]>(`${this.baseUrl}/`);
+  }
+
+  getCoursesByFacultyAndYear(faculty: string, year: number): Observable<Course[]> {
+    const params = new HttpParams()
+    .set('faculty', faculty)
+    .set('year', year);
+    return this.http.get<Course[]>(`${this.baseUrl}/`, { params });
   }
 }

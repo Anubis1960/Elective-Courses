@@ -4,21 +4,21 @@ export class Course {
     name: string | undefined;
     description: string | undefined;
     category: string | undefined;
-    maximum_students: number | undefined;
-    faculty_section: string | undefined;
+    maximumStudents: number | undefined;
+    facultySection: string | undefined;
     year: number | undefined;
-    teacher_name: string | undefined;
-    number_of_students: number | undefined;
+    teacherName: string | undefined;
+    numberOfStudents: number | undefined;
 
     constructor(id: number, name: string, description: string, category: string, maximum_students: number, faculty_section: string, year: number, teacher_name: string, number_of_students: number) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.category = category;
-        this.maximum_students = maximum_students;
-        this.faculty_section = faculty_section;
+        this.maximumStudents = maximum_students;
+        this.facultySection = faculty_section;
         this.year = year;
-        this.teacher_name = teacher_name;
-        this.number_of_students = number_of_students;
+        this.teacherName = teacher_name;
+        this.numberOfStudents = number_of_students;
     }
 }

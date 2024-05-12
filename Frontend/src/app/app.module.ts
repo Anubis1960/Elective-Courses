@@ -13,6 +13,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { CourseDetailsComponent } from './component/course-details/course-details.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,6 +21,7 @@ import { MatSortModule } from '@angular/material/sort';
     StudentComponent,
     CourseComponent,
     TopBarComponent,
+    CourseDetailsComponent,
   ],
   imports: [
     BrowserModule,

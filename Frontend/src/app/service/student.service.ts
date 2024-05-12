@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Student } from '../model/student.model';
 
@@ -13,23 +13,37 @@ export class StudentService {
 
   constructor(private http: HttpClient) { }
 
-  getStudent(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${id}`);
+  getStudent(id: number): Observable<Student> {
+    return this.http.get<Student>(`${this.baseUrl}/${id}`);
   }
 
-  createStudent(name: string, grade: number, faculty_section: string, year: number, email: string, password: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/`, { name, grade, faculty_section, year, email, password });
+  createStudent(name: string, grade: number, faculty_section: string, year: number, email: string, password: string): Observable<Student> {
+    const params = new HttpParams()
+    .set('name', name)
+    .set('grade', grade)
+    .set('facultySection', faculty_section)
+    .set('year', year)
+    .set('email', email)
+    .set('password', password);
+    return this.http.post<Student>(`${this.baseUrl}/`, params);
   }
 
-  updateStudent(id: number, name: string, grade: number, faculty_section: string, year: number, email: string, password: string): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${id}`, { name, grade, faculty_section, year, email, password });
+  updateStudent(id: number, name: string, grade: number, faculty_section: string, year: number, email: string, password: string): Observable<Student> {
+    const params = new HttpParams()
+    .set('name', name)
+    .set('grade', grade)
+    .set('facultySection', faculty_section)
+    .set('year', year)
+    .set('email', email)
+    .set('password', password);
+    return this.http.put<Student>(`${this.baseUrl}/${id}`, params);
   }
 
-  deleteStudent(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+  deleteStudent(id: number): Observable<Student> {
+    return this.http.delete<Student>(`${this.baseUrl}/${id}`);
   }
 
-  getStudentsList(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/`);
+  getStudentsList(): Observable<Student[]> {
+    return this.http.get<Student[]>(`${this.baseUrl}/`);
   }
 }
