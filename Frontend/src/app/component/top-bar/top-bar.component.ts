@@ -9,8 +9,12 @@ import { User } from '../../model/user.model';
 export class TopBarComponent {
   constructor(private router:Router ) { }
   onLogout(){
+    console.log(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    console.log(user.id);    
+    console.log(user.role);
     localStorage.removeItem('user');
-    
-
-  }
+    this.router.navigateByUrl('/login');
+  
+  } 
 }
