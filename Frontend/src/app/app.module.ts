@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './component/login/login.component';
 import { StudentComponent } from './component/student/student.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { CourseComponent } from './component/course/course.component';
 import { TopBarComponent } from './component/top-bar/top-bar.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -17,6 +17,11 @@ import { CourseDetailsComponent } from './component/course-details/course-detail
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { ProfileComponent } from './component/profile/profile.component';
+import { CourseStudentComponent } from './component/course-student/course-student.component';
+import { PopUpComponent } from './component/pop-up/pop-up.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -27,6 +32,8 @@ import { ProfileComponent } from './component/profile/profile.component';
     TopBarComponent,
     CourseDetailsComponent,
     ProfileComponent,
+    CourseStudentComponent,
+    PopUpComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,8 +45,9 @@ import { ProfileComponent } from './component/profile/profile.component';
     MatSortModule,
     MatButtonModule,
     MatCardModule,
-
-
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule
   ],
   providers: [
     provideClientHydration(),

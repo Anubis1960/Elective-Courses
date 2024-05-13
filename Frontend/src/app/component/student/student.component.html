@@ -1,2 +1,66 @@
 <app-top-bar></app-top-bar>
-<h3>Student work</h3>
+
+<mat-card>
+    <mat-card-header>
+        <mat-card-title> Courses </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+<table matSort mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+        <th mat-sort-header *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> 
+            <button mat-button (click)="getDetails(element.id)"> {{element.name}} </button>
+        </td>
+    </ng-container>
+    
+
+    <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description </th>
+        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="category">
+        <th mat-sort-header *matHeaderCellDef> Category </th>
+        <td mat-cell *matCellDef="let element"> {{element.category}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="facultySection">
+        <th mat-header-cell *matHeaderCellDef> FacultySection </th>
+        <td mat-cell *matCellDef="let element"> {{element.facultySection}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="maximumStudentsAllowed">
+        <th mat-sort-header *matHeaderCellDef> MaxStudents </th>
+        <td mat-cell *matCellDef="let element"> {{element.maximumStudentsAllowed}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="numberOfStudents">
+        <th mat-sort-header *matHeaderCellDef> Students enrolled </th>
+        <td mat-cell *matCellDef="let element"> {{element.numberOfStudents}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="teacherName">
+        <th mat-header-cell *matHeaderCellDef> Teacher </th>
+        <td mat-cell *matCellDef="let element"> {{element.teacherName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="year">
+        <th mat-sort-header *matHeaderCellDef> Year </th>
+        <td mat-cell *matCellDef="let element"> {{element.year}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displyedColumns"></tr>
+    <tr mat-row *matRowDef="let row;columns:displyedColumns"></tr>
+</table>
+</mat-card-content>
+<mat-card-footer>
+    <mat-paginator [pageSizeOptions]="[5,10,15]" showFirstLastButtons></mat-paginator>
+</mat-card-footer>
+</mat-card>
+
+  

@@ -26,11 +26,11 @@ public class CourseController {
     @PostMapping("/")
     public ResponseEntity<CourseDTO> addCourse(
             @RequestParam String courseName,
-            @RequestParam String category,
             @RequestParam String description,
-            @RequestParam Integer year,
-            @RequestParam Integer maxStudentsAllowed,
+            @RequestParam String category,
             @RequestParam String facultySection,
+            @RequestParam Integer maxStudentsAllowed,
+            @RequestParam Integer year,
             @RequestParam String teacherName) throws ObjectNotFound, InvalidInput {
         Course course = courseService.addCourse(courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
         CourseDTO courseDTO = new CourseDTO(course.getCourseId(), course.getCourseName(), course.getDescription(), course.getCategory(), course.getMaximumStudentsAllowed(), course.getFacultySection().toString(), course.getYear(), course.getTeacherName(), 0);
@@ -41,11 +41,11 @@ public class CourseController {
     public ResponseEntity<CourseDTO> updateCourse(
             @PathVariable("id") Long courseId,
             @RequestParam String courseName,
-            @RequestParam String category,
             @RequestParam String description,
-            @RequestParam Integer year,
-            @RequestParam Integer maxStudentsAllowed,
+            @RequestParam String category,
             @RequestParam String facultySection,
+            @RequestParam Integer maxStudentsAllowed,
+            @RequestParam Integer year,
             @RequestParam String teacherName) throws ObjectNotFound, InvalidInput {
         Course course = courseService.updateCourse(courseId, courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
         CourseDTO courseDTO = new CourseDTO(course.getCourseId(), course.getCourseName(), course.getDescription(), course.getCategory(), course.getMaximumStudentsAllowed(), course.getFacultySection().toString(), course.getYear(), course.getTeacherName(), enrollmentServiceImpl.countByCourseId(courseId));
@@ -72,11 +72,13 @@ public class CourseController {
         return getListResponseEntity(courses);
     }
 
-    @GetMapping("/{facultySection}/{year}")
-    public ResponseEntity<List<CourseDTO>> getAllCoursesByFacultySectionAndYear(
-            @PathVariable("facultySection") String facultySection,
-            @PathVariable("year") int year) {
-        List<Course> courses = courseService.findAllCoursesByYearAndFacultySection(year, facultySection);
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<List<CourseDTO>> getCoursesOfStudent(@PathVariable("studentId") Long studentId) throws ObjectNotFound {
+        System.out.println("studentId = " + studentId);
+        List<Course> courses = courseService.getCoursesOfStudent(studentId);
+        for (Course course : courses) {
+            System.out.println("course = " + course);
+        }
         return getListResponseEntity(courses);
     }
 
@@ -87,6 +89,9 @@ public class CourseController {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
         List<CourseDTO> courseDTOs = CourseDTO.convertToDTO(courses, numberOfStudents);
+        for (CourseDTO courseDTO : courseDTOs) {
+            System.out.println("courseDTO = " + courseDTO);
+        }
         return new ResponseEntity<>(courseDTOs, HttpStatus.OK);
     }
 }

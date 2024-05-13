@@ -17,23 +17,25 @@ export class CourseService {
     return this.http.get<Course>(`${this.baseUrl}/${id}`);
   }
 
-  createCourse(name: string, description: string, category: string, maximum_students: number, year: number, teacher_name: string): Observable<Course> {
+  createCourse(name: string, description: string, category: string, facultySection: string, maximumStudents: number, year: number, teacherName: string): Observable<Course> {
     const params = new HttpParams()
-    .set('name', name)
+    .set('courseName', name)
     .set('description', description)
     .set('category', category)
-    .set('maximumStudents', maximum_students)
+    .set('facultySection', facultySection)
+    .set('maxStudentsAllowed', maximumStudents)
     .set('year', year)
-    .set('teacherName', teacher_name);
+    .set('teacherName', teacherName);
     return this.http.post<Course>(`${this.baseUrl}/`, params);
   }
 
-  updateCourse(id: number, name: string, description: string, category: string, maximumStudents: number, year: number, teacherName: string): Observable<Course> {
+  updateCourse(id: number, name: string, description: string, category: string, facultySection: string, maximumStudents: number, year: number, teacherName: string): Observable<Course> {
     const params = new HttpParams()
-    .set('name', name)
+    .set('courseName', name)
     .set('description', description)
     .set('category', category)
-    .set('maximumStudents', maximumStudents)
+    .set('facultySection', facultySection)
+    .set('maxStudentsAllowed', maximumStudents)
     .set('year', year)
     .set('teacherName', teacherName);
     return this.http.put<Course>(`${this.baseUrl}/${id}`, params);
@@ -51,6 +53,10 @@ export class CourseService {
     const params = new HttpParams()
     .set('faculty', faculty)
     .set('year', year);
-    return this.http.get<Course[]>(`${this.baseUrl}/`, { params });
+    return this.http.get<Course[]>(`${this.baseUrl}/${faculty}/${year}`);
+  }
+
+  getCoursesByStudentId(id: number): Observable<Course[]> {
+    return this.http.get<Course[]>(`${this.baseUrl}/student/${id}`);
   }
 }

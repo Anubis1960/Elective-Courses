@@ -68,6 +68,7 @@ public class StudentServiceImpl implements StudentService{
     public Student getStudentById(Long id) throws ObjectNotFound {
         Student student = studentRepository.findById(id).orElse(null);
         if (student == null) {
+            System.out.println("Student not found");
             throw new ObjectNotFound("Student not found");
         }
         return student;
@@ -81,5 +82,10 @@ public class StudentServiceImpl implements StudentService{
     @Override
     public Student getStudentByEmailAndPassword(String email, String password) {
         return studentRepository.findByEmailAndPassword(email, password);
+    }
+
+    @Override
+    public List<Student> getAllStudentsByCourseId(Long courseId) {
+        return studentRepository.findAllStudentsByCourseId(courseId);
     }
 }

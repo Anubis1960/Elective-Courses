@@ -72,4 +72,14 @@ public class StudentController {
         return new ResponseEntity<>(studentDTOs, HttpStatus.OK);
     }
 
+    @GetMapping("/admin/{courseId}")
+    public ResponseEntity<List<StudentDTO>> getAllStudentsByCourseId(@PathVariable("courseId") Long courseId) {
+        List<Student> students = studentService.getAllStudentsByCourseId(courseId);
+        if (students.isEmpty()) {
+            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
+        }
+        List<StudentDTO> studentDTOs = StudentDTO.convertToDTO(students);
+        return new ResponseEntity<>(studentDTOs, HttpStatus.OK);
+    }
+
 }
