@@ -26,11 +26,11 @@ public class CourseController {
     @PostMapping("/")
     public ResponseEntity<CourseDTO> addCourse(
             @RequestParam String courseName,
-            @RequestParam String category,
             @RequestParam String description,
-            @RequestParam Integer year,
-            @RequestParam Integer maxStudentsAllowed,
+            @RequestParam String category,
             @RequestParam String facultySection,
+            @RequestParam Integer maxStudentsAllowed,
+            @RequestParam Integer year,
             @RequestParam String teacherName) throws ObjectNotFound, InvalidInput {
         Course course = courseService.addCourse(courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
         CourseDTO courseDTO = new CourseDTO(course.getCourseId(), course.getCourseName(), course.getDescription(), course.getCategory(), course.getMaximumStudentsAllowed(), course.getFacultySection().toString(), course.getYear(), course.getTeacherName(), 0);
@@ -41,11 +41,11 @@ public class CourseController {
     public ResponseEntity<CourseDTO> updateCourse(
             @PathVariable("id") Long courseId,
             @RequestParam String courseName,
-            @RequestParam String category,
             @RequestParam String description,
-            @RequestParam Integer year,
-            @RequestParam Integer maxStudentsAllowed,
+            @RequestParam String category,
             @RequestParam String facultySection,
+            @RequestParam Integer maxStudentsAllowed,
+            @RequestParam Integer year,
             @RequestParam String teacherName) throws ObjectNotFound, InvalidInput {
         Course course = courseService.updateCourse(courseId, courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
         CourseDTO courseDTO = new CourseDTO(course.getCourseId(), course.getCourseName(), course.getDescription(), course.getCategory(), course.getMaximumStudentsAllowed(), course.getFacultySection().toString(), course.getYear(), course.getTeacherName(), enrollmentServiceImpl.countByCourseId(courseId));
