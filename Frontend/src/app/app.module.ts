@@ -17,6 +17,7 @@ import { CourseDetailsComponent } from './component/course-details/course-detail
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { ProfileComponent } from './component/profile/profile.component';
+import { CourseStudentComponent } from './component/course-student/course-student.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { ProfileComponent } from './component/profile/profile.component';
     TopBarComponent,
     CourseDetailsComponent,
     ProfileComponent,
+    CourseStudentComponent,
   ],
   imports: [
     BrowserModule,

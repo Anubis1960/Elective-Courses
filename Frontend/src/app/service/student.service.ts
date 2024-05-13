@@ -46,4 +46,8 @@ export class StudentService {
   getStudentsList(): Observable<Student[]> {
     return this.http.get<Student[]>(`${this.baseUrl}/`);
   }
+
+  getStudentsByCourseId(courseId: number): Observable<Student[]> {
+    return this.http.get<Student[]>(`${this.baseUrl}/admin/${courseId}`);
+  }
 }

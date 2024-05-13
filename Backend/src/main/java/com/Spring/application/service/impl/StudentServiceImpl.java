@@ -82,4 +82,9 @@ public class StudentServiceImpl implements StudentService{
     public Student getStudentByEmailAndPassword(String email, String password) {
         return studentRepository.findByEmailAndPassword(email, password);
     }
+
+    @Override
+    public List<Student> getAllStudentsByCourseId(Long courseId) {
+        return studentRepository.findAllStudentsByCourseId(courseId);
+    }
 }

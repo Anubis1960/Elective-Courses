@@ -5,14 +5,16 @@ import { StudentComponent } from './component/student/student.component';
 import { CourseComponent } from './component/course/course.component';
 import { CourseDetailsComponent } from './component/course-details/course-details.component';
 import { ProfileComponent } from './component/profile/profile.component';
+import { CourseStudentComponent } from './component/course-student/course-student.component';
 
 const routes: Routes = [
   {path: '', redirectTo:'/login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'student', component: StudentComponent},
-  {path: 'course', component: CourseComponent},
+  {path: 'admin/courses', component: CourseComponent},
   {path: 'courses/:id', component: CourseDetailsComponent},
-  {path: 'profile', component: ProfileComponent}
+  {path: 'profile', component: ProfileComponent},
+  {path: 'admin/courses/:id', component: CourseStudentComponent}
 ];
 
 @NgModule({
