@@ -18,7 +18,7 @@ export class CourseStudentComponent {
   course: Course | undefined;
   courseService: CourseService | undefined;
   students !: Student[] | undefined;
-  dataSource: any;
+  dataSource: MatTableDataSource<Student> = new MatTableDataSource<Student>();
   displyedColumns: string[]=['id', 'name', 'email', 'facultySection', 'year','grade'];
 
   constructor(private route: ActivatedRoute, private httpClient: HttpClient, private studentService: StudentService) { }

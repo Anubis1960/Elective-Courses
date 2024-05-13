@@ -1,6 +1,7 @@
 package com.Spring.application.service.impl;
 
 import com.Spring.application.entity.Course;
+import com.Spring.application.entity.Student;
 import com.Spring.application.enums.FacultySection;
 import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
@@ -23,6 +24,8 @@ public class CourseServiceImpl implements CourseService{
     private CourseScheduleRepository courseScheduleRepository;
     @Autowired
     private EnrollmentRepository enrollmentRepository;
+    @Autowired
+    private StudentServiceImpl studentService;
 
     @Override
     public Course addCourse(String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) throws ObjectNotFound, InvalidInput {
@@ -99,7 +102,7 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public List<Course> findAllCoursesByYearAndFacultySection(int year, String facultySection) {
-        return courseRepository.findAllCoursesByYearAndFacultySection(year, facultySection);
+        return courseRepository.findAllCoursesByYearAndFacultySection(year, FacultySection.valueOf(facultySection));
     }
 
     @Override
@@ -110,5 +113,16 @@ public class CourseServiceImpl implements CourseService{
     @Override
     public List<Course> findAllCoursesOrderByDESC(String field, String order) {
         return courseRepository.findAllCoursesOrderByDESC(field, order);
+    }
+
+    @Override
+    public List<Course> getCoursesOfStudent(Long studentId) throws ObjectNotFound {
+        Student student = studentService.getStudentById(studentId);
+        System.out.println("student = " + student);
+        List<Course> courses = courseRepository.findAllCoursesByYearAndFacultySection(student.getYear(), student.getFacultySection());
+        for (Course course : courses) {
+            System.out.println("course = " + course);
+        }
+        return courses;
     }
 }

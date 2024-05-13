@@ -68,6 +68,7 @@ public class StudentServiceImpl implements StudentService{
     public Student getStudentById(Long id) throws ObjectNotFound {
         Student student = studentRepository.findById(id).orElse(null);
         if (student == null) {
+            System.out.println("Student not found");
             throw new ObjectNotFound("Student not found");
         }
         return student;

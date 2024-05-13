@@ -53,6 +53,10 @@ export class CourseService {
     const params = new HttpParams()
     .set('faculty', faculty)
     .set('year', year);
-    return this.http.get<Course[]>(`${this.baseUrl}/`, { params });
+    return this.http.get<Course[]>(`${this.baseUrl}/${faculty}/${year}`);
+  }
+
+  getCoursesByStudentId(id: number): Observable<Course[]> {
+    return this.http.get<Course[]>(`${this.baseUrl}/student/${id}`);
   }
 }

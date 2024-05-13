@@ -24,10 +24,10 @@ export class LoginComponent {
         console.log(this.user);
         localStorage.setItem('user', JSON.stringify(this.user));
         if(this.user.role === 'ADMIN'){
-          this.router.navigateByUrl('/course');
+          this.router.navigateByUrl('/admin/courses');
         }
         else if(this.user.role === 'STUDENT'){
-          this.router.navigateByUrl('/student');
+          this.router.navigateByUrl('/student/courses');
         }
       },
       error: (error) => {

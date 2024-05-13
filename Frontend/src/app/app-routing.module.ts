@@ -10,11 +10,11 @@ import { CourseStudentComponent } from './component/course-student/course-studen
 const routes: Routes = [
   {path: '', redirectTo:'/login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'student', component: StudentComponent},
+  {path: 'student/courses', component: StudentComponent},
   {path: 'admin/courses', component: CourseComponent},
-  {path: 'courses/:id', component: CourseDetailsComponent},
+  {path: 'student/courses/:id', component: CourseDetailsComponent},
   {path: 'profile', component: ProfileComponent},
-  {path: 'admin/courses/:id', component: CourseStudentComponent}
+  {path: 'admin/courses/:id', component: CourseStudentComponent},
 ];
 
 @NgModule({
