@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Centering the form */
 :host {
     display: flex;
@@ -42,3 +43,5 @@ mat-dialog-actions button {
 mat-form-field.mat-form-field-disabled {
     background-color: #f9f9f9;
 }
+=======
+>>>>>>> d0ce5a7f7db84e5eef6d38372acb5ce2d6bd23d4
