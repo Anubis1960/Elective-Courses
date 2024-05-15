@@ -85,4 +85,8 @@ export class CourseComponent implements OnInit {
   getDetails(id: number) {
     this.router.navigateByUrl('/admin/courses/'+id);
   }
+  filterchange(data:Event) {
+    const value=(data.target as HTMLInputElement).value;
+    this.dataSource.filter = value.trim().toLowerCase();
+  }
 }
