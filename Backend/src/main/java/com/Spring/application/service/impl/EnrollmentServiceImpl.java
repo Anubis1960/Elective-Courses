@@ -105,4 +105,9 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     public Integer countByStudentId(Long studentId){
         return enrollmentRepository.countByStudentId(studentId);
     }
+
+    @Override
+    public List<Enrollment> getEnrollmentsByStudentId(Long studentId){
+        return enrollmentRepository.findByStudentId(studentId);
+    }
 }
