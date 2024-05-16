@@ -32,4 +32,6 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     @Query("SELECT count(e) FROM Enrollment e WHERE e.student.id = :studentId GROUP BY e.student.id")
     Integer countByStudentId(Long studentId);
 
+    List<Enrollment> findByStudentId(Long studentId);
+
 }
