@@ -18,4 +18,5 @@ public interface CourseService {
     List<Course> findAllCoursesOrderByASC(String field, String order);
     List<Course> findAllCoursesOrderByDESC(String field, String order);
     List<Course> getCoursesOfStudent(Long studentId) throws ObjectNotFound;
+    Course getCourseByName(String name);
 }

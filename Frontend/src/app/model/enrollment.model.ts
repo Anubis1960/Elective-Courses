@@ -1,15 +1,15 @@
 
 export class Enrollment {
     id: number | undefined;
-    studentId: number | undefined;
-    courseId: number | undefined;
+    studentName: string | undefined;
+    courseName: string | undefined;
     priority: number | undefined;
     status: string | undefined;
 
-    constructor(id: number, student_id: number, course_id: number, priority: number, status: string) {
+    constructor(id: number, studentName: string, courseName: string, priority: number, status: string) {
         this.id = id;
-        this.studentId = student_id;
-        this.courseId = course_id;
+        this.studentName = studentName;
+        this.courseName = courseName;
         this.priority = priority;
         this.status = status;
     }

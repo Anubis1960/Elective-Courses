@@ -10,4 +10,5 @@ public interface StudentRepository extends JpaRepository<Student, Long>{
     Student findByEmailAndPassword(String email, String password);
     @Query("SELECT s FROM Student s, Enrollment e WHERE s.id = e.student.id AND e.course.courseId = ?1")
     List<Student> findAllStudentsByCourseId(Long courseId);
+    Student findByName(String name);
 }

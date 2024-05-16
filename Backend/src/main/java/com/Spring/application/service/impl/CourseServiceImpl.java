@@ -125,4 +125,9 @@ public class CourseServiceImpl implements CourseService{
         }
         return courses;
     }
+
+    @Override
+    public Course getCourseByName(String name) {
+        return courseRepository.findByCourseName(name);
+    }
 }

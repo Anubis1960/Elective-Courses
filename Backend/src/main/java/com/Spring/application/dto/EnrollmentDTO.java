@@ -8,25 +8,25 @@ import java.util.List;
 
 public class EnrollmentDTO {
     private Long id;
-    private Long studentId;
-    private Long courseId;
+    private String studentName;
+    private String courseName;
     private Integer priority;
     private String status;
-
-    public EnrollmentDTO(Long id, Long studentId, Long courseId, Integer priority, String status) {
-        this.id = id;
-        this.studentId = studentId;
-        this.courseId = courseId;
-        this.priority = priority;
-        this.status = status;
-    }
 
     public EnrollmentDTO() {
     }
 
+    public EnrollmentDTO(Long id, String studentName, String courseName, Integer priority, String status) {
+        this.id = id;
+        this.studentName = studentName;
+        this.courseName = courseName;
+        this.priority = priority;
+        this.status = status;
+    }
+
     public static List<EnrollmentDTO> convertToDTO(List<Enrollment> enrollments) {
         List<EnrollmentDTO> enrollmentDTOS = new ArrayList<>();
-        enrollments.forEach(enrollment -> enrollmentDTOS.add(new EnrollmentDTO(enrollment.getEnrollmentId(), enrollment.getStudent().getId(), enrollment.getCourse().getCourseId(), enrollment.getPriority(), enrollment.getStatus().toString())));
+        enrollments.forEach(enrollment -> enrollmentDTOS.add(new EnrollmentDTO(enrollment.getEnrollmentId(), enrollment.getStudent().getName(), enrollment.getCourse().getCourseName(), enrollment.getPriority(), enrollment.getStatus().toString())));
         return enrollmentDTOS;
     }
 
@@ -38,20 +38,20 @@ public class EnrollmentDTO {
         this.id = id;
     }
 
-    public Long getStudentId() {
-        return studentId;
+    public String getStudentName() {
+        return studentName;
     }
 
-    public void setStudentId(Long studentId) {
-        this.studentId = studentId;
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 
-    public Long getCourseId() {
-        return courseId;
+    public String getCourseName() {
+        return courseName;
     }
 
-    public void setCourseId(Long courseId) {
-        this.courseId = courseId;
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     public Integer getPriority() {
