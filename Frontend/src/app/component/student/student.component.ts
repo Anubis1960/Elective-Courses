@@ -42,5 +42,8 @@ export class StudentComponent {
   getDetails(id: number) {
     this.router.navigateByUrl('/student/courses/'+id);
   }
-    
+  filterchange(data:Event) {
+    const value=(data.target as HTMLInputElement).value;
+    this.dataSource.filter = value.trim().toLowerCase();
+  }
 }

@@ -7,6 +7,7 @@ import { User } from '../../model/user.model';
   styleUrls: ['./top-bar.component.css']
 })
 export class TopBarComponent {
+  userRole = JSON.parse(localStorage.getItem('user') || '{}').role;
   constructor(private router:Router ) { }
   onLogout(){
     console.log(localStorage.getItem('user'));
@@ -16,4 +17,6 @@ export class TopBarComponent {
     localStorage.removeItem('user');
     this.router.navigateByUrl('/login');
   } 
+
+
 }
