@@ -10,7 +10,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-
+import {MatIconModule} from '@angular/material/icon';
 @NgModule({
   imports: [
     AppModule,
@@ -22,6 +22,7 @@ import { MatCardModule } from '@angular/material/card';
     MatSortModule,
     MatButtonModule,
     MatCardModule,
+    MatIconModule,
 
   ],
   bootstrap: [AppComponent],
