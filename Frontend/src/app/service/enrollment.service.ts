@@ -40,4 +40,8 @@ export class EnrollmentService {
   exportEnrollments(): Observable<any> {
     return this.http.get(`${this.baseUrl}/export`);
   }
+
+  updateAllEnrollments(enrollments: Enrollment[]): Observable<Enrollment[]> {
+    return this.http.put<Enrollment[]>(`${this.baseUrl}/`, enrollments);
+  }
 }

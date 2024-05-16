@@ -46,8 +46,8 @@ export class CourseComponent implements OnInit {
 
   openDialog(id: number, name: string, description: string, category: string, facultySection: string, maximumStudentsAllowed: number, teacherName: string, year: number, title: string) {
     this.dialog.open(PopUpComponent, {
-      width: '400px',
-      height: '600px',
+      width: '590px',
+      height: '880px',
       data: {
         title: title,
         id: id,

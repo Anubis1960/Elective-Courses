@@ -1,12 +1,15 @@
 package com.Spring.application.controller;
 
 import com.Spring.application.dto.EnrollmentDTO;
-import com.Spring.application.dto.EnrollmentRequest;
+import com.Spring.application.entity.Course;
 import com.Spring.application.entity.Enrollment;
+import com.Spring.application.entity.Student;
 import com.Spring.application.exceptions.ObjectNotFound;
-import com.Spring.application.repository.EnrollmentRepository;
+import com.Spring.application.service.CourseService;
+import com.Spring.application.service.impl.CourseServiceImpl;
 import com.Spring.application.service.impl.EnrollmentServiceImpl;
 
+import com.Spring.application.service.impl.StudentServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +30,10 @@ public class EnrollmentController {
     private EnrollmentServiceImpl enrollmentService;
     @Autowired
     private PDFGeneratorService pdfGeneratorService;
+    @Autowired
+    private StudentServiceImpl studentService;
+    @Autowired
+    private CourseServiceImpl courseService;
 
     @PostMapping("/")
     public ResponseEntity<EnrollmentDTO> enroll(
@@ -35,7 +42,7 @@ public class EnrollmentController {
         //System.out.println("studentId: " + studentId + " courseId: " + courseId + " priority: " + priority);
         Integer priority = enrollmentService.countByStudentId(studentId) + 1;
         Enrollment enrollment = enrollmentService.addEnrollment(studentId, courseId, priority);
-        EnrollmentDTO enrollmentDTO = new EnrollmentDTO(enrollment.getEnrollmentId(), enrollment.getStudent().getId(), enrollment.getCourse().getCourseId(), enrollment.getPriority(), enrollment.getStatus().toString());
+        EnrollmentDTO enrollmentDTO = new EnrollmentDTO(enrollment.getEnrollmentId(), enrollment.getStudent().getName(), enrollment.getCourse().getCourseName(), enrollment.getPriority(), enrollment.getStatus().toString());
         return new ResponseEntity<>(enrollmentDTO, HttpStatus.CREATED);
     }
 
@@ -43,21 +50,23 @@ public class EnrollmentController {
     public ResponseEntity<EnrollmentDTO> updateEnrollment(
             @PathVariable("id") Long enrollmentId,
             @RequestBody EnrollmentDTO enrollmentDTO) throws ObjectNotFound {
-        enrollmentService.updateEnrollment(enrollmentId, enrollmentDTO.getStudentId(), enrollmentDTO.getCourseId(), enrollmentDTO.getPriority(), enrollmentDTO.getStatus());
+        Student student = studentService.getStudentByName(enrollmentDTO.getStudentName());
+        Course course = courseService.getCourseByName(enrollmentDTO.getCourseName());
+        enrollmentService.updateEnrollment(enrollmentId, student.getUserId(), course.getCourseId(), enrollmentDTO.getPriority(), enrollmentDTO.getStatus());
         return new ResponseEntity<>(enrollmentDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<EnrollmentDTO> deleteEnrollment(@PathVariable("id") Long enrollmentId) throws ObjectNotFound {
         Enrollment enrollment = enrollmentService.deleteEnrollment(enrollmentId);
-        EnrollmentDTO enrollmentDTO = new EnrollmentDTO(enrollment.getEnrollmentId(), enrollment.getStudent().getId(), enrollment.getCourse().getCourseId(), enrollment.getPriority(), enrollment.getStatus().toString());
+        EnrollmentDTO enrollmentDTO = new EnrollmentDTO(enrollment.getEnrollmentId(), enrollment.getStudent().getName(), enrollment.getCourse().getCourseName(), enrollment.getPriority(), enrollment.getStatus().toString());
         return new ResponseEntity<>(enrollmentDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EnrollmentDTO> getEnrollmentById(@PathVariable("id") Long enrollmentId) throws ObjectNotFound {
         Enrollment enrollment = enrollmentService.getEnrollmentById(enrollmentId);
-        EnrollmentDTO enrollmentDTO = new EnrollmentDTO(enrollment.getEnrollmentId(), enrollment.getStudent().getId(), enrollment.getCourse().getCourseId(), enrollment.getPriority(), enrollment.getStatus().toString());
+        EnrollmentDTO enrollmentDTO = new EnrollmentDTO(enrollment.getEnrollmentId(), enrollment.getStudent().getName(), enrollment.getCourse().getCourseName(), enrollment.getPriority(), enrollment.getStatus().toString());
         return new ResponseEntity<>(enrollmentDTO, HttpStatus.OK);
     }
 
@@ -81,5 +90,15 @@ public class EnrollmentController {
         String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
         response.getOutputStream().write(pdfGeneratorService.exportEnrollmentsToPDF());
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<List<EnrollmentDTO>> updateEnrollments(@RequestBody List<EnrollmentDTO> enrollmentDTOs) throws ObjectNotFound {
+        for (EnrollmentDTO enrollmentDTO : enrollmentDTOs) {
+            Student student = studentService.getStudentByName(enrollmentDTO.getStudentName());
+            Course course = courseService.getCourseByName(enrollmentDTO.getCourseName());
+            enrollmentService.updateEnrollment(enrollmentDTO.getId(), student.getUserId(), course.getCourseId(), enrollmentDTO.getPriority(), enrollmentDTO.getStatus());
+        }
+        return new ResponseEntity<>(enrollmentDTOs, HttpStatus.OK);
     }
 }
