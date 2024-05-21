@@ -111,4 +111,24 @@ public class EnrollmentController {
         List<EnrollmentDTO> enrollmentDTOs = EnrollmentDTO.convertToDTO(enrollments);
         return new ResponseEntity<>(enrollmentDTOs, HttpStatus.OK);
     }
+
+    @GetMapping("/sort")
+    public ResponseEntity<List<EnrollmentDTO>> sortEnrollmentsByStudentGradeAsc() {
+        List<Enrollment> enrollments = enrollmentService.sortEnrollmentsByStudentGradeAsc();
+        if (enrollments.isEmpty()) {
+            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
+        }
+        List<EnrollmentDTO> enrollmentDTOs = EnrollmentDTO.convertToDTO(enrollments);
+        return new ResponseEntity<>(enrollmentDTOs, HttpStatus.OK);
+    }
+
+    @GetMapping("/assign")
+    public ResponseEntity<List<EnrollmentDTO>> assignStudents() {
+        List<Enrollment> enrollments = enrollmentService.assignStudents();
+        if (enrollments.isEmpty()) {
+            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
+        }
+        List<EnrollmentDTO> enrollmentDTOs = EnrollmentDTO.convertToDTO(enrollments);
+        return new ResponseEntity<>(enrollmentDTOs, HttpStatus.OK);
+    }
 }

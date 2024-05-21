@@ -7,14 +7,10 @@ import { User } from '../../model/user.model';
   styleUrls: ['./top-bar.component.css']
 })
 export class TopBarComponent {
-  userRole = JSON.parse(localStorage.getItem('user') || '{}').role;
+  userRole = JSON.parse(sessionStorage.getItem('user') || '{}').role;
   constructor(private router:Router ) { }
   onLogout(){
-    console.log(localStorage.getItem('user'));
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    console.log(user.id);    
-    console.log(user.role);
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('user');
     this.router.navigateByUrl('/login');
   } 
 
