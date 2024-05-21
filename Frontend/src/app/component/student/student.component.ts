@@ -24,7 +24,7 @@ export class StudentComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   ngOnInit(): void {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     console.log(user);
     this.courseService.getCoursesByStudentId(user.id).subscribe({
       next: (data: Course[]) => {

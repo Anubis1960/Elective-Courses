@@ -16,4 +16,5 @@ public interface EnrollmentService {
     List<Enrollment> sortEnrollmentsByStudentGradeAsc();
     Integer countByStudentId(Long studentId);
     List<Enrollment> getEnrollmentsByStudentId(Long studentId);
+    List<Enrollment> assignStudents();
 }

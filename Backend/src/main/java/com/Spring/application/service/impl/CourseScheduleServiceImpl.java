@@ -28,19 +28,56 @@ public class CourseScheduleServiceImpl implements CourseScheduleService{
             throw new InvalidInput("Start time cannot be after end time");
         }
         Course course = courseRepository.findById(courseId).orElse(null);
+        if (course == null) {
+            throw new ObjectNotFound("Course not found");
+        }
         CourseSchedule courseSchedule = courseScheduleRepository.findById(courseId).orElse(null);
         if (courseSchedule != null) {
             throw new NonUniqueObjectException("Course Schedule already exists", courseSchedule.getCourseId().toString());
         }
-        if (course == null) {
-            throw new ObjectNotFound("Course not found");
-        }
+
         LocalTime start = LocalTime.parse(startTime);
         LocalTime end = LocalTime.parse(endTime);
-        courseSchedule = new CourseSchedule(course, Day.valueOf(day), start, end);
-        courseScheduleRepository.save(courseSchedule);
-        return courseSchedule;
+        List<CourseSchedule> courseSchedules = courseScheduleRepository.findByDayAndStartTimeAndEndTime(day, start, end);
+        CourseSchedule newCourseSchedule = new CourseSchedule(course, Day.valueOf(day), start, end);
+
+        if (!courseSchedules.isEmpty()) {
+            boolean collide = avoidCollision(newCourseSchedule, courseSchedules);
+            if (collide) {
+                throw new NonUniqueObjectException("Course Schedule collides with another", newCourseSchedule.getCourseId().toString());
+            }
+        }
+
+        courseScheduleRepository.save(newCourseSchedule);
+
+        return newCourseSchedule;
     }
+
+    private boolean avoidCollision(CourseSchedule newCourseSchedule, List<CourseSchedule> courseSchedules) throws NonUniqueObjectException {
+        boolean collide = false;
+        for (CourseSchedule cs : courseSchedules) {
+            if (cs.getCourseId().equals(newCourseSchedule.getCourseId())) {
+                continue;
+            }
+            if (cs.getCourse().getFacultySection().equals(newCourseSchedule.getCourse().getFacultySection())) {
+                if (cs.getCourse().getYear().equals(newCourseSchedule.getCourse().getYear())) {
+                    if (cs.getDay().equals(newCourseSchedule.getDay())) {
+                        if (cs.getStartTime().equals(newCourseSchedule.getStartTime()) || cs.getEndTime().equals(newCourseSchedule.getEndTime())) {
+                            collide = true;
+                        } else if (cs.getStartTime().isBefore(newCourseSchedule.getStartTime()) && cs.getEndTime().isAfter(newCourseSchedule.getStartTime())) {
+                            collide = true;
+                        } else if (cs.getStartTime().isBefore(newCourseSchedule.getEndTime()) && cs.getEndTime().isAfter(newCourseSchedule.getEndTime())) {
+                            collide = true;
+                        } else if (cs.getStartTime().isAfter(newCourseSchedule.getStartTime()) && cs.getEndTime().isBefore(newCourseSchedule.getEndTime())) {
+                            collide = true;
+                        }
+                    }
+                }
+            }
+        }
+        return collide;
+    }
+
 
     @Override
     public CourseSchedule updateCourseSchedule(Long courseId, String day, String startTime, String endTime) throws ObjectNotFound, InvalidInput {
@@ -58,6 +95,15 @@ public class CourseScheduleServiceImpl implements CourseScheduleService{
         LocalTime end = LocalTime.parse(endTime);
         courseSchedule.setStartTime(start);
         courseSchedule.setEndTime(end);
+        List<CourseSchedule> courseSchedules = courseScheduleRepository.findByDayAndStartTimeAndEndTime(day, start, end);
+
+        if (!courseSchedules.isEmpty()) {
+            boolean collide = avoidCollision(courseSchedule, courseSchedules);
+            if (collide) {
+                throw new NonUniqueObjectException("Course Schedule collides with another", courseSchedule.getCourseId().toString());
+            }
+        }
+
         courseScheduleRepository.save(courseSchedule);
         return courseSchedule;
     }

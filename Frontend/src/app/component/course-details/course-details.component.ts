@@ -5,6 +5,7 @@ import { CourseService } from '../../service/course.service';
 import { Enrollment } from '../../model/enrollment.model';
 import { EnrollmentService } from '../../service/enrollment.service';
 import { HttpClient } from '@angular/common/http';
+import { User } from '../../model/user.model';
 
 @Component({
   selector: 'app-course-details',
@@ -38,7 +39,7 @@ export class CourseDetailsComponent implements OnInit{
 
   
   onEnroll() {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}') as User;
     console.log(user);
     if (!this.enrollmentService) {
       this.enrollmentService = new EnrollmentService(this.httpClient);

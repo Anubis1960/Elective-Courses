@@ -16,7 +16,7 @@ export class ProfileComponent implements OnInit{
     constructor(private httpClient: HttpClient) {}
 
     ngOnInit() {
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const user = JSON.parse(sessionStorage.getItem('user') || '{}') as User;
       console.log(user);
       if (!this.student_service) {
         this.student_service = new StudentService(this.httpClient);

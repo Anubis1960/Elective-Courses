@@ -12,6 +12,8 @@ import com.Spring.application.service.EnrollmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -109,5 +111,25 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     @Override
     public List<Enrollment> getEnrollmentsByStudentId(Long studentId){
         return enrollmentRepository.findByStudentId(studentId);
+    }
+
+    @Override
+    public List<Enrollment> assignStudents(){
+        List<Enrollment> enrollments = enrollmentRepository.findAll();
+        enrollments.sort((Enrollment enrollment1, Enrollment enrollment2) -> {
+            Student student1 = enrollment1.getStudent();
+            Student student2 = enrollment2.getStudent();
+            if (!student1.getGrade().equals(student2.getGrade())) {
+                return student1.getGrade() < student2.getGrade() ? 1 : -1;
+            } else {
+                if (!student1.getId().equals(student2.getId())) {
+                    return student1.getId() > student2.getId() ? 1 : -1;
+                } else {
+                    return enrollment1.getPriority() > enrollment2.getPriority() ? 1 : -1;
+                }
+            }
+        });
+
+        return enrollments;
     }
 }
