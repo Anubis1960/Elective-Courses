@@ -17,6 +17,4 @@ export class TopBarComponent {
     localStorage.removeItem('user');
     this.router.navigateByUrl('/login');
   } 
-
-
 }

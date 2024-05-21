@@ -6,9 +6,8 @@
         <mat-card-subtitle> 
             <button (click)="openDialog(-1,  '', '', '', '', 0, '', 0, 'Add Course')" mat-raised-button color="primary"> Add Course </button>
         </mat-card-subtitle>
-        <mat-form-field>
-            <input matInput (keyup)="filterchange($event)" placeholder="Search" />
-        
+        <mat-form-field appearance="outline" style="height: 60px; margin-left: 50px; margin-bottom:20px">
+            <input matInput (keyup)="filterchange($event)" placeholder="Search" style="height:20px"/>
         </mat-form-field>
     </mat-card-header>
     <mat-card-content>
