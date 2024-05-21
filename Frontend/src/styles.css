@@ -35,10 +35,6 @@ app-top-bar {
     cursor: auto;
   }
   
-  .fancy-button {
-    background-color: white;
-    color: #1976d2;
-  }
   input {
     font-size: 14px;
     border-radius: 2px;
