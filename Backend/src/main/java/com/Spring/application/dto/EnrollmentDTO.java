@@ -16,6 +16,17 @@ public class EnrollmentDTO {
     public EnrollmentDTO() {
     }
 
+    @Override
+    public String toString() {
+        return "EnrollmentDTO{" +
+                "id=" + id +
+                ", studentName='" + studentName + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", priority=" + priority +
+                ", status='" + status + '\'' +
+                '}';
+    }
+
     public EnrollmentDTO(Long id, String studentName, String courseName, Integer priority, String status) {
         this.id = id;
         this.studentName = studentName;

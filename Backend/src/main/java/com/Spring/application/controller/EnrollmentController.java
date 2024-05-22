@@ -95,9 +95,10 @@ public class EnrollmentController {
     @PutMapping("/")
     public ResponseEntity<List<EnrollmentDTO>> updateEnrollments(@RequestBody List<EnrollmentDTO> enrollmentDTOs) throws ObjectNotFound {
         for (EnrollmentDTO enrollmentDTO : enrollmentDTOs) {
+            System.out.println(enrollmentDTO.toString());
             Student student = studentService.getStudentByName(enrollmentDTO.getStudentName());
             Course course = courseService.getCourseByName(enrollmentDTO.getCourseName());
-            enrollmentService.updateEnrollment(enrollmentDTO.getId(), student.getUserId(), course.getCourseId(), enrollmentDTO.getPriority(), enrollmentDTO.getStatus());
+            enrollmentService.updateEnrollment(enrollmentDTO.getId(), student.getUserId(), course.getCourseId(),enrollmentDTOs.indexOf(enrollmentDTO)+1, enrollmentDTO.getStatus());
         }
         return new ResponseEntity<>(enrollmentDTOs, HttpStatus.OK);
     }
