@@ -34,4 +34,7 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
 
     List<Enrollment> findByStudentId(Long studentId);
 
+    @Query("SELECT e.student.id FROM Enrollment e WHERE e.status = 'ACCEPTED' AND e.course.courseId = :courseId")
+    List<Long> findAllByCourseIdAndStatusIsAccepted(Long courseId);
+
 }

@@ -2,10 +2,12 @@ package com.Spring.application.repository;
 
 import com.Spring.application.entity.Course;
 import com.Spring.application.enums.FacultySection;
+import org.antlr.v4.runtime.misc.Pair;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
@@ -25,4 +27,8 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findAllCoursesOrderByDESC(String field, String order);
 
     Course findByCourseName(String courseName);
+
+    @Query("SELECT c FROM Course c ORDER BY c.courseId ASC")
+    List<Course> findAllCoursesOrderByASC();
+
 }

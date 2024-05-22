@@ -93,4 +93,9 @@ public class StudentServiceImpl implements StudentService{
     public Student getStudentByName(String name) {
         return studentRepository.findByName(name);
     }
+
+    @Override
+    public List<Long> getAcceptedEnrollmentsByCourseId(Long courseId) {
+        return enrollmentRepository.findAllByCourseIdAndStatusIsAccepted(courseId);
+    }
 }

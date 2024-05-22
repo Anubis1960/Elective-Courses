@@ -80,6 +80,17 @@ public class CourseSchedule extends Auditable<String> {
         this.course = course;
     }
 
+    @Override
+    public String toString() {
+        return "CourseSchedule{" +
+                "courseId=" + courseId +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", day=" + day +
+                ", course=" + course +
+                '}';
+    }
+
     public CourseSchedule(Course course, Day day, LocalTime startTime, LocalTime endTime) {
         this.day = day;
         this.startTime = startTime;
