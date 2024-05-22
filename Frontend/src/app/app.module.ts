@@ -23,6 +23,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,6 +50,7 @@ import {MatIconModule} from '@angular/material/icon';
     ReactiveFormsModule,
     MatInputModule,
     MatIconModule,
+    DragDropModule,
   ],
   providers: [
     provideClientHydration(),

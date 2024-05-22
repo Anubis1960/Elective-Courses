@@ -36,7 +36,9 @@ export class EnrollmentService {
   getEnrollmentsList(): Observable<Enrollment[]> {
     return this.http.get<Enrollment[]>(`${this.baseUrl}/`);
   }
-
+  getStudentEnrollmentsList(studentId: number): Observable<Enrollment[]> {
+    return this.http.get<Enrollment[]>(`${this.baseUrl}/student/${studentId}`);
+  }
   exportEnrollments(): Observable<any> {
     return this.http.get(`${this.baseUrl}/export`);
   }
