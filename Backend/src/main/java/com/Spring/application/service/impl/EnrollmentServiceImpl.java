@@ -11,6 +11,7 @@ import com.Spring.application.repository.StudentRepository;
 import com.Spring.application.service.EnrollmentService;
 import org.antlr.v4.runtime.misc.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -121,23 +122,24 @@ public class EnrollmentServiceImpl implements EnrollmentService{
 
     @Override
     public List<Enrollment> assignStudents(){
-        List<Enrollment> enrollments = enrollmentRepository.findAll();
-        enrollments.sort((Enrollment enrollment1, Enrollment enrollment2) -> {
-            Student student1 = enrollment1.getStudent();
-            Student student2 = enrollment2.getStudent();
-            if (!student1.getGrade().equals(student2.getGrade())) {
-                return student1.getGrade() < student2.getGrade() ? 1 : -1;
-            } else {
-                if (!student1.getId().equals(student2.getId())) {
-                    return student1.getId() > student2.getId() ? 1 : -1;
-                } else {
-                    return enrollment1.getPriority() > enrollment2.getPriority() ? 1 : -1;
-                }
-            }
-        });
+        List<Enrollment> enrollments = enrollmentRepository.findAll(Sort.by(Sort.Direction.DESC, "student.grade").and(Sort.by(Sort.Direction.ASC, "student.id")).and(Sort.by(Sort.Direction.ASC, "priority")));
+//        enrollments.sort((Enrollment enrollment1, Enrollment enrollment2) -> {
+//            Student student1 = enrollment1.getStudent();
+//            Student student2 = enrollment2.getStudent();
+//            if (!student1.getGrade().equals(student2.getGrade())) {
+//                return student1.getGrade() < student2.getGrade() ? 1 : -1;
+//            } else {
+//                if (!student1.getId().equals(student2.getId())) {
+//                    return student1.getId() > student2.getId() ? 1 : -1;
+//                } else {
+//                    return enrollment1.getPriority() > enrollment2.getPriority() ? 1 : -1;
+//                }
+//            }
+//        });
 
         Long currentStudentId = enrollments.get(0).getStudent().getId();
-        List<Course> courses = courseRepository.findAllCoursesOrderByASC();
+//        List<Course> courses = courseRepository.findAllCoursesOrderByASC();
+        List<Course> courses = courseRepository.findAll();
         List<String> categoriesTaken = new ArrayList<>();
         for (Enrollment enrollment : enrollments) {
             if (!enrollment.getStudent().getId().equals(currentStudentId)) {
@@ -149,13 +151,14 @@ public class EnrollmentServiceImpl implements EnrollmentService{
             Integer mid = 0;
             while (low <= high) {
                 mid = low + (high - low) / 2;
-                if (enrollment.getCourse().getCourseId() == courses.get(mid).getCourseId())
+                if (enrollment.getCourse().getCourseId().equals(courses.get(mid).getCourseId()))
                     break;
                 if (enrollment.getCourse().getCourseId() > courses.get(mid).getCourseId())
                     low = mid + 1;
                 else
                     high = mid - 1;
             }
+
             if(courses.get(mid).getMaximumStudentsAllowed() <= 0)
                 enrollment.setStatus(Status.valueOf("REJECTED"));
             else {

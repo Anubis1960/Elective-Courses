@@ -44,7 +44,7 @@ export class PopUpComponent implements OnInit {
       this.courseService.updateCourse(this.form.value.id, this.form.value.name, this.form.value.description, this.form.value.category, this.form.value.facultySection, this.form.value.maximumStudentsAllowed, this.form.value.year, this.form.value.teacherName).subscribe({
         next: (data) => {
           console.log(data);
-          this.ref.close();
+          this.ref.close(data);
         },
         error: (error) => {
           console.log(error);
@@ -55,7 +55,7 @@ export class PopUpComponent implements OnInit {
       this.courseService.createCourse(this.form.value.name, this.form.value.description, this.form.value.category, this.form.value.facultySection, this.form.value.maximumStudentsAllowed, this.form.value.year, this.form.value.teacherName).subscribe({
         next: (data : Course) => {
           console.log(data);
-          this.ref.close();
+          this.ref.close(data);
         },
         error: (error) => {
           console.log(error);

@@ -56,7 +56,6 @@ public class CourseScheduleServiceImpl implements CourseScheduleService{
 
         if (!courseSchedules.isEmpty()) {
             boolean collide = avoidCollision(newCourseSchedule, courseSchedules);
-            System.out.println("Collide: " + collide);
             if (collide) {
                 throw new NonUniqueObjectException("Course Schedule collides with another", newCourseSchedule.getCourse().getCourseId().toString());
             }
@@ -97,13 +96,7 @@ public class CourseScheduleServiceImpl implements CourseScheduleService{
 
     public boolean checkBothCourses(CourseSchedule cs, CourseSchedule newCourseSchedule) {
         List<Long> studentIds1 = enrollmentRepository.findAllByCourseIdAndStatusIsAccepted(cs.getCourseId());
-        for (Long id : studentIds1) {
-            System.out.println("Student ID1111111: " + id);
-        }
         List<Long> studentIds2 = enrollmentRepository.findAllByCourseIdAndStatusIsAccepted(newCourseSchedule.getCourse().getCourseId());
-        for (Long id : studentIds2) {
-            System.out.println("Student ID2222222222222: " + id);
-        }
         for (Long id1 : studentIds1) {
             for (Long id2 : studentIds2) {
                 if (id1.equals(id2)) {
