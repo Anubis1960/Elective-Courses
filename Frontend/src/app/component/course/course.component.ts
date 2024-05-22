@@ -62,6 +62,7 @@ export class CourseComponent implements OnInit {
     });
     this.dialog.afterAllClosed.subscribe({
       next: (data) => {
+        console.log(data);
         this.refresh();
       }
     });
