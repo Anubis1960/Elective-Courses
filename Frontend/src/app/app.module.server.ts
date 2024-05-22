@@ -11,6 +11,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 @NgModule({
   imports: [
     AppModule,
@@ -23,6 +24,7 @@ import {MatIconModule} from '@angular/material/icon';
     MatButtonModule,
     MatCardModule,
     MatIconModule,
+    DragDropModule,
 
   ],
   bootstrap: [AppComponent],

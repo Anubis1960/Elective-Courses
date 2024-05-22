@@ -1,11 +1,19 @@
 <app-top-bar></app-top-bar>
 <div class="student-info">
-    <h2>{{ student?.name }}</h2>
-    <div class="info">
-      <p><strong>Grade:</strong> {{ student?.grade }}</p>
-      <p><strong>Faculty Section:</strong> {{ student?.facultySection }}</p>
-      <p><strong>Year:</strong> {{ student?.year }}</p>
-      <p><strong>Email:</strong> {{ student?.email }}</p>
-    </div>
+  <h2>{{ student?.name }}</h2>
+  <div class="info">
+    <p><strong>Grade:</strong> {{ student?.grade }}</p>
+    <p><strong>Faculty Section:</strong> {{ student?.facultySection }}</p>
+    <p><strong>Year:</strong> {{ student?.year }}</p>
+    <p><strong>Email:</strong> {{ student?.email }}</p>
+  </div>
 </div>
-  
+<div class="dragAndDrop">
+  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let enroll of enrollments_list; let i = index" cdkDrag>
+      <span class="number">{{ i + 1 }}</span>
+      <span>{{ enroll.courseName }}</span>
+    </div>
+  </div>
+</div>
+<button mat-button (click)="saveOrder()">Save</button>
