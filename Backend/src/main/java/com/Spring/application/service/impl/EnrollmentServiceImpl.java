@@ -39,6 +39,10 @@ public class EnrollmentServiceImpl implements EnrollmentService{
         if (course == null) {
             throw new ObjectNotFound("Course not found");
         }
+        Enrollment e = enrollmentRepository.findEnrollmentByStudentIdAndCourseId(studentId, courseId);
+        if(e != null){
+            throw new ObjectNotFound("Course not found");
+        }
         Enrollment enrollment = new Enrollment(student, course, priority, Status.valueOf("PENDING"));
         enrollmentRepository.save(enrollment);
         return enrollment;
