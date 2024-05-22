@@ -9,12 +9,14 @@ import com.Spring.application.repository.CourseRepository;
 import com.Spring.application.repository.EnrollmentRepository;
 import com.Spring.application.repository.StudentRepository;
 import com.Spring.application.service.EnrollmentService;
+import org.antlr.v4.runtime.misc.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EnrollmentServiceImpl implements EnrollmentService{
@@ -130,6 +132,39 @@ public class EnrollmentServiceImpl implements EnrollmentService{
             }
         });
 
+        Long currentStudentId = enrollments.get(0).getStudent().getId();
+        List<Course> courses = courseRepository.findAllCoursesOrderByASC();
+        List<String> categoriesTaken = new ArrayList<>();
+        for (Enrollment enrollment : enrollments) {
+            if (!enrollment.getStudent().getId().equals(currentStudentId)) {
+                categoriesTaken.clear();
+                currentStudentId = enrollment.getStudent().getId();
+            }
+            Integer low = 0;
+            Integer high = courses.size() - 1;
+            Integer mid = 0;
+            while (low <= high) {
+                mid = low + (high - low) / 2;
+                if (enrollment.getCourse().getCourseId() == courses.get(mid).getCourseId())
+                    break;
+                if (enrollment.getCourse().getCourseId() > courses.get(mid).getCourseId())
+                    low = mid + 1;
+                else
+                    high = mid - 1;
+            }
+            if(courses.get(mid).getMaximumStudentsAllowed() <= 0)
+                enrollment.setStatus(Status.valueOf("REJECTED"));
+            else {
+                if (categoriesTaken.contains(courses.get(mid).getCategory()))
+                    enrollment.setStatus(Status.valueOf("REJECTED"));
+                else {
+                    courses.get(mid).setMaximumStudentsAllowed(courses.get(mid).getMaximumStudentsAllowed() - 1);
+                    enrollment.setStatus(Status.valueOf("ACCEPTED"));
+                    categoriesTaken.add(courses.get(mid).getCategory());
+                }
+            }
+        }
+        enrollmentRepository.saveAll(enrollments);
         return enrollments;
     }
 }

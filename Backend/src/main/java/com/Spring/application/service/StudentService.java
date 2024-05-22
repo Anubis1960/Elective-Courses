@@ -17,4 +17,5 @@ public interface StudentService {
     Student getStudentByEmailAndPassword(String email, String password);
     List<Student> getAllStudentsByCourseId(Long courseId);
     Student getStudentByName(String name);
+    List<Long> getAcceptedEnrollmentsByCourseId(Long courseId);
 }
