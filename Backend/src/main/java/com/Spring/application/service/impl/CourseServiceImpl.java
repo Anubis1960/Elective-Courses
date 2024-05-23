@@ -91,43 +91,22 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public List<String> findAllCategoriesByYear(int year) {
-        return courseRepository.findAllCategoriesByYear(year);
-    }
-
-    @Override
-    public List<Course> findAllCoursesByCategoryAndYear(String category, int year) {
-        return courseRepository.findAllCoursesByCategoryAndYear(category, year);
-    }
-
-    @Override
-    public List<Course> findAllCoursesByYearAndFacultySection(int year, String facultySection) {
-        return courseRepository.findAllCoursesByYearAndFacultySection(year, FacultySection.valueOf(facultySection));
-    }
-
-    @Override
-    public List<Course> findAllCoursesOrderByASC(String field, String order) {
-        return courseRepository.findAllCoursesOrderByASC(field, order);
-    }
-
-    @Override
-    public List<Course> findAllCoursesOrderByDESC(String field, String order) {
-        return courseRepository.findAllCoursesOrderByDESC(field, order);
-    }
-
-    @Override
     public List<Course> getCoursesOfStudent(Long studentId) throws ObjectNotFound {
         Student student = studentService.getStudentById(studentId);
-        System.out.println("student = " + student);
-        List<Course> courses = courseRepository.findAllCoursesByYearAndFacultySection(student.getYear(), student.getFacultySection());
-        for (Course course : courses) {
-            System.out.println("course = " + course);
-        }
-        return courses;
+//        System.out.println("student = " + student);
+        //        for (Course course : courses) {
+//            System.out.println("course = " + course);
+//        }
+        return courseRepository.findAllCoursesByYearAndFacultySection(student.getYear(), student.getFacultySection());
     }
 
     @Override
     public Course getCourseByName(String name) {
         return courseRepository.findByCourseName(name);
+    }
+
+    @Override
+    public List<Course> getAcceptedCoursesByStudentId(Long studentId) {
+        return courseRepository.findAcceptedCoursesByStudentId(studentId);
     }
 }

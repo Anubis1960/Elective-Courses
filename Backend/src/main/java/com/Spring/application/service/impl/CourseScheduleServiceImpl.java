@@ -2,14 +2,12 @@ package com.Spring.application.service.impl;
 
 import com.Spring.application.entity.Course;
 import com.Spring.application.entity.CourseSchedule;
-import com.Spring.application.entity.Student;
 import com.Spring.application.enums.Day;
 import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.repository.CourseRepository;
 import com.Spring.application.repository.CourseScheduleRepository;
 import com.Spring.application.repository.EnrollmentRepository;
-import com.Spring.application.repository.StudentRepository;
 import com.Spring.application.service.CourseScheduleService;
 import jakarta.transaction.Transactional;
 import org.hibernate.NonUniqueObjectException;
@@ -47,7 +45,7 @@ public class CourseScheduleServiceImpl implements CourseScheduleService{
 
         LocalTime start = LocalTime.parse(startTime);
         LocalTime end = LocalTime.parse(endTime);
-        List<CourseSchedule> courseSchedules = courseScheduleRepository.findCourseScheduleByDayAndYearAndSection(Day.valueOf(day), course.getYear(), course.getFacultySection());
+        List<CourseSchedule> courseSchedules = courseScheduleRepository.findCourseScheduleByDay(Day.valueOf(day));
 
         for (CourseSchedule cs : courseSchedules) {
             System.out.println(cs);
@@ -70,28 +68,38 @@ public class CourseScheduleServiceImpl implements CourseScheduleService{
                 continue;
             }
             if (cs.getStartTime().equals(newCourseSchedule.getStartTime()) || cs.getEndTime().equals(newCourseSchedule.getEndTime())) {
-                collide = checkBothCourses(cs, newCourseSchedule);
+                collide = checkCondition(cs, newCourseSchedule);
                 if (collide) {
                     break;
                 }
             } else if (cs.getStartTime().isBefore(newCourseSchedule.getStartTime()) && cs.getEndTime().isAfter(newCourseSchedule.getStartTime())) {
-                collide = checkBothCourses(cs, newCourseSchedule);
+                collide = checkCondition(cs, newCourseSchedule);
                 if (collide) {
                     break;
                 }
             } else if (cs.getStartTime().isBefore(newCourseSchedule.getEndTime()) && cs.getEndTime().isAfter(newCourseSchedule.getEndTime())) {
-                collide = checkBothCourses(cs, newCourseSchedule);
+                collide = checkCondition(cs, newCourseSchedule);
                 if (collide) {
                     break;
                 }
             } else if (cs.getStartTime().isAfter(newCourseSchedule.getStartTime()) && cs.getEndTime().isBefore(newCourseSchedule.getEndTime())) {
-                collide = checkBothCourses(cs, newCourseSchedule);
+                collide = checkCondition(cs, newCourseSchedule);
                 if (collide) {
                     break;
                 }
             }
         }
         return collide;
+    }
+
+    public boolean checkCondition(CourseSchedule cs, CourseSchedule newCourseSchedule) {
+        if(cs.getCourse().getTeacherName().equals(newCourseSchedule.getCourse().getTeacherName())){
+            return true;
+        }
+        else if(cs.getCourse().getYear().equals(newCourseSchedule.getCourse().getYear()) && cs.getCourse().getFacultySection().equals(newCourseSchedule.getCourse().getFacultySection())){
+            return checkBothCourses(cs, newCourseSchedule);
+        }
+        return false;
     }
 
     public boolean checkBothCourses(CourseSchedule cs, CourseSchedule newCourseSchedule) {
@@ -125,7 +133,7 @@ public class CourseScheduleServiceImpl implements CourseScheduleService{
 
         LocalTime start = LocalTime.parse(startTime);
         LocalTime end = LocalTime.parse(endTime);
-        List<CourseSchedule> courseSchedules = courseScheduleRepository.findCourseScheduleByDayAndYearAndSection(Day.valueOf(day), course.getYear(), course.getFacultySection());
+        List<CourseSchedule> courseSchedules = courseScheduleRepository.findCourseScheduleByDay(Day.valueOf(day));
         courseSchedule.setDay(Day.valueOf(day));
         courseSchedule.setStartTime(start);
         courseSchedule.setEndTime(end);

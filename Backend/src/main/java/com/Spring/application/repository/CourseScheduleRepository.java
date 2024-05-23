@@ -13,7 +13,7 @@ public interface CourseScheduleRepository extends JpaRepository<CourseSchedule, 
     @Query("SELECT cs FROM Enrollment e, CourseSchedule cs WHERE e.student.id = ?1 and e.status='ACCEPTED' and e.course.courseId = cs.courseId")
     List<CourseSchedule> findCourseScheduleOfStudent(Long id);
 
-    @Query("SELECT cs FROM CourseSchedule cs, Course c WHERE cs.day = :day AND c.year = :year AND c.facultySection = :section AND c.courseId = cs.courseId")
-    List<CourseSchedule> findCourseScheduleByDayAndYearAndSection(Day day, Integer year, FacultySection section);
+    @Query("SELECT cs FROM CourseSchedule cs WHERE cs.day = :day")
+    List<CourseSchedule> findCourseScheduleByDay(Day day);
 
 }

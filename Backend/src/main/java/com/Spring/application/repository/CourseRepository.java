@@ -28,10 +28,10 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     Course findByCourseName(String courseName);
 
-    @Query("SELECT c FROM Course c ORDER BY c.courseId ASC")
-    List<Course> findAllCoursesOrderByASC();
-
-    @Query("SELECT COUNT(DISTINCT c.category) FROM Course c WHERE c.year = ?1 GROUP BY YEAR ")
+    @Query("SELECT COUNT(DISTINCT c.category) FROM Course c WHERE c.year = ?1 GROUP BY c.year ")
     Integer countDistinctCategoriesByYear(Integer year);
+
+    @Query("SELECT c FROM Course c, Enrollment e WHERE e.student.id = ?1 AND e.course.courseId = c.courseId AND e.status = 'ACCEPTED'")
+    List<Course> findAcceptedCoursesByStudentId(Long studentId);
 
 }

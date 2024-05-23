@@ -4,7 +4,6 @@ import com.Spring.application.entity.Student;
 import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
 
-import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
@@ -17,5 +16,5 @@ public interface StudentService {
     Student getStudentByEmailAndPassword(String email, String password);
     List<Student> getAllStudentsByCourseId(Long courseId);
     Student getStudentByName(String name);
-    List<Long> getAcceptedEnrollmentsByCourseId(Long courseId);
+    List<Student> getAcceptedStudentsByCourseId(Long courseId);
 }

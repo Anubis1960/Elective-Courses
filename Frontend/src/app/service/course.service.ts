@@ -59,4 +59,8 @@ export class CourseService {
   getCoursesByStudentId(id: number): Observable<Course[]> {
     return this.http.get<Course[]>(`${this.baseUrl}/student/${id}`);
   }
+
+  getAcceptedCoursesByStudentId(id: number): Observable<Course[]> {
+    return this.http.get<Course[]>(`${this.baseUrl}/accepted/${id}`);
+  }
 }

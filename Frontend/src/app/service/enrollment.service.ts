@@ -46,4 +46,8 @@ export class EnrollmentService {
   updateAllEnrollments(enrollments: Enrollment[]): Observable<Enrollment[]> {
     return this.http.put<Enrollment[]>(`${this.baseUrl}/`, enrollments);
   }
+
+  assignStudentsToCourse(): Observable<Enrollment[]> {
+    return this.http.get<Enrollment[]>(`${this.baseUrl}/assign`);
+  }
 }

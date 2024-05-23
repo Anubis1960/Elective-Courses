@@ -74,11 +74,11 @@ public class CourseController {
 
     @GetMapping("/student/{studentId}")
     public ResponseEntity<List<CourseDTO>> getCoursesOfStudent(@PathVariable("studentId") Long studentId) throws ObjectNotFound {
-        System.out.println("studentId = " + studentId);
+//        System.out.println("studentId = " + studentId);
         List<Course> courses = courseService.getCoursesOfStudent(studentId);
-        for (Course course : courses) {
-            System.out.println("course = " + course);
-        }
+//        for (Course course : courses) {
+//            System.out.println("course = " + course);
+//        }
         return getListResponseEntity(courses);
     }
 
@@ -89,9 +89,15 @@ public class CourseController {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
         List<CourseDTO> courseDTOs = CourseDTO.convertToDTO(courses, numberOfStudents);
-        for (CourseDTO courseDTO : courseDTOs) {
-            System.out.println("courseDTO = " + courseDTO);
-        }
+//        for (CourseDTO courseDTO : courseDTOs) {
+//            System.out.println("courseDTO = " + courseDTO);
+//        }
         return new ResponseEntity<>(courseDTOs, HttpStatus.OK);
+    }
+
+    @GetMapping("/accepted/{studentId}")
+    public ResponseEntity<List<CourseDTO>> getAcceptedCoursesByStudentId(@PathVariable("studentId") Long studentId) {
+        List<Course> courses = courseService.getAcceptedCoursesByStudentId(studentId);
+        return getListResponseEntity(courses);
     }
 }

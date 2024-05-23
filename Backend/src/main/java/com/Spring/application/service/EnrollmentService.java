@@ -7,13 +7,11 @@ import java.util.List;
 
 public interface EnrollmentService {
     Enrollment addEnrollment(Long studentId, Long courseId, Integer priority) throws ObjectNotFound;
-    Enrollment updateEnrollment(Long enrollmentId, Long studentId, Long courseId, Integer priority, String status) throws ObjectNotFound;
+    void updateEnrollment(Long enrollmentId, Long studentId, Long courseId, Integer priority, String status) throws ObjectNotFound;
     Enrollment deleteEnrollment(Long enrollmentId) throws ObjectNotFound;
     Enrollment getEnrollmentById(Long enrollmentId) throws ObjectNotFound;
     List<Enrollment> getAllEnrollments();
-    List<Enrollment> getAllEnrollmentsWhereStatusIsAccepted();
     Integer countByCourseId(Long courseId);
-    List<Enrollment> sortEnrollmentsByStudentGradeAsc();
     Integer countByStudentId(Long studentId);
     List<Enrollment> getEnrollmentsByStudentId(Long studentId);
     List<Enrollment> assignStudents();
