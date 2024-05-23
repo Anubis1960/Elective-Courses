@@ -2,8 +2,18 @@
     <mat-icon class="logout-icon" (click)="onLogout()">exit_to_app</mat-icon>
 </div>
 @if(userRole==='STUDENT') {
+    <a routerLink="/student/courses" class="courses-icon-container">
+        <mat-icon class="courses-icon">school</mat-icon>
+    </a>
     <a routerLink="/profile" class="profile-icon-container">
         <mat-icon class="profile-icon">account_circle</mat-icon>
     </a>
 }
-@else {}
+@else {
+    <a routerLink="/admin/courses" class="courses-icon-container">
+        <mat-icon class="courses-icon">school</mat-icon>
+    </a>
+    <a routerLink="/admin/students" class="profile-icon-container">
+        <mat-icon class="profile-icon">account_circle</mat-icon>
+    </a>
+}
