@@ -2,6 +2,7 @@ package com.Spring.application.repository;
 
 import com.Spring.application.entity.Enrollment;
 import com.Spring.application.entity.Student;
+import com.Spring.application.enums.FacultySection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,14 +18,8 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     @Query("DELETE FROM Enrollment e WHERE e.course.courseId = :courseId")
     void deleteByCourseId(Long courseId);
 
-    @Query("SELECT e FROM Enrollment e JOIN e.student s ORDER BY s.grade ASC")
-    List<Enrollment> findAllByOrderByStudentGradeAsc();
-
     @Query("SELECT e FROM Enrollment e WHERE e.status = 'ACCEPTED'")
     List<Enrollment> findAllWhereStatusIsAccepted();
-
-    @Query("SELECT e FROM Enrollment e ORDER BY e.student.grade DESC")
-    List<Enrollment> findAllByOrderByStudentGradeDesc();
 
     @Query("SELECT count(e) FROM Enrollment e WHERE e.course.courseId = :courseId GROUP BY e.course.courseId")
     Integer countByCourseId(Long courseId);
@@ -39,5 +34,11 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
 
     @Query("SELECT e FROM Enrollment e WHERE e.student.id = :studentId AND e.course.courseId = :courseId")
     Enrollment findEnrollmentByStudentIdAndCourseId(Long studentId, Long courseId);
+
+    @Query("SELECT e FROM Enrollment e WHERE e.student.year = :year AND e.status = 'ACCEPTED'")
+    List<Enrollment> findEnrollmentByYearAndStatusIsAccepted(Integer year);
+
+    @Query("SELECT e FROM Enrollment e WHERE e.student.facultySection = :facultySection AND e.status = 'ACCEPTED'")
+    List<Enrollment> findEnrollmentByFacultySectionAndStatusIsAccepted(FacultySection facultySection);
 
 }

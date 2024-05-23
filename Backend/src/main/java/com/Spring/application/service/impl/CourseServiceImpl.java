@@ -109,4 +109,9 @@ public class CourseServiceImpl implements CourseService{
     public List<Course> getAcceptedCoursesByStudentId(Long studentId) {
         return courseRepository.findAcceptedCoursesByStudentId(studentId);
     }
+
+    @Override
+    public List<Course> getAvailableCourses() {
+        return courseRepository.findAvailableCourses();
+    }
 }

@@ -4,10 +4,10 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './component/login/login.component';
-import { StudentComponent } from './component/student/student.component';
+import { StudentComponent } from './component/student-courses/student.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
-import { CourseComponent } from './component/course/course.component';
+import { CourseComponent } from './component/admin-courses/course.component';
 import { TopBarComponent } from './component/top-bar/top-bar.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {  MatTableModule } from '@angular/material/table';

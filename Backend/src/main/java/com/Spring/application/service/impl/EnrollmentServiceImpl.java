@@ -3,6 +3,7 @@ package com.Spring.application.service.impl;
 import com.Spring.application.entity.Course;
 import com.Spring.application.entity.Enrollment;
 import com.Spring.application.entity.Student;
+import com.Spring.application.enums.FacultySection;
 import com.Spring.application.enums.Status;
 import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.repository.CourseRepository;
@@ -183,5 +184,15 @@ public class EnrollmentServiceImpl implements EnrollmentService{
                 }
             }
         }
+    }
+
+    @Override
+    public List<Enrollment> getEnrollmentsByYearAndStatusIsAccepted(Integer year){
+        return enrollmentRepository.findEnrollmentByYearAndStatusIsAccepted(year);
+    }
+
+    @Override
+    public List<Enrollment> getEnrollmentsByFacultySectionAndStatusIsAccepted(String facultySection){
+        return enrollmentRepository.findEnrollmentByFacultySectionAndStatusIsAccepted(FacultySection.valueOf(facultySection));
     }
 }

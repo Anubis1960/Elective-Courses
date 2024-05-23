@@ -15,4 +15,6 @@ public interface EnrollmentService {
     Integer countByStudentId(Long studentId);
     List<Enrollment> getEnrollmentsByStudentId(Long studentId);
     List<Enrollment> assignStudents();
+    List<Enrollment> getEnrollmentsByYearAndStatusIsAccepted(Integer year);
+    List<Enrollment> getEnrollmentsByFacultySectionAndStatusIsAccepted(String facultySection);
 }

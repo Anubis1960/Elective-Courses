@@ -6,11 +6,16 @@ import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.service.impl.CourseServiceImpl;
 import com.Spring.application.service.impl.EnrollmentServiceImpl;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.Spring.application.service.PDFGeneratorService;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +27,8 @@ public class CourseController {
     private CourseServiceImpl courseService;
     @Autowired
     private EnrollmentServiceImpl enrollmentServiceImpl;
+    @Autowired
+    private PDFGeneratorService pdfGeneratorService;
 
     @PostMapping("/")
     public ResponseEntity<CourseDTO> addCourse(
@@ -99,5 +106,16 @@ public class CourseController {
     public ResponseEntity<List<CourseDTO>> getAcceptedCoursesByStudentId(@PathVariable("studentId") Long studentId) {
         List<Course> courses = courseService.getAcceptedCoursesByStudentId(studentId);
         return getListResponseEntity(courses);
+    }
+
+    @GetMapping("/export/{id}")
+    public void exportCourseToPDF(HttpServletResponse response, @PathVariable("id") Long id) throws IOException {
+        response.setContentType("application/pdf");
+        DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormater.format(System.currentTimeMillis());
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=course_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
+        pdfGeneratorService.exportStudentsOfCourseToPDF(response.getOutputStream(), id);
     }
 }

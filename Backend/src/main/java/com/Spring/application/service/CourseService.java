@@ -15,5 +15,6 @@ public interface CourseService {
     List<Course> getCoursesOfStudent(Long studentId) throws ObjectNotFound;
     Course getCourseByName(String name);
     List<Course> getAcceptedCoursesByStudentId(Long studentId);
+    List<Course> getAvailableCourses();
 
 }
