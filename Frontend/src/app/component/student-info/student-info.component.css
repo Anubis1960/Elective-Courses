@@ -1,0 +1,28 @@
+.student-info {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .student-info h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .info {
+    margin-top: 20px;
+  }
+  
+  .info p {
+    margin: 8px 0;
+    color: #555;
+  }
+  
+  .info p strong {
+    font-weight: bold;
+  }
+  

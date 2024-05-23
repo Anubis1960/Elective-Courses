@@ -1,0 +1,67 @@
+<app-top-bar></app-top-bar>
+<app-student-info [studentId]="id"></app-student-info>
+<mat-card>
+    <mat-card-header>
+      <mat-card-title>Courses</mat-card-title>
+      <mat-card-subtitle>
+        <mat-form-field appearance="outline" style="margin-left: 50px; margin-bottom: 20px; height: 60px;">
+          <input matInput placeholder="Search" (keyup)="filterChange($event)" style="height: 20px;">
+        </mat-form-field>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+          <td mat-cell *matCellDef="let element">{{ element.category }}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="facultySection">
+          <th mat-header-cell *matHeaderCellDef>Faculty Section</th>
+          <td mat-cell *matCellDef="let element">{{ element.facultySection }}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="maximumStudentsAllowed">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Max Students</th>
+          <td mat-cell *matCellDef="let element">{{ element.maximumStudentsAllowed }}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="numberOfStudents">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Students Enrolled</th>
+          <td mat-cell *matCellDef="let element">{{ element.numberOfStudents }}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="teacherName">
+          <th mat-header-cell *matHeaderCellDef>Teacher</th>
+          <td mat-cell *matCellDef="let element">{{ element.teacherName }}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="year">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Year</th>
+          <td mat-cell *matCellDef="let element">{{ element.year }}</td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card-content>
+    <mat-card-footer>
+      <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
+    </mat-card-footer>
+  </mat-card>
+  

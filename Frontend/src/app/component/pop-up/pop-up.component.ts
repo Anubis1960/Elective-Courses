@@ -44,22 +44,22 @@ export class PopUpComponent implements OnInit {
     if (this.checkTitle()) {
       this.courseService.updateCourse(this.form.value.id, this.form.value.name, this.form.value.description, this.form.value.category, this.form.value.facultySection, this.form.value.maximumStudentsAllowed, this.form.value.year, this.form.value.teacherName).subscribe({
         next: (data) => {
-          console.log(data);
+          //console.log(data);
           this.ref.close(data);
         },
         error: (error) => {
-          console.log(error);
+          //console.log(error);
         }
       });
     }
     else {
       this.courseService.createCourse(this.form.value.name, this.form.value.description, this.form.value.category, this.form.value.facultySection, this.form.value.maximumStudentsAllowed, this.form.value.year, this.form.value.teacherName).subscribe({
         next: (data : Course) => {
-          console.log(data);
+          //console.log(data);
           this.ref.close(data);
         },
         error: (error) => {
-          console.log(error);
+          //console.log(error);
         }
       });
     }

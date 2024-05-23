@@ -28,10 +28,10 @@ export class CourseDetailsComponent implements OnInit{
       this.courseService.getCourse(id).subscribe({
         next: (data: Course) => {
           this.course = data;
-          console.log(this.course);
+          //console.log(this.course);
         },
         error: (error) => {
-          console.log(error);
+          //console.log(error);
         }
       });
     });
@@ -45,14 +45,14 @@ export class CourseDetailsComponent implements OnInit{
       this.enrollmentService = new EnrollmentService(this.httpClient);
     }
     if (this.course && user.id && this.course.id) {
-      console.log(user.id);
-      console.log(this.course.id);
+      //console.log(user.id);
+      //console.log(this.course.id);
       this.enrollmentService.createEnrollment(user.id, this.course.id).subscribe({
         next: (data: Enrollment) => {
-          console.log(data);
+          //console.log(data);
         },
         error: (error) => {
-          console.log(error);
+          //console.log(error);
         }
       });
     }

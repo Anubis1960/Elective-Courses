@@ -8,7 +8,9 @@ import { User } from '../../model/user.model';
 })
 export class TopBarComponent {
   userRole = JSON.parse(sessionStorage.getItem('user') || '{}').role;
+
   constructor(private router:Router ) { }
+  
   onLogout() {
     sessionStorage.removeItem('user');
     this.router.navigateByUrl('/login');

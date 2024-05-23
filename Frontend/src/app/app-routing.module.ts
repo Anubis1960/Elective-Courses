@@ -6,7 +6,9 @@ import { CourseComponent } from './component/admin-courses/course.component';
 import { CourseDetailsComponent } from './component/course-details/course-details.component';
 import { ProfileComponent } from './component/profile/profile.component';
 import { CourseStudentComponent } from './component/course-student/course-student.component';
-import { canActivateAdminGuard, canActivateGuard, canActivateStudentGuard } from './guard/auth-guard';
+import { canActivateAdminGuard, canActivateStudentGuard } from './guard/auth-guard';
+import { AdminStudentsComponent } from './component/admin-students/admin-students.component';
+import { StudentDetailsComponent } from './component/student-details/student-details.component';
 
 const routes: Routes = [
   {path: '', redirectTo:'/login', pathMatch: 'full'},
@@ -14,8 +16,10 @@ const routes: Routes = [
   {path: 'student/courses', component: StudentComponent, canActivate: [canActivateStudentGuard]},
   {path: 'admin/courses', component: CourseComponent, canActivate: [canActivateAdminGuard]},
   {path: 'student/courses/:id', component: CourseDetailsComponent, canActivate: [canActivateStudentGuard]},
-  {path: 'profile', component: ProfileComponent, canActivate: [canActivateGuard]},
+  {path: 'profile', component: ProfileComponent, canActivate: [canActivateStudentGuard]},
   {path: 'admin/courses/:id', component: CourseStudentComponent, canActivate: [canActivateAdminGuard]},
+  {path: 'admin/students', component: AdminStudentsComponent, canActivate: [canActivateAdminGuard]},
+  {path: 'admin/students/:id', component: StudentDetailsComponent, canActivate: [canActivateAdminGuard]}
 ];
 
 @NgModule({
