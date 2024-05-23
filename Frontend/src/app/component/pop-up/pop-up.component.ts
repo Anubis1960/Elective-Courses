@@ -18,16 +18,17 @@ export class PopUpComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<PopUpComponent>, private builder: FormBuilder, private courseService: CourseService) { }
 
   ngOnInit(): void {
+    console.log(this.data);
     this.input = this.data;
     this.form = this.builder.group({
-      id: [this.input.id],
-      name: [this.input.name],
-      description: [this.input.description],
-      category: [this.input.category],
-      facultySection: [this.input.facultySection],
-      maximumStudentsAllowed: [this.input.maximumStudentsAllowed],
-      teacherName: [this.input.teacherName],
-      year: [this.input.year]
+      id: [this.input.course?.id],
+      name: [this.input.course?.name],
+      description: [this.input.course?.description],
+      category: [this.input.course?.category],
+      facultySection: [this.input.course?.facultySection],
+      maximumStudentsAllowed: [this.input.course?.maximumStudentsAllowed],
+      year: [this.input.course?.year],
+      teacherName: [this.input.course?.teacherName]
     });
   }
 
@@ -36,7 +37,7 @@ export class PopUpComponent implements OnInit {
   }
 
   checkTitle() {
-    return this.input.title == 'Update Course';
+    return this.input.title == 'Edit Course';
   }
 
   save() {

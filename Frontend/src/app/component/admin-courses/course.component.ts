@@ -12,23 +12,25 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
-  styleUrl: './course.component.css'
+  styleUrls: ['./course.component.css']
 })
 export class CourseComponent implements OnInit {
 
-  courses!: Course[] | undefined;
+  courses!: Course[];
   dataSource: MatTableDataSource<Course> = new MatTableDataSource<Course>();
-  displyedColumns: string[] = ['id', 'name', 'description', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year', 'action'];
+  displayedColumns: string[] = ['id', 'name', 'description', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year', 'action'];
 
   constructor(private http: HttpClient, private courseService: CourseService, private dialog: MatDialog, private router: Router) { }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  
   ngOnInit(): void {
     this.refresh();
   }
+  
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator
+    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
@@ -36,7 +38,8 @@ export class CourseComponent implements OnInit {
     this.courseService.deleteCourse(id).subscribe({
       next: (data: Course) => {
         console.log(data);
-        this.refresh();
+        this.courses = this.courses.filter(course => course.id !== id);
+        this.updateDataSource();
       },
       error: (error) => {
         console.log(error);
@@ -44,26 +47,27 @@ export class CourseComponent implements OnInit {
     });
   }
 
-  openDialog(id: number, name: string, description: string, category: string, facultySection: string, maximumStudentsAllowed: number, teacherName: string, year: number, title: string) {
-    this.dialog.open(PopUpComponent, {
+  openDialog(course: Course | null, title: string) {
+    const dialogRef = this.dialog.open(PopUpComponent, {
       width: '590px',
       height: '880px',
       data: {
         title: title,
-        id: id,
-        name: name,
-        description: description,
-        category: category,
-        facultySection: facultySection,
-        maximumStudentsAllowed: maximumStudentsAllowed,
-        teacherName: teacherName,
-        year: year
+        course: course
       }
     });
-    this.dialog.afterAllClosed.subscribe({
-      next: (data) => {
-        console.log(data);
-        this.refresh();
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (title === 'Edit Course') {
+          const index = this.courses.findIndex(c => c.id === result.id);
+          if (index !== -1) {
+            this.courses[index] = result;
+          }
+        } else {
+          this.courses.push(result);
+        }
+        this.updateDataSource();
       }
     });
   }
@@ -72,10 +76,7 @@ export class CourseComponent implements OnInit {
     this.courseService.getCoursesList().subscribe({
       next: (data: Course[]) => {
         this.courses = data;
-        this.dataSource = new MatTableDataSource<Course>(this.courses);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        console.log(this.courses);
+        this.updateDataSource();
       },
       error: (error) => {
         console.log(error);
@@ -84,10 +85,17 @@ export class CourseComponent implements OnInit {
   }
 
   getDetails(id: number) {
-    this.router.navigateByUrl('/admin/courses/'+id);
+    this.router.navigateByUrl('/admin/courses/' + id);
   }
-  filterchange(data:Event) {
-    const value=(data.target as HTMLInputElement).value;
+
+  filterChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
     this.dataSource.filter = value.trim().toLowerCase();
+  }
+
+  private updateDataSource() {
+    this.dataSource.data = this.courses;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 }
