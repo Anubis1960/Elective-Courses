@@ -146,9 +146,9 @@ public class EnrollmentServiceImpl implements EnrollmentService{
                 categoriesTaken.clear();
                 currentStudentId = enrollment.getStudent().getId();
             }
-            Integer low = 0;
-            Integer high = courses.size() - 1;
-            Integer mid = 0;
+            int low = 0;
+            int high = courses.size() - 1;
+            int mid = 0;
             while (low <= high) {
                 mid = low + (high - low) / 2;
                 if (enrollment.getCourse().getCourseId().equals(courses.get(mid).getCourseId()))
