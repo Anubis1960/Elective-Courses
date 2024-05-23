@@ -11,4 +11,7 @@ public interface StudentRepository extends JpaRepository<Student, Long>{
     @Query("SELECT s FROM Student s, Enrollment e WHERE s.id = e.student.id AND e.course.courseId = ?1")
     List<Student> findAllStudentsByCourseId(Long courseId);
     Student findByName(String name);
+
+    @Query("SELECT s FROM Student s WHERE s.id NOT IN (SELECT e.student.id FROM Enrollment e )")
+    List<Student> findStudentsNotEnrolled();
 }

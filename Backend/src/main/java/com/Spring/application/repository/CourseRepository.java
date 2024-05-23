@@ -31,4 +31,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query("SELECT c FROM Course c ORDER BY c.courseId ASC")
     List<Course> findAllCoursesOrderByASC();
 
+    @Query("SELECT COUNT(DISTINCT c.category) FROM Course c WHERE c.year = ?1 GROUP BY YEAR ")
+    Integer countDistinctCategoriesByYear(Integer year);
+
 }
