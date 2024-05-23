@@ -12,51 +12,41 @@ import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
+
   title = 'Profile';
-  student: Student | undefined;
-  student_service: StudentService | undefined;
   enrollments_list: Enrollment[] = [];
   enrollment_service: EnrollmentService | undefined;
   event: Event | undefined;
+  user: User | undefined;
   constructor(private httpClient: HttpClient) { }
+
   ngOnInit() {
-    const user = JSON.parse(sessionStorage.getItem('user') || '{}') as User;
-    console.log(user);
-    if (!this.student_service) {
-      this.student_service = new StudentService(this.httpClient);
-    }
+    this.user = JSON.parse(sessionStorage.getItem('user') || '{}') as User;
+    //console.log(this.user);
     if (!this.enrollment_service) {
       this.enrollment_service = new EnrollmentService(this.httpClient);
-    }
-    if (user.id && user.role == 'STUDENT') {
-      console.log(user);
-      this.student_service.getStudent(user.id).subscribe({
-        next: (data: Student) => {
-          this.student = data;
-          console.log(this.student);
-        },
-        error: (error) => {
-          console.log(error);
-        }
-      });
-      this.enrollment_service.getStudentEnrollmentsList(user.id).subscribe({
-        next: (data: Enrollment[]) => {
-          this.enrollments_list = data;
+      if (this.user.id !== undefined) {
+        this.enrollment_service.getStudentEnrollmentsList(this.user.id).subscribe({
+          next: (data: Enrollment[]) => {
+            this.enrollments_list = data;
 
-          console.log(this.enrollments_list);
-        },
-        error: (error) => {
-          console.log(error);
-        }
-      });
+            //console.log(this.enrollments_list);
+          },
+          error: (error) => {
+            //console.log(error);
+          }
+        });
+      }
     }
   }
+
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.enrollments_list, event.previousIndex, event.currentIndex);
     for (let i = 0; i < this.enrollments_list.length; i++) {
-      console.log(this.enrollments_list[i]);
+      //console.log(this.enrollments_list[i]);
     }
   }
+  
   saveOrder() {
     console.log('Save order');
     if (!this.enrollment_service) {
@@ -65,10 +55,10 @@ export class ProfileComponent implements OnInit {
     this.enrollment_service.updateAllEnrollments(this.enrollments_list).subscribe({
       next: (data: Enrollment[]) => {
         this.enrollments_list = data;
-        console.log(this.enrollments_list);
+        //console.log(this.enrollments_list);
       },
       error: (error) => {
-        console.log(error);
+        //console.log(error);
       }
     });
   }

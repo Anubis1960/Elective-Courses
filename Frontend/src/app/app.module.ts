@@ -24,6 +24,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { AdminStudentsComponent } from './component/admin-students/admin-students.component';
+import { StudentInfoComponent } from './component/student-info/student-info.component';
+import { StudentDetailsComponent } from './component/student-details/student-details.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +39,10 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ProfileComponent,
     CourseStudentComponent,
     PopUpComponent,
-  ],
+    AdminStudentsComponent,
+    StudentInfoComponent,
+    StudentDetailsComponent,
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,

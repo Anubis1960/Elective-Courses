@@ -19,7 +19,7 @@ export class CourseStudentComponent {
   courseService: CourseService | undefined;
   students !: Student[] | undefined;
   dataSource: MatTableDataSource<Student> = new MatTableDataSource<Student>();
-  displyedColumns: string[]=['id', 'name', 'email', 'facultySection', 'year','grade'];
+  displayedColumns: string[]=['id', 'name', 'email', 'facultySection', 'year','grade'];
 
   constructor(private route: ActivatedRoute, private httpClient: HttpClient, private studentService: StudentService) { }
 
@@ -34,10 +34,10 @@ export class CourseStudentComponent {
       this.courseService.getCourse(id).subscribe({
         next: (data: Course) => {
           this.course = data;
-          console.log(this.course);
+          //console.log(this.course);
         },
         error: (error) => {
-          console.log(error);
+          //console.log(error);
         }
       });
       if (!this.studentService) {
@@ -49,10 +49,10 @@ export class CourseStudentComponent {
           this.dataSource = new MatTableDataSource<Student>(this.students);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
-          console.log(this.students);
+          //console.log(this.students);
         },
         error: (error) => {
-          console.log(error);
+          //console.log(error);
         }
       });
 

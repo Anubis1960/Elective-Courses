@@ -25,7 +25,7 @@ export class StudentComponent {
   @ViewChild(MatSort) sort!: MatSort;
   ngOnInit(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
-    console.log(user);
+    //console.log(user);
     this.courseService.getCoursesByStudentId(user.id).subscribe({
       next: (data: Course[]) => {
         this.courses = data;
@@ -34,7 +34,7 @@ export class StudentComponent {
         this.dataSource.sort = this.sort;
       },
       error: (error) => {
-        console.log(error);
+        //console.log(error);
       }
     });
   }
@@ -42,6 +42,7 @@ export class StudentComponent {
   getDetails(id: number) {
     this.router.navigateByUrl('/student/courses/'+id);
   }
+  
   filterchange(data:Event) {
     const value=(data.target as HTMLInputElement).value;
     this.dataSource.filter = value.trim().toLowerCase();

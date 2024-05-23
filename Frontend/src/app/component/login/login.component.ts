@@ -23,7 +23,7 @@ export class LoginComponent {
     this.loginService.getUser(this.email, this.password).subscribe({
       next: (data: User) => {
         this.user = data;
-        console.log(this.user);
+        //console.log(this.user);
         sessionStorage.setItem('user', JSON.stringify(this.user));
         if(this.user.role === 'ADMIN'){
           this.router.navigateByUrl('/admin/courses');
@@ -32,7 +32,7 @@ export class LoginComponent {
         }
       },
       error: (error) => {
-        console.log(error);
+        //console.log(error);
       }
     });
   }
