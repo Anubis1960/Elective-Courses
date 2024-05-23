@@ -68,7 +68,7 @@ public class StudentServiceImpl implements StudentService{
     public Student getStudentById(Long id) throws ObjectNotFound {
         Student student = studentRepository.findById(id).orElse(null);
         if (student == null) {
-            System.out.println("Student not found");
+//            System.out.println("Student not found");
             throw new ObjectNotFound("Student not found");
         }
         return student;
@@ -95,7 +95,7 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public List<Long> getAcceptedEnrollmentsByCourseId(Long courseId) {
-        return enrollmentRepository.findAllByCourseIdAndStatusIsAccepted(courseId);
+    public List<Student> getAcceptedStudentsByCourseId(Long courseId) {
+        return studentRepository.findAcceptedStudentsByCourseId(courseId);
     }
 }

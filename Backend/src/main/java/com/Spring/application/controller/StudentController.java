@@ -82,4 +82,14 @@ public class StudentController {
         return new ResponseEntity<>(studentDTOs, HttpStatus.OK);
     }
 
+    @GetMapping("/accepted/{courseId}")
+    public ResponseEntity<List<StudentDTO>> getAcceptedEnrollmentsByCourseId(@PathVariable("courseId") Long courseId) {
+        List<Student> students = studentService.getAcceptedStudentsByCourseId(courseId);
+        if (students.isEmpty()) {
+            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
+        }
+        List<StudentDTO> studentDTOs = StudentDTO.convertToDTO(students);
+        return new ResponseEntity<>(studentDTOs, HttpStatus.OK);
+    }
+
 }

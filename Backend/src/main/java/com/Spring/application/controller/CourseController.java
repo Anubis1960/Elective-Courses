@@ -6,11 +6,16 @@ import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.service.impl.CourseServiceImpl;
 import com.Spring.application.service.impl.EnrollmentServiceImpl;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.Spring.application.service.PDFGeneratorService;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +27,8 @@ public class CourseController {
     private CourseServiceImpl courseService;
     @Autowired
     private EnrollmentServiceImpl enrollmentServiceImpl;
+    @Autowired
+    private PDFGeneratorService pdfGeneratorService;
 
     @PostMapping("/")
     public ResponseEntity<CourseDTO> addCourse(
@@ -74,11 +81,11 @@ public class CourseController {
 
     @GetMapping("/student/{studentId}")
     public ResponseEntity<List<CourseDTO>> getCoursesOfStudent(@PathVariable("studentId") Long studentId) throws ObjectNotFound {
-        System.out.println("studentId = " + studentId);
+//        System.out.println("studentId = " + studentId);
         List<Course> courses = courseService.getCoursesOfStudent(studentId);
-        for (Course course : courses) {
-            System.out.println("course = " + course);
-        }
+//        for (Course course : courses) {
+//            System.out.println("course = " + course);
+//        }
         return getListResponseEntity(courses);
     }
 
@@ -89,9 +96,26 @@ public class CourseController {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
         List<CourseDTO> courseDTOs = CourseDTO.convertToDTO(courses, numberOfStudents);
-        for (CourseDTO courseDTO : courseDTOs) {
-            System.out.println("courseDTO = " + courseDTO);
-        }
+//        for (CourseDTO courseDTO : courseDTOs) {
+//            System.out.println("courseDTO = " + courseDTO);
+//        }
         return new ResponseEntity<>(courseDTOs, HttpStatus.OK);
+    }
+
+    @GetMapping("/accepted/{studentId}")
+    public ResponseEntity<List<CourseDTO>> getAcceptedCoursesByStudentId(@PathVariable("studentId") Long studentId) {
+        List<Course> courses = courseService.getAcceptedCoursesByStudentId(studentId);
+        return getListResponseEntity(courses);
+    }
+
+    @GetMapping("/export/{id}")
+    public void exportCourseToPDF(HttpServletResponse response, @PathVariable("id") Long id) throws IOException {
+        response.setContentType("application/pdf");
+        DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormater.format(System.currentTimeMillis());
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=course_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
+        pdfGeneratorService.exportStudentsOfCourseToPDF(response.getOutputStream(), id);
     }
 }
