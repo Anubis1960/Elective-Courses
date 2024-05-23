@@ -5,8 +5,6 @@ import com.Spring.application.enums.Role;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 
-import java.util.List;
-
 @Entity
 @Table(name = "Student")
 @OnDelete(action = org.hibernate.annotations.OnDeleteAction.CASCADE)

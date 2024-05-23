@@ -12,4 +12,12 @@ public interface CourseService {
     Course deleteCourse(Long courseId) throws ObjectNotFound;
     Course getCourseById(Long courseId) throws ObjectNotFound;
     List<Course> getAllCourses();
+    List<String> findAllCategoriesByYear(int year);
+    List<Course> findAllCoursesByCategoryAndYear(String category, int year);
+    List<Course> findAllCoursesByYearAndFacultySection(int year, String facultySection);
+    List<Course> findAllCoursesOrderByASC(String field, String order);
+    List<Course> findAllCoursesOrderByDESC(String field, String order);
+    List<Course> getCoursesOfStudent(Long studentId) throws ObjectNotFound;
+    Course getCourseByName(String name);
+
 }

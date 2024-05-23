@@ -7,31 +7,32 @@ import com.Spring.application.service.impl.AdminServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
     private AdminServiceImpl adminService;
     @PostMapping("/")
-    public ResponseEntity<UserDTO> addAdmin(String adminName, String email, String password) throws NoSuchAlgorithmException{
+    public ResponseEntity<UserDTO> addAdmin(
+            @RequestParam String adminName,
+            @RequestParam String email,
+            @RequestParam String password) throws NoSuchAlgorithmException{
         Admin admin = adminService.addAdmin(adminName, email,password);
         UserDTO userDTO = new UserDTO(admin.getId(), admin.getName(), admin.getEmail(), admin.getRole().toString());
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateAdmin(@PathVariable(value = "id") Long adminId, String adminName, String email, String password) throws ObjectNotFound, NoSuchAlgorithmException {
+    public ResponseEntity<UserDTO> updateAdmin(
+            @PathVariable(value = "id") Long adminId,
+            @RequestParam String adminName,
+            @RequestParam String email,
+            @RequestParam String password) throws ObjectNotFound, NoSuchAlgorithmException {
         Admin admin = adminService.updateAdmin(adminId, adminName, email, password);
         UserDTO userDTO = new UserDTO(admin.getId(), admin.getName(), admin.getEmail(), admin.getRole().toString());
         return new ResponseEntity<>(userDTO, HttpStatus.OK);

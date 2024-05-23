@@ -15,4 +15,7 @@ public interface StudentService {
     Student getStudentById(Long id) throws ObjectNotFound;
     List<Student> getAllStudents();
     Student getStudentByEmailAndPassword(String email, String password);
+    List<Student> getAllStudentsByCourseId(Long courseId);
+    Student getStudentByName(String name);
+    List<Long> getAcceptedEnrollmentsByCourseId(Long courseId);
 }

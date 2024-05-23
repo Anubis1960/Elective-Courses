@@ -58,4 +58,14 @@ public class CourseScheduleDTO {
     public void setDay(String day) {
         this.day = day;
     }
+
+    @Override
+    public String toString() {
+        return "CourseScheduleDTO{" +
+                "id=" + id +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", day='" + day + '\'' +
+                '}';
+    }
 }

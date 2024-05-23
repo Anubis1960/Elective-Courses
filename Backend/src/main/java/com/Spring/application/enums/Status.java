@@ -2,7 +2,8 @@ package com.Spring.application.enums;
 
 public enum Status {
     ACCEPTED("ACCEPTED"),
-    PENDING("PENDING");
+    PENDING("PENDING"),
+    REJECTED("REJECTED");
 
     private final String status;
 

@@ -26,4 +26,18 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     @Query("SELECT e FROM Enrollment e ORDER BY e.student.grade DESC")
     List<Enrollment> findAllByOrderByStudentGradeDesc();
 
+    @Query("SELECT count(e) FROM Enrollment e WHERE e.course.courseId = :courseId GROUP BY e.course.courseId")
+    Integer countByCourseId(Long courseId);
+
+    @Query("SELECT count(e) FROM Enrollment e WHERE e.student.id = :studentId GROUP BY e.student.id")
+    Integer countByStudentId(Long studentId);
+
+    List<Enrollment> findByStudentId(Long studentId);
+
+    @Query("SELECT e.student.id FROM Enrollment e WHERE e.status = 'ACCEPTED' AND e.course.courseId = :courseId")
+    List<Long> findAllByCourseIdAndStatusIsAccepted(Long courseId);
+
+    @Query("SELECT e FROM Enrollment e WHERE e.student.id = :studentId AND e.course.courseId = :courseId")
+    Enrollment findEnrollmentByStudentIdAndCourseId(Long studentId, Long courseId);
+
 }

@@ -1,0 +1,9 @@
+<div class="logout-icon-container">
+    <mat-icon class="logout-icon" (click)="onLogout()">exit_to_app</mat-icon>
+</div>
+@if(userRole==='STUDENT') {
+    <a routerLink="/profile" class="profile-icon-container">
+        <mat-icon class="profile-icon">account_circle</mat-icon>
+    </a>
+}
+@else {}
