@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class EnrollmentServiceImpl implements EnrollmentService{
@@ -39,6 +36,9 @@ public class EnrollmentServiceImpl implements EnrollmentService{
         Course course = courseRepository.findById(courseId).orElse(null);
         if (course == null) {
             throw new ObjectNotFound("Course not found");
+        }
+        if (!student.getYear().equals(course.getYear()) || (student.getFacultySection() != course.getFacultySection())){
+            throw new ObjectNotFound("Year of student and course do not match");
         }
         Enrollment e = enrollmentRepository.findEnrollmentByStudentIdAndCourseId(studentId, courseId);
         if(e != null){
@@ -123,29 +123,26 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     @Override
     public List<Enrollment> assignStudents(){
         List<Enrollment> enrollments = enrollmentRepository.findAll(Sort.by(Sort.Direction.DESC, "student.grade").and(Sort.by(Sort.Direction.ASC, "student.id")).and(Sort.by(Sort.Direction.ASC, "priority")));
-//        enrollments.sort((Enrollment enrollment1, Enrollment enrollment2) -> {
-//            Student student1 = enrollment1.getStudent();
-//            Student student2 = enrollment2.getStudent();
-//            if (!student1.getGrade().equals(student2.getGrade())) {
-//                return student1.getGrade() < student2.getGrade() ? 1 : -1;
-//            } else {
-//                if (!student1.getId().equals(student2.getId())) {
-//                    return student1.getId() > student2.getId() ? 1 : -1;
-//                } else {
-//                    return enrollment1.getPriority() > enrollment2.getPriority() ? 1 : -1;
-//                }
-//            }
-//        });
-
         Long currentStudentId = enrollments.get(0).getStudent().getId();
-//        List<Course> courses = courseRepository.findAllCoursesOrderByASC();
         List<Course> courses = courseRepository.findAll();
         List<String> categoriesTaken = new ArrayList<>();
+
+        Map<Integer, Integer> mapYearByNoCategories = new HashMap<>();
+        mapYearByNoCategories.put(1, courseRepository.countDistinctCategoriesByYear(1));
+        mapYearByNoCategories.put(2, courseRepository.countDistinctCategoriesByYear(2));
+        mapYearByNoCategories.put(3, courseRepository.countDistinctCategoriesByYear(3));
+
+        List<Student> unassignedStudents = new ArrayList<>();
+
         for (Enrollment enrollment : enrollments) {
             if (!enrollment.getStudent().getId().equals(currentStudentId)) {
+                if (categoriesTaken.size() < mapYearByNoCategories.get(enrollment.getStudent().getYear())) {
+                    unassignedStudents.add(enrollment.getStudent());
+                }
                 categoriesTaken.clear();
                 currentStudentId = enrollment.getStudent().getId();
             }
+<<<<<<< HEAD
             int low = 0;
             int high = courses.size() - 1;
             int mid = 0;
@@ -158,6 +155,10 @@ public class EnrollmentServiceImpl implements EnrollmentService{
                 else
                     high = mid - 1;
             }
+=======
+
+            int mid = binarySearchCourse(courses, enrollment.getCourse().getCourseId());
+>>>>>>> b4a03d1e3d8fcb932973b75059b546633129daba
 
             if(courses.get(mid).getMaximumStudentsAllowed() <= 0)
                 enrollment.setStatus(Status.valueOf("REJECTED"));
@@ -171,7 +172,55 @@ public class EnrollmentServiceImpl implements EnrollmentService{
                 }
             }
         }
+        unassignedStudents.addAll(studentRepository.findStudentsNotEnrolled());
+        List<Course> availableCourses = new ArrayList<>();
+        for (Course course : courses) {
+            if (course.getMaximumStudentsAllowed() > 0) {
+                availableCourses.add(course);
+            }
+        }
+
         enrollmentRepository.saveAll(enrollments);
         return enrollments;
     }
+
+    public Integer binarySearchCourse(List<Course> courses, Long courseId){
+        int low = 0;
+        int high = courses.size() - 1;
+        int mid;
+        while (low <= high) {
+            mid = low + (high - low) / 2;
+            if (courseId.equals(courses.get(mid).getCourseId()))
+                return mid;
+            if (courseId > courses.get(mid).getCourseId())
+                low = mid + 1;
+            else
+                high = mid - 1;
+        }
+        return -1;
+    }
+
+    public List<Enrollment> completeAssignment(List<Student> students, List<Course> courses, Map<Integer, Integer> mapYearByNoCategories){
+        List<Enrollment> enrollments = new ArrayList<>();
+        for (Student student : students) {
+            int numOptionals = mapYearByNoCategories.get(student.getYear());
+            for (Course course : courses)
+                if (course.getYear().equals(student.getYear()) && course.getFacultySection().equals(student.getFacultySection())) {
+                    if (numOptionals == 0)
+                        break;
+                    if (course.getMaximumStudentsAllowed() > 0) {
+                        enrollments.add(new Enrollment(student, course, 1, Status.valueOf("ACCEPTED")));
+                        course.setMaximumStudentsAllowed(course.getMaximumStudentsAllowed() - 1);
+                        numOptionals--;
+                    }   else{
+                        courses.remove(course);
+                    }
+
+                }
+        }
+        enrollmentRepository.saveAll(enrollments);
+        return enrollments;
+    }
+
+
 }
