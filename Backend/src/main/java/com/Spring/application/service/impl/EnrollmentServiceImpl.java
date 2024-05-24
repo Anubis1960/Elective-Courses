@@ -113,8 +113,12 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     public List<Enrollment> assignStudents(){
         List<Enrollment> enrollments = enrollmentRepository.findAll(Sort.by(Sort.Direction.DESC, "student.grade").and(Sort.by(Sort.Direction.ASC, "student.id")).and(Sort.by(Sort.Direction.ASC, "priority")));
         Long currentStudentId = enrollments.get(0).getStudent().getId();
-        List<Course> courses = courseRepository.findAll();
         List<String> categoriesTaken = new ArrayList<>();
+        List<Long> courseIds = courseRepository.findAllCourseIds();
+        Map<Long, Integer> mapCourseIdByMaxStudents = new HashMap<>();
+        for(Long courseId : courseIds){
+            mapCourseIdByMaxStudents.put(courseId, courseRepository.findById(courseId).get().getMaximumStudentsAllowed());
+        }
 
         Map<Integer, Integer> mapYearByNoCategories = new HashMap<>();
         mapYearByNoCategories.put(1, courseRepository.countDistinctCategoriesByYear(1));
@@ -132,54 +136,42 @@ public class EnrollmentServiceImpl implements EnrollmentService{
                 currentStudentId = enrollment.getStudent().getId();
             }
 
-            int mid = binarySearchCourse(courses, enrollment.getCourse().getCourseId());
-
-            if(courses.get(mid).getMaximumStudentsAllowed() == 0)
+            if(mapCourseIdByMaxStudents.get(enrollment.getCourse().getCourseId()) == 0)
                 enrollment.setStatus(Status.valueOf("REJECTED"));
             else {
-                if (categoriesTaken.contains(courses.get(mid).getCategory()))
+                if (categoriesTaken.contains(enrollment.getCourse().getCategory())) {
                     enrollment.setStatus(Status.valueOf("REJECTED"));
+                }
                 else {
-                    courses.get(mid).setMaximumStudentsAllowed(courses.get(mid).getMaximumStudentsAllowed() - 1);
+                    mapCourseIdByMaxStudents.put(enrollment.getCourse().getCourseId(), mapCourseIdByMaxStudents.get(enrollment.getCourse().getCourseId()) - 1);
                     enrollment.setStatus(Status.valueOf("ACCEPTED"));
-                    categoriesTaken.add(courses.get(mid).getCategory());
+                    categoriesTaken.add(enrollment.getCourse().getCategory());
                 }
             }
         }
         studentRepository.findStudentsNotEnrolled().forEach(student -> unassignedStudents.put(student, new ArrayList<>()));
-        courses.removeIf(course -> course.getMaximumStudentsAllowed() == 0);
-        enrollmentRepository.saveAll(enrollments);
-        completeAssignment(unassignedStudents, courses, mapYearByNoCategories);
+        completeAssignment(unassignedStudents, mapCourseIdByMaxStudents, mapYearByNoCategories);
 
         return enrollmentRepository.findAll();
     }
 
-    public Integer binarySearchCourse(List<Course> courses, Long courseId){
-        int low = 0;
-        int high = courses.size() - 1;
-        int mid;
-        while (low <= high) {
-            mid = low + (high - low) / 2;
-            if (courseId.equals(courses.get(mid).getCourseId()))
-                return mid;
-            if (courseId > courses.get(mid).getCourseId())
-                low = mid + 1;
-            else
-                high = mid - 1;
-        }
-        return -1;
-    }
-
-    public void completeAssignment(Map<Student, List<String>> students, List<Course> courses, Map<Integer, Integer> mapYearByNoCategories){
+    public void completeAssignment(Map<Student, List<String>> students,Map<Long, Integer> mapCourseIdByMaxStudents, Map<Integer, Integer> mapYearByNoCategories){
         for (Map.Entry<Student, List<String>> entry : students.entrySet()) {
             List<String> categoriesTaken = entry.getValue();
-            for (Course course : courses) {
-                if (course.getYear().equals(entry.getKey().getYear()) && course.getFacultySection().equals(entry.getKey().getFacultySection()) && !categoriesTaken.contains(course.getCategory())) {
-                    Enrollment enrollment = new Enrollment(entry.getKey(), course, 0, Status.valueOf("ACCEPTED"));
-                    enrollmentRepository.save(enrollment);
-                    categoriesTaken.add(course.getCategory());
-                    if (categoriesTaken.size() == mapYearByNoCategories.get(entry.getKey().getYear())) {
-                        break;
+            for (Map.Entry<Long, Integer> entry1 : mapCourseIdByMaxStudents.entrySet()) {
+                if (entry1.getValue() == 0) {
+                    mapCourseIdByMaxStudents.remove(entry1.getKey());
+                    continue;
+                }
+                Course course = courseRepository.findById(entry1.getKey()).orElse(null);
+                if (course == null)
+                    continue;
+                if (categoriesTaken.size() < mapYearByNoCategories.get(entry.getKey().getYear())) {
+                    if (!categoriesTaken.contains(course.getCategory())) {
+                        mapCourseIdByMaxStudents.put(course.getCourseId(), mapCourseIdByMaxStudents.get(course.getCourseId()) - 1);
+                        Enrollment enrollment = new Enrollment(entry.getKey(), course, 0, Status.valueOf("ACCEPTED"));
+                        enrollmentRepository.save(enrollment);
+                        categoriesTaken.add(course.getCategory());
                     }
                 }
             }

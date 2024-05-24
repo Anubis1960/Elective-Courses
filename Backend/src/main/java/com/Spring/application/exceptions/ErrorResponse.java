@@ -2,6 +2,7 @@ package com.Spring.application.exceptions;
 
 import org.springframework.http.HttpStatus;
 
+
 public class ErrorResponse {
     private HttpStatus status;
     private String message;

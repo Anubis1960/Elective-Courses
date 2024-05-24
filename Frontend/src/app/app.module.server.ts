@@ -25,7 +25,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatCardModule,
     MatIconModule,
     DragDropModule,
-
   ],
   bootstrap: [AppComponent],
 })
