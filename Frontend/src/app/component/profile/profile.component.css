@@ -1,104 +1,74 @@
-.student-info {
-  max-width: 400px;
-  margin: 50px auto;
-  /* Centering vertically and horizontally */
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-}
-
-.student-info h2 {
-  margin-top: 0;
-  font-size: 24px;
-  color: #333;
-}
-
-.info {
-  margin-top: 20px;
-}
-
-.info p {
-  margin: 8px 0;
-  color: #555;
-}
-
-.info p strong {
-  font-weight: bold;
-}
-
-.example-list {
-  width: 700px; /* Lățime mai mare */
-  max-width: 90%; /* Asigură că nu depășește 90% din lățimea viewport-ului */
-  border: solid 1px #ccc;
-  min-height: 300px; /* Înălțime minimă mai mare */
-  display: block;
-  background: white;
-  border-radius: 8px; /* Border-radius mai mare pentru un aspect mai modern */
-  overflow: hidden;
+/* Top bar styles */
+app-top-bar {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 0;
   text-align: center;
-  padding: 20px; /* Adaugă padding pentru spațiere interioară */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adaugă umbră pentru un efect de profunzime */
-}
-.example-box .number {
-  width: 30px; /* Lățimea numerotării */
-  height: 30px; /* Înălțimea numerotării */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 10px; /* Spațiu între numerotare și text */
-  background-color: #f1f1f1; /* Culoarea de fundal */
-  border-radius: 50%; /* Formă rotundă */
-  font-size: 16px; /* Mărimea textului */
-  color: #333; /* Culoarea textului */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Umbră pentru profunzime */
 }
 
-.example-box {
-  padding: 20px 10px;
-  border-bottom: solid 1px #ccc;
-  color: rgba(0, 0, 0, 0.87);
+/* Student info container styles */
+app-student-info {
+  display: block;
+  margin-bottom: 20px;
+}
+
+/* Drag and drop container styles */
+.dragAndDrop {
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+/* List container styles */
+.example-list {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  border: 2px dashed #ccc;
+  min-height: 100px;
+  padding: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* Box styles */
+.example-box {
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  box-sizing: border-box;
-  cursor: move;
-  background: white;
-  font-size: 14px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 15px;
+  cursor: grab;
+  transition: background-color 0.3s ease;
 }
 
-.cdk-drag-preview {
-  box-sizing: border-box;
+.example-box:hover {
+  background-color: #e0e0e0;
+}
+
+/* Box number styles */
+.number {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+/* Save button styles */
+button.mat-button {
+  background-color: #2196f3;
+  color: #ffffff;
   border-radius: 4px;
-  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
-}
-
-.cdk-drag-placeholder {
-  opacity: 0;
-}
-
-.cdk-drag-animating {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-.example-box:last-child {
+  padding: 12px 24px;
+  cursor: pointer;
   border: none;
+  transition: background-color 0.3s ease;
 }
 
-.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+button.mat-button:hover {
+  background-color: #0e81ce;
 }
 
-.dragAndDrop {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-}
-button[mat-button] {
-  background-color: #4caf50;
-  color: white;
+button.mat-button:focus {
+  outline: none;
 }
