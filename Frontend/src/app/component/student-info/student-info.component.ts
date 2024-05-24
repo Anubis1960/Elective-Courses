@@ -9,7 +9,7 @@ import { StudentService } from '../../service/student.service';
 })
 export class StudentInfoComponent {
   @Input() studentId!: number | undefined;
-  student!: Student;
+  student!: Student | undefined;
 
   constructor(private studentService: StudentService) { }
   

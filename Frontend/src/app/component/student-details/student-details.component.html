@@ -1,14 +1,14 @@
 <app-top-bar></app-top-bar>
 <app-student-info [studentId]="id"></app-student-info>
 <mat-card>
-    <mat-card-header>
-      <mat-card-title>Courses</mat-card-title>
-      <mat-card-subtitle>
-        <mat-form-field appearance="outline" style="margin-left: 50px; margin-bottom: 20px; height: 60px;">
-          <input matInput placeholder="Search" (keyup)="filterChange($event)" style="height: 20px;">
+  <mat-card-header>
+    <div class="header-content">
+        <mat-card-title>Courses</mat-card-title>
+        <mat-form-field appearance="outline" class="search-field">
+            <input matInput placeholder="Search" (keyup)="filterChange($event)">
         </mat-form-field>
-      </mat-card-subtitle>
-    </mat-card-header>
+    </div>
+  </mat-card-header>
     <mat-card-content>
       <table mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="id">

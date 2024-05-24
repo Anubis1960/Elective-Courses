@@ -1,0 +1,94 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Top Bar Styles */
+  app-top-bar {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+  }
+  
+  /* Student Info Styles */
+  app-student-info {
+    display: block;
+    margin-bottom: 20px;
+  }
+  
+  /* Card Styles */
+  mat-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  mat-card-header {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 20px;
+  }
+  
+  mat-card-title {
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  mat-card-subtitle {
+    margin-top: 10px;
+  }
+  
+  /* Form Field Styles */
+  mat-form-field {
+    margin-bottom: 20px;
+    width: calc(100% - 100px);
+  }
+  
+  /* Input Styles */
+  input.mat-input {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  /* Table Styles */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  th {
+    background-color: #ffffff;
+    color: #000000;
+  }
+  
+  /* Paginator Styles */
+  mat-paginator {
+    margin-top: 20px;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    mat-form-field {
+      width: 100%;
+    }
+  }
+  
