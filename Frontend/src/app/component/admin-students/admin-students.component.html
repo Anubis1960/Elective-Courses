@@ -2,6 +2,11 @@
 <mat-card>
     <mat-card-header>
         <mat-card-title> Students </mat-card-title>
+        <mat-card-subtitle>
+            <mat-form-field appearance="outline" style="margin-left: 50px; margin-bottom: 20px; height: 60px;">
+              <input matInput placeholder="Search" (keyup)="filterChange($event)" style="height: 20px;">
+            </mat-form-field>
+          </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
 <table matSort mat-table [dataSource]="dataSource">

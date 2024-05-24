@@ -22,7 +22,6 @@ export class AdminStudentsComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-
   ngOnInit(): void {
     this.studentService.getStudentsList().subscribe({
       next: (data: Student[]) => {
