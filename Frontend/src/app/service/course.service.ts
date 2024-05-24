@@ -63,4 +63,8 @@ export class CourseService {
   getAcceptedCoursesByStudentId(id: number): Observable<Course[]> {
     return this.http.get<Course[]>(`${this.baseUrl}/accepted/${id}`);
   }
+
+  exportCoursesToPDF(courseId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/export/${courseId}`, {responseType: 'blob'});
+  }
 }

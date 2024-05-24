@@ -11,4 +11,5 @@ public interface PDFGeneratorService {
     void exportStudentsOfCourseToPDF(OutputStream out,Long id) throws IOException;
     void exportEnrollmentByFacultySectionToPDF(OutputStream out,String facultySection) throws IOException;
     void exportEnrollmentByYearToPDF(OutputStream out,Integer year) throws IOException;
+    void exportEnrollmentByFacultySectionAndYearToPDF(OutputStream out, String facultySection, Integer year) throws IOException;
 }

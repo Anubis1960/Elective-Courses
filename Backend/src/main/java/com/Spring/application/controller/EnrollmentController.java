@@ -83,14 +83,23 @@ public class EnrollmentController {
 
 
     @GetMapping("/export")
-    public void exportEnrollmentsToPDF(HttpServletResponse response) throws IOException {
+    public void exportEnrollmentsToPDF(HttpServletResponse response, @RequestParam String facultySection, @RequestParam Integer year) throws IOException {
         response.setContentType("application/pdf");
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormater.format(System.currentTimeMillis());
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
-        pdfGeneratorService.exportEnrollmentsToPDF(response.getOutputStream());
+
+        if (facultySection != null && year != null) {
+            pdfGeneratorService.exportEnrollmentByFacultySectionAndYearToPDF(response.getOutputStream(), facultySection, year);
+        } else if (facultySection != null) {
+            pdfGeneratorService.exportEnrollmentByFacultySectionToPDF(response.getOutputStream(), facultySection);
+        } else if (year != null) {
+            pdfGeneratorService.exportEnrollmentByYearToPDF(response.getOutputStream(), year);
+        } else {
+            pdfGeneratorService.exportEnrollmentsToPDF(response.getOutputStream());
+        }
     }
 
     @PutMapping("/")
@@ -122,28 +131,6 @@ public class EnrollmentController {
         }
         List<EnrollmentDTO> enrollmentDTOs = EnrollmentDTO.convertToDTO(enrollments);
         return new ResponseEntity<>(enrollmentDTOs, HttpStatus.OK);
-    }
-
-    @GetMapping("/export/year/{year}")
-    public void exportEnrollmentsByYearToPDF(HttpServletResponse response, @PathVariable("year") Integer year) throws IOException {
-        response.setContentType("application/pdf");
-        DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormater.format(System.currentTimeMillis());
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=enrollments_" + year + "_" + currentDateTime + ".pdf";
-        response.setHeader(headerKey, headerValue);
-        pdfGeneratorService.exportEnrollmentByYearToPDF(response.getOutputStream(), year);
-    }
-
-    @GetMapping("/export/facultySection/{facultySection}")
-    public void exportEnrollmentsByFacultySectionToPDF(HttpServletResponse response, @PathVariable("facultySection") String facultySection) throws IOException {
-        response.setContentType("application/pdf");
-        DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormater.format(System.currentTimeMillis());
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=enrollments_" + facultySection + "_" + currentDateTime + ".pdf";
-        response.setHeader(headerKey, headerValue);
-        pdfGeneratorService.exportEnrollmentByFacultySectionToPDF(response.getOutputStream(), facultySection);
     }
 
 }
