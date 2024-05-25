@@ -28,7 +28,6 @@ import { AdminStudentsComponent } from './component/admin-students/admin-student
 import { StudentInfoComponent } from './component/student-info/student-info.component';
 import { StudentDetailsComponent } from './component/student-details/student-details.component';
 import { ErrorComponent } from './component/error/error.component';
-
 @NgModule({
   declarations: [
     AppComponent,
