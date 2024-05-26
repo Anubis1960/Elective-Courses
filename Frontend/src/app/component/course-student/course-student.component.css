@@ -4,48 +4,4 @@ app-top-bar {
   padding: 10px 0;
   text-align: center;
 }
-
-.course-details {
-    max-width: 600px;
-    margin: 50px auto; /* Centering vertically and horizontally */
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-  }
-  
-  .header h2 {
-    margin-top: 0;
-    font-size: 24px;
-    color: #333;
-  }
-  
-  .content {
-    margin-top: 20px;
-  }
-  
-  .content p {
-    margin: 8px 0;
-    color: #555;
-  }
-  
-  .footer {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  .footer button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .footer button:hover {
-    background-color: #0056b3;
-  }
   

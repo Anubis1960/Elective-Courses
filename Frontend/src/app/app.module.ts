@@ -27,7 +27,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AdminStudentsComponent } from './component/admin-students/admin-students.component';
 import { StudentInfoComponent } from './component/student-info/student-info.component';
 import { StudentDetailsComponent } from './component/student-details/student-details.component';
-import { ErrorComponent } from './component/error/error.component';
+import { CourseInfoComponent } from './component/course-info/course-info.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +42,7 @@ import { ErrorComponent } from './component/error/error.component';
     AdminStudentsComponent,
     StudentInfoComponent,
     StudentDetailsComponent,
-    ErrorComponent,
+    CourseInfoComponent,
     ],
   imports: [
     BrowserModule,

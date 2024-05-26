@@ -141,7 +141,7 @@ VALUES ('9:30', '8:00', 1, CURRENT_DATE, CURRENT_DATE, 'Roberto', 'MONDAY', 'Rob
 
 --Enrollment
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
-VALUES (1, 1, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 1, 'Roberto', 'Roberto', 'ACCEPTED');
+VALUES (1, 1, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 1, 'Roberto', 'Roberto', 'PENDING');
 
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
 VALUES (2, 2, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 1, 'Roberto', 'Roberto', 'PENDING');
@@ -150,7 +150,7 @@ INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_mo
 VALUES (3, 3, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 1, 'Roberto', 'Roberto', 'PENDING');
 
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
-VALUES (1, 4, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 1, 'Roberto', 'Roberto', 'ACCEPTED');
+VALUES (1, 4, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 1, 'Roberto', 'Roberto', 'PENDING');
 
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
 VALUES (2, 5, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 1, 'Roberto', 'Roberto', 'PENDING');
@@ -165,7 +165,7 @@ INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_mo
 VALUES (2, 3, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 2, 'Roberto', 'Roberto', 'PENDING');
 
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
-VALUES (2, 4, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 3, 'Roberto', 'Roberto', 'ACCEPTED');
+VALUES (2, 4, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 3, 'Roberto', 'Roberto', 'PENDING');
 
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
 VALUES (1, 5, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 3, 'Roberto', 'Roberto', 'PENDING');
@@ -173,14 +173,14 @@ VALUES (1, 5, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DAT
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Enrollments for Student 1
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
-VALUES (1, 6, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 1, 'Roberto', 'Roberto', 'ACCEPTED');
+VALUES (1, 6, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 1, 'Roberto', 'Roberto', 'PENDING');
 
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
 VALUES (2, 7, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 1, 'Roberto', 'Roberto', 'PENDING');
 
 -- Enrollments for Student 2
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
-VALUES (1, 8, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 2, 'Roberto', 'Roberto', 'ACCEPTED');
+VALUES (1, 8, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 2, 'Roberto', 'Roberto', 'PENDING');
 
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
 VALUES (3, 9, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 2, 'Roberto', 'Roberto', 'PENDING');
@@ -190,21 +190,21 @@ INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_mo
 VALUES (2, 10, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 3, 'Roberto', 'Roberto', 'PENDING');
 
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
-VALUES (1, 11, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 3, 'Roberto', 'Roberto', 'ACCEPTED');
+VALUES (1, 11, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 3, 'Roberto', 'Roberto', 'PENDING');
 
 -- Enrollments for Student 4
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
 VALUES (1, 1, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 4, 'Roberto', 'Roberto', 'PENDING');
 
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
-VALUES (2, 2, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 4, 'Roberto', 'Roberto', 'ACCEPTED');
+VALUES (2, 2, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 4, 'Roberto', 'Roberto', 'PENDING');
 
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
 VALUES (3, 3, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 4, 'Roberto', 'Roberto', 'PENDING');
 
 -- Enrollments for Student 5
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
-VALUES (1, 4, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 5, 'Roberto', 'Roberto', 'ACCEPTED');
+VALUES (1, 4, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 5, 'Roberto', 'Roberto', 'PENDING');
 
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
 VALUES (2, 5, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 5, 'Roberto', 'Roberto', 'PENDING');
@@ -214,7 +214,7 @@ VALUES (3, 6, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DAT
 
 -- Enrollments for Student 6
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
-VALUES (1, 7, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 6, 'Roberto', 'Roberto', 'ACCEPTED');
+VALUES (1, 7, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 6, 'Roberto', 'Roberto', 'PENDING');
 
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
 VALUES (2, 8, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 6, 'Roberto', 'Roberto', 'PENDING');
@@ -224,7 +224,7 @@ VALUES (3, 9, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DAT
 
 -- Enrollments for Student 7
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
-VALUES (1, 10, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 7, 'Roberto', 'Roberto', 'ACCEPTED');
+VALUES (1, 10, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 7, 'Roberto', 'Roberto', 'PENDING');
 
 INSERT INTO enrollment(priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status)
 VALUES (2, 11, CURRENT_DATE, nextval('enrollment_enrollment_id_seq'), CURRENT_DATE, 7, 'Roberto', 'Roberto', 'PENDING');

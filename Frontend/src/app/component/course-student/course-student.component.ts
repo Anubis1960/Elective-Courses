@@ -15,8 +15,7 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrl: './course-student.component.css'
 })
 export class CourseStudentComponent {
-  course: Course | undefined;
-  courseService: CourseService | undefined;
+  courseId: number | undefined;
   students !: Student[] | undefined;
   dataSource: MatTableDataSource<Student> = new MatTableDataSource<Student>();
   displayedColumns: string[]=['id', 'name', 'email', 'facultySection', 'year','grade'];
@@ -27,23 +26,11 @@ export class CourseStudentComponent {
   @ViewChild(MatSort) sort !: MatSort;
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      const id = Number(params.get('id'));
-      if (!this.courseService) {
-        this.courseService = new CourseService(this.httpClient);
-      }
-      this.courseService.getCourse(id).subscribe({
-        next: (data: Course) => {
-          this.course = data;
-          //console.log(this.course);
-        },
-        error: (error) => {
-          //console.log(error);
-        }
-      });
+      this.courseId = Number(params.get('id'));
       if (!this.studentService) {
         this.studentService = new StudentService(this.httpClient);
       }
-      this.studentService.getStudentsByCourseId(id).subscribe({
+      this.studentService.getStudentsByCourseId(this.courseId).subscribe({
         next: (data: Student[]) => {
           this.students = data;
           this.dataSource = new MatTableDataSource<Student>(this.students);
