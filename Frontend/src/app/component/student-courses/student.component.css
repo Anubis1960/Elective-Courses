@@ -4,3 +4,9 @@ app-top-bar {
     padding: 10px 0;
     text-align: center;
   }
+.search-field{
+    margin-left:50px;
+}
+.course-text{
+  margin-top:15px;
+}
