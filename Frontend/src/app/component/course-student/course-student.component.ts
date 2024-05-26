@@ -25,23 +25,42 @@ export class CourseStudentComponent {
   @ViewChild(MatPaginator) paginator !: MatPaginator;
   @ViewChild(MatSort) sort !: MatSort;
   ngOnInit() {
+
     this.route.paramMap.subscribe(params => {
       this.courseId = Number(params.get('id'));
       if (!this.studentService) {
         this.studentService = new StudentService(this.httpClient);
       }
-      this.studentService.getStudentsByCourseId(this.courseId).subscribe({
-        next: (data: Student[]) => {
-          this.students = data;
-          this.dataSource = new MatTableDataSource<Student>(this.students);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-          //console.log(this.students);
-        },
-        error: (error) => {
-          console.log(error);
-        }
-      });
+      const status: string = JSON.parse(localStorage.getItem('status') || 'true');
+      if(status == 'true'){
+        this.studentService.getStudentsByCourseId(this.courseId).subscribe({
+          next: (data: Student[]) => {
+            this.students = data;
+            this.dataSource = new MatTableDataSource<Student>(this.students);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+            //console.log(this.students);
+          },
+          error: (error) => {
+            console.log(error);
+          }
+        });
+      }
+      else{
+        this.studentService.getAcceptedStudentsByCourseId(this.courseId).subscribe({
+          next: (data: Student[]) => {
+            this.students = data;
+            this.dataSource = new MatTableDataSource<Student>(this.students);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+            // console.log(this.students);
+          },
+          error: (error) => {
+            console.log(error);
+          }
+        });
+      }
+      //console.log(this.students);
 
     });
   }

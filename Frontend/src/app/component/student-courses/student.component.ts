@@ -26,17 +26,33 @@ export class StudentComponent {
   ngOnInit(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     //console.log(user);
-    this.courseService.getCoursesByStudentId(user.id).subscribe({
-      next: (data: Course[]) => {
-        this.courses = data;
-        this.dataSource = new MatTableDataSource<Course>(this.courses);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      },
-      error: (error) => {
-        //console.log(error);
-      }
-    });
+    const status: string = JSON.parse(localStorage.getItem('status') || 'true');
+    if(status == 'true'){
+      this.courseService.getCoursesByStudentId(user.id).subscribe({
+        next: (data: Course[]) => {
+          this.courses = data;
+          this.dataSource = new MatTableDataSource<Course>(this.courses);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        },
+        error: (error) => {
+          //console.log(error);
+        }
+      });
+    }
+    else{
+      this.courseService.getAcceptedCoursesByStudentId(user.id).subscribe({
+        next: (data: Course[]) => {
+          this.courses = data;
+          this.dataSource = new MatTableDataSource<Course>(this.courses);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        },
+        error: (error) => {
+          //console.log(error);
+        }
+      });
+    }
   }
 
   getDetails(id: number) {
