@@ -32,3 +32,14 @@
     margin-left: 80px; /* Adjust spacing as needed */
     overflow: visible;
 }
+
+.profile-icon-container{
+    display: inline-table;
+    align-items: center; /* Center the icon vertically */
+    justify-content: center; /* Center the icon horizontally */
+    width: 60px; /* Adjust button size as needed */
+    height: 60px; /* Adjust button size as needed */
+    color: #ffffff; /* Text color */
+    margin-left: 170px; /* Adjust spacing as needed */
+    overflow: visible;
+}

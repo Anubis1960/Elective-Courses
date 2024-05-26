@@ -18,13 +18,13 @@ export class StudentDetailsComponent implements OnInit{
   id: number | undefined;
   dataSource: MatTableDataSource<Course> = new MatTableDataSource<Course>();
   displayedColumns: string[] = ['id', 'name', 'description', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year'];
-  status: string = JSON.parse(localStorage.getItem('status') || 'true');
 
   constructor(private route: ActivatedRoute, private httpClient: HttpClient) { }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   ngOnInit(): void {
+    let status: string = JSON.parse(localStorage.getItem('status') || 'true');
     this.route.paramMap.subscribe(params => {
       this.id = Number(params.get('id'));
       if (!this.courseService) {
