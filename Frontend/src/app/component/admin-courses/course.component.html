@@ -4,7 +4,7 @@
   <mat-card-header>
     <mat-card-title>Courses</mat-card-title>
     <mat-card-subtitle>
-      <button mat-raised-button color="primary" (click)="openDialog(null, 'Add Course')">Add Course</button>
+      <button mat-raised-button color="primary" (click)="openDialog(null)">Add Course</button>
       <mat-form-field appearance="outline" style="margin-left: 50px; margin-bottom: 20px; height: 60px;">
         <input matInput placeholder="Search" (keyup)="filterChange($event)" style="height: 20px;">
       </mat-form-field>
@@ -62,8 +62,10 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef>Action</th>
         <td mat-cell *matCellDef="let element">
-          <button mat-raised-button color="primary" (click)="openDialog(element, 'Edit Course')">Edit</button>
+          @if(status == 'true'){
+          <button mat-raised-button color="primary" (click)="openDialog(element)">Edit</button>
           <button mat-raised-button color="warn" (click)="onDelete(element.id)">Delete</button>
+          }
         </td>
       </ng-container>
 

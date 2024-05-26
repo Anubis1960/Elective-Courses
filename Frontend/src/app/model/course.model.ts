@@ -4,7 +4,7 @@ export class Course {
     name: string | undefined;
     description: string | undefined;
     category: string | undefined;
-    maximumStudents: number | undefined;
+    maximumStudentsAllowed: number | undefined;
     facultySection: string | undefined;
     year: number | undefined;
     teacherName: string | undefined;
@@ -15,7 +15,7 @@ export class Course {
         this.name = name;
         this.description = description;
         this.category = category;
-        this.maximumStudents = maximum_students;
+        this.maximumStudentsAllowed = maximum_students;
         this.facultySection = faculty_section;
         this.year = year;
         this.teacherName = teacher_name;

@@ -1,6 +1,8 @@
-<form [formGroup]="form">
-    <h1 mat-dialog-title>{{input.title}}</h1>
+<div mat-dialog-title>
+    {{ checkTitle() ? 'Create Course' : 'Edit Course' }}
+</div>
     <div mat-dialog-content>
+        <form [formGroup]="form">
         <mat-form-field appearance="outline">
             <mat-label>Name</mat-label>
             <input matInput placeholder="Name" formControlName="name">
@@ -15,7 +17,7 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Faculty Section</mat-label>
-            <input matInput placeholder="Faculty Section" formControlName="facultySection" [readonly]="checkTitle()">
+            <input matInput placeholder="Faculty Section" formControlName="facultySection" [readonly]="!checkTitle()">
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Maximum Students Allowed</mat-label>
@@ -27,11 +29,12 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Year</mat-label>
-            <input matInput placeholder="Year" formControlName="year" [readonly]="checkTitle()">
+            <input matInput placeholder="Year" formControlName="year" [readonly]="!checkTitle()">
         </mat-form-field>
-    </div>
-    <div mat-dialog-actions>
-        <button (click)="close()" mat-button mat-dialog-close>Close</button>
-        <button (click)="save()" mat-button [disabled]="form.invalid">Save</button>
-    </div>
+   
 </form>
+ </div >
+<div mat-dialog-actions>
+    <button (click)="close()" mat-button mat-dialog-close>Close</button>
+    <button (click)="save()" mat-button [disabled]="form.invalid">Save</button>
+</div>

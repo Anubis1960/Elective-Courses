@@ -12,25 +12,31 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class PopUpComponent implements OnInit {
 
-  input: any;
+  input: Course | undefined;
   disabeld: boolean = false;
   form!: FormGroup;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<PopUpComponent>, private builder: FormBuilder, private courseService: CourseService, private snackbat: MatSnackBar) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Course, private ref: MatDialogRef<PopUpComponent>, private builder: FormBuilder, private courseService: CourseService, private snackbat: MatSnackBar) { }
 
   ngOnInit(): void {
     console.log(this.data);
     this.input = this.data;
     this.form = this.builder.group({
-      id: [this.input.course?.id],
-      name: [this.input.course?.name],
-      description: [this.input.course?.description],
-      category: [this.input.course?.category],
-      facultySection: [this.input.course?.facultySection],
-      maximumStudentsAllowed: [this.input.course?.maximumStudentsAllowed],
-      year: [this.input.course?.year],
-      teacherName: [this.input.course?.teacherName]
+      id: [this.input.id],
+      name: [this.input.name],
+      description: [this.input.description],
+      category: [this.input.category],
+      facultySection: [this.input.facultySection],
+      maximumStudentsAllowed: [this.input.maximumStudentsAllowed],
+      year: [this.input.year],
+      teacherName: [this.input.teacherName]
     });
+
+    const contentHeight = 320 + (Object.keys(this.input).length - 1) * 80;
+    const contentWidth = 590;
+    this.ref.updateSize(contentWidth + 'px', contentHeight + 'px');
+  
+    
   }
 
   close() {
@@ -38,7 +44,7 @@ export class PopUpComponent implements OnInit {
   }
 
   checkTitle() {
-    return this.input.title == 'Edit Course';
+    return this.input?.id === undefined;
   }
 
   save() {

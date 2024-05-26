@@ -6,7 +6,7 @@
     <div class="content">
       <p><strong>Description:</strong> {{ course?.description }}</p>
       <p><strong>Category:</strong> {{ course?.category }}</p>
-      <p><strong>Maximum Students:</strong> {{ course?.maximumStudents }}</p>
+      <p><strong>Maximum Students:</strong> {{ course?.maximumStudentsAllowed }}</p>
       <p><strong>Faculty Section:</strong> {{ course?.facultySection }}</p>
       <p><strong>Year:</strong> {{ course?.year }}</p>
       <p><strong>Teacher Name:</strong> {{ course?.teacherName }}</p>
@@ -22,6 +22,15 @@
         @else{
             <p><strong>No schedule available</strong></p>
         }
-
     </div>
-  </div>
+  
+  @if(role === 'ADMIN'){
+    @if(courseSchedule != undefined){
+        <button (click)="openDialog()">Edit Schedule</button>
+    }
+    @else{
+        <button (click)="openDialog()">Add Schedule</button>
+    }
+    <button (click)="exportPDF()">Export PDF</button>
+  }
+</div>

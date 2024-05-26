@@ -69,4 +69,25 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
+
+  delEnrollment(enrollmentId: number) {
+    if (!this.enrollment_service) {
+      this.enrollment_service = new EnrollmentService(this.httpClient);
+    }
+    this.enrollment_service.deleteEnrollment(enrollmentId).subscribe({
+      next: (data: Enrollment) => {
+        this.enrollments_list = this.enrollments_list.filter(enrollment => enrollment.id !== enrollmentId);
+        this.saveOrder();
+        this._snackbar.open("Enrollment deleted", undefined, {
+          duration: 2000
+        });
+      },
+      error: (error) => {
+        //console.log(error);
+        this._snackbar.open("Error deleting enrollment", undefined, {
+          duration: 2000
+        });
+      }
+    });
+  }
 }

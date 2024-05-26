@@ -39,7 +39,7 @@ export class CourseStudentComponent {
           //console.log(this.students);
         },
         error: (error) => {
-          //console.log(error);
+          console.log(error);
         }
       });
 
