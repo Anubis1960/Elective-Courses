@@ -9,10 +9,14 @@ body {
 .login-container {
   max-width: 400px;
   margin: 0 auto;
-  padding: 20px;
+  padding-top:100px;
+  padding-bottom:100px;
+  padding-left: 30px;
+  padding-right: 30px;
   margin-top: 200px;
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   border-radius: 5px;
+  background-color: #ffd1e4;
 }
 
 h3 {
@@ -42,7 +46,7 @@ form {
 .input-box input {
   width: calc(100% - 20px); /* Ajustare pentru padding */
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   border-radius: 5px;
   margin: 0 auto; /* Centrează input-ul */
   display: block; /* Asigură că input-ul ia lățimea completă */
@@ -54,8 +58,8 @@ button {
   border: none;
   margin: 50px auto 0 auto; /* Centrează butonul și adaugă spațiu sus */
   border-radius: 10px;
-  background-color: #007bff;
-  color: #fff;
+  background-color: #ace7ff;
+  color: #0d47a1;
   font-size: 16px;
   cursor: pointer;
   text-align: center; /* Centrează textul */
