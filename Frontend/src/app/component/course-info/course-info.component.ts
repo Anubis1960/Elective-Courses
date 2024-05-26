@@ -20,6 +20,7 @@ export class CourseInfoComponent {
   constructor( private dialog: MatDialog, private courseService: CourseService, private courseScheduleService: CourseScheduleService) { }
 
   ngOnInit() {
+    const role = JSON.parse(sessionStorage.getItem('user') || '{}').role;
     if (this.courseId) {
       this.courseService.getCourse(this.courseId).subscribe({
         next: (data: Course) => {
