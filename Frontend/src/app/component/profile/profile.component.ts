@@ -6,6 +6,7 @@ import { User } from '../../model/user.model';
 import { Enrollment } from '../../model/enrollment.model';
 import { EnrollmentService } from '../../service/enrollment.service';
 import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -18,7 +19,7 @@ export class ProfileComponent implements OnInit {
   enrollment_service: EnrollmentService | undefined;
   event: Event | undefined;
   user: User | undefined;
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private _snackbar: MatSnackBar) { }
 
   ngOnInit() {
     this.user = JSON.parse(sessionStorage.getItem('user') || '{}') as User;
@@ -55,10 +56,16 @@ export class ProfileComponent implements OnInit {
     this.enrollment_service.updateAllEnrollments(this.enrollments_list).subscribe({
       next: (data: Enrollment[]) => {
         this.enrollments_list = data;
+        this._snackbar.open("Your changes have been saved", undefined, {
+          duration: 2000
+        });
         //console.log(this.enrollments_list);
       },
       error: (error) => {
         //console.log(error);
+        this._snackbar.open("Error saving order", undefined, {
+          duration: 2000
+        });
       }
     });
   }
