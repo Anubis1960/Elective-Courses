@@ -18,7 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { ProfileComponent } from './component/profile/profile.component';
 import { CourseStudentComponent } from './component/course-student/course-student.component';
-import { PopUpComponent } from './component/pop-up/pop-up.component';
+import { PopUpComponent } from './component/course-pop-up/pop-up.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -28,6 +28,9 @@ import { AdminStudentsComponent } from './component/admin-students/admin-student
 import { StudentInfoComponent } from './component/student-info/student-info.component';
 import { StudentDetailsComponent } from './component/student-details/student-details.component';
 import { CourseInfoComponent } from './component/course-info/course-info.component';
+import { SchedulePopUpComponent } from './component/schedule-pop-up/schedule-pop-up.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,6 +46,7 @@ import { CourseInfoComponent } from './component/course-info/course-info.compone
     StudentInfoComponent,
     StudentDetailsComponent,
     CourseInfoComponent,
+    SchedulePopUpComponent,
     ],
   imports: [
     BrowserModule,
@@ -59,6 +63,8 @@ import { CourseInfoComponent } from './component/course-info/course-info.compone
     MatInputModule,
     MatIconModule,
     DragDropModule,
+    MatSelectModule,
+    MatDialogModule,
   ],
   providers: [
     provideClientHydration(),

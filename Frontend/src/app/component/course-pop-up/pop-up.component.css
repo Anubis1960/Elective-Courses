@@ -1,0 +1,69 @@
+/* Container styling */
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+/* Title styling */
+.mat-dialog-title {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+}
+
+/* Adjust the margin for mat-form-field */
+mat-form-field {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px; /* Add some bottom margin */
+}
+
+/* If needed, you can remove the top margin of the first mat-form-field */
+mat-form-field:first-child {
+  margin-top: 0; /* Remove the top margin */
+}
+
+
+/* Form styling */
+form {
+  width: 100%;
+  max-width: 100%;
+  background-color: #fff;
+}
+
+
+/* Input styling */
+input {
+  font-size: 14px;
+}
+
+/* Dialog actions styling */
+.mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Button styling */
+button[mat-button] {
+  margin-left: 5px;
+  padding: 5px 10px;
+}
+
+button[mat-button]:first-child {
+  background-color: #f44336;
+  color: white;
+}
+
+button[mat-button]:last-child {
+  background-color: #4caf50;
+  color: white;
+}
+
+/* Disabled button styling */
+button[mat-button][disabled] {
+  background-color: rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.26);
+}

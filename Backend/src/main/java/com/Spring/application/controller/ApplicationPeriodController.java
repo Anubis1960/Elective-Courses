@@ -19,7 +19,7 @@ public class ApplicationPeriodController {
         return new ResponseEntity<>(applicationPeriodService.getApplicationPeriod(), HttpStatus.OK);
     }
 
-    @PutMapping("/")
+    @GetMapping("/reverse")
     public ResponseEntity<Boolean> reverseApplicationPeriod() {
         return new ResponseEntity<>(applicationPeriodService.reverseApplicationPeriod(), HttpStatus.OK);
     }

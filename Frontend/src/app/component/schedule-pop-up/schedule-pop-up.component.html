@@ -1,0 +1,35 @@
+<div mat-dialog-title>
+    {{ checkTitle() ? 'Create Course Schedule' : 'Edit Course Schedule' }}
+</div>
+  <div mat-dialog-content>
+    <form [formGroup]="form">
+      <mat-form-field appearance="outline">
+        <mat-label>Day</mat-label>
+        <mat-select formControlName="day">
+          <mat-option *ngFor="let day of daysOfWeek" [value]="day">{{ day }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Start Time</mat-label>
+        <input matInput type="text" formControlName="startTime" placeholder="HH:MM" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" required>
+        <mat-error *ngIf="form.controls['startTime'].invalid && (form.controls['startTime'].dirty || form.controls['startTime'].touched)">
+          Please enter a valid time in 24-hour format (HH:MM)
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>End Time</mat-label>
+        <input matInput type="text" formControlName="endTime" placeholder="HH:MM" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" required>
+        <mat-error *ngIf="form.controls['endTime'].invalid && (form.controls['endTime'].dirty || form.controls['endTime'].touched)">
+          Please enter a valid time in 24-hour format (HH:MM)
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </div>
+  
+  <div mat-dialog-actions>
+    <button mat-button (click)="close()">Cancel</button>
+    <button mat-button color="primary" (click)="save()" [disabled]="form.invalid">Save</button>
+  </div>
+  

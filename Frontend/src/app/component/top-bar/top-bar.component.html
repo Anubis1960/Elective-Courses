@@ -16,4 +16,7 @@
     <a routerLink="/admin/students" class="profile-icon-container">
         <mat-icon class="profile-icon">account_circle</mat-icon>
     </a>
+    @if(status == 'false'){
+        <button (click)="closePeriod()"></button>
+    }
 }

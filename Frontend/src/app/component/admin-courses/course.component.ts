@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { PopUpComponent } from '../pop-up/pop-up.component';
+import { PopUpComponent } from '../course-pop-up/pop-up.component';
 import { Router } from '@angular/router';
 
 @Component({
@@ -19,6 +19,7 @@ export class CourseComponent implements OnInit {
   courses!: Course[];
   dataSource: MatTableDataSource<Course> = new MatTableDataSource<Course>();
   displayedColumns: string[] = ['id', 'name', 'description', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year', 'action'];
+  status: string = JSON.parse(localStorage.getItem('status') || 'true');
 
   constructor(private http: HttpClient, private courseService: CourseService, private dialog: MatDialog, private router: Router) { }
 
@@ -47,19 +48,26 @@ export class CourseComponent implements OnInit {
     });
   }
 
-  openDialog(course: Course | null, title: string) {
+  openDialog(course: Course | null) {
+    console.log(course);
     const dialogRef = this.dialog.open(PopUpComponent, {
       width: '590px',
       height: '880px',
       data: {
-        title: title,
-        course: course
+        id: course?.id,
+        name: course?.name,
+        description: course?.description,
+        category: course?.category,
+        facultySection: course?.facultySection,
+        maximumStudentsAllowed: course?.maximumStudentsAllowed,
+        year: course?.year,
+        teacherName: course?.teacherName
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        if (title === 'Edit Course') {
+        if (course) {
           const index = this.courses.findIndex(c => c.id === result.id);
           if (index !== -1) {
             this.courses[index] = result;
@@ -97,5 +105,10 @@ export class CourseComponent implements OnInit {
     this.dataSource.data = this.courses;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  checkStatus() {
+    console.log(this.status);
+    return this.status == 'false';
   }
 }

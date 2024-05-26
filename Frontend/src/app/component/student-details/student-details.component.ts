@@ -18,6 +18,7 @@ export class StudentDetailsComponent implements OnInit{
   id: number | undefined;
   dataSource: MatTableDataSource<Course> = new MatTableDataSource<Course>();
   displayedColumns: string[] = ['id', 'name', 'description', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year'];
+  status: string = JSON.parse(localStorage.getItem('status') || 'true');
 
   constructor(private route: ActivatedRoute, private httpClient: HttpClient) { }
 
@@ -29,19 +30,36 @@ export class StudentDetailsComponent implements OnInit{
       if (!this.courseService) {
         this.courseService = new CourseService(this.httpClient);
       }
-      this.courseService.getCoursesByStudentId(this.id).subscribe({
-        next: (data: Course[]) => {
-          this.courses = data;
-          //console.log(this.courses);
-          this.dataSource.data = this.courses;
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        },
-        error: (error) => {
-          //console.log(error);
-        }
-      });
+      if (status == 'true'){
+        this.courseService.getCoursesByStudentId(this.id).subscribe({
+          next: (data: Course[]) => {
+            this.courses = data;
+            //console.log(this.courses);
+            this.dataSource.data = this.courses;
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+          },
+          error: (error) => {
+            //console.log(error);
+          }
+        });
+      }
+      else{
+        this.courseService.getAcceptedCoursesByStudentId(this.id).subscribe({
+          next: (data: Course[]) => {
+            this.courses = data;
+            //console.log(this.courses);
+            this.dataSource.data = this.courses;
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+          },
+          error: (error) => {
+            //console.log(error);
+          }
+        });
+      }
     });
+
   }
 
   filterChange(event: Event) {
