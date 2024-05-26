@@ -13,26 +13,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrl: './course-details.component.css'
 })
 export class CourseDetailsComponent implements OnInit{
-  course: Course | undefined;
+  status: boolean = localStorage.getItem('status') === 'true';
+  courseId: number | undefined;
   enrollmentService: EnrollmentService | undefined;
-  courseService: CourseService | undefined;
-  constructor(private route: ActivatedRoute, private httpClient: HttpClient,private _snackbar: MatSnackBar) { }
+  constructor(private route: ActivatedRoute, private httpClient: HttpClient,private snackbar: MatSnackBar) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      const id = Number(params.get('id'));
-      if (!this.courseService) {
-        this.courseService = new CourseService(this.httpClient);
-      }
-      this.courseService.getCourse(id).subscribe({
-        next: (data: Course) => {
-          this.course = data;
-          //console.log(this.course);
-        },
-        error: (error) => {
-          //console.log(error);
-        }
-      });
+      this.courseId = Number(params.get('id'));
+      //console.log(this.courseId);
     });
   }
 
@@ -44,25 +33,25 @@ export class CourseDetailsComponent implements OnInit{
     if (!this.enrollmentService) {
       this.enrollmentService = new EnrollmentService(this.httpClient);
     }
-    if (this.course && user.id && this.course.id) {
       //console.log(user.id);
       //console.log(this.course.id);
-      this.enrollmentService.createEnrollment(user.id, this.course.id).subscribe({
-        next: (data: Enrollment) => {
-          message = "You have successfully enrolled in this course"
-          this._snackbar.open(message, undefined, {
-            duration: 2000
-          });
-          //console.log(data);
-        },
-        error: (error) => {
-          message = "You are already enrolled in this course";
-          this._snackbar.open(message, undefined, {
-            duration: 2000
-          });
-        }
-      });
-    }
+      if (this.courseId && user.id) {
+        this.enrollmentService.createEnrollment(user.id, this.courseId).subscribe({
+          next: (data: Enrollment) => {
+            message = "You have successfully enrolled in this course"
+            this.snackbar.open(message, undefined, {
+              duration: 2000
+            });
+            //console.log(data);
+          },
+          error: (error) => {
+            message = "You are already enrolled in this course";
+            this.snackbar.open(message, undefined, {
+              duration: 2000
+            });
+          }
+        });
+      }
   }
 
 }

@@ -18,7 +18,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/schedule")
+@RequestMapping("/course-schedule")
 public class CourseScheduleController {
     @Autowired
     private CourseScheduleServiceImpl courseScheduleService;
@@ -47,6 +47,9 @@ public class CourseScheduleController {
     @GetMapping("/{id}")
     public ResponseEntity<CourseScheduleDTO> getCourseScheduleById(@PathVariable("id") Long id) throws ObjectNotFound {
         CourseSchedule courseSchedule = courseScheduleService.getCourseScheduleById(id);
+        if (courseSchedule == null) {
+            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
+        }
         CourseScheduleDTO courseScheduleDTO = new CourseScheduleDTO(courseSchedule.getCourseId(), courseSchedule.getDay().toString(), courseSchedule.getStartTime().toString(), courseSchedule.getEndTime().toString());
         return new ResponseEntity<>(courseScheduleDTO, HttpStatus.OK);
     }

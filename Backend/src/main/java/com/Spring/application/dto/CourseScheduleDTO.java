@@ -7,11 +7,11 @@ import java.util.List;
 
 public class CourseScheduleDTO {
     private Long id;
+    private String day;
     private String startTime;
     private String endTime;
-    private String day;
 
-    public CourseScheduleDTO(Long id, String startTime, String endTime, String day) {
+    public CourseScheduleDTO(Long id, String day, String startTime, String endTime) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;

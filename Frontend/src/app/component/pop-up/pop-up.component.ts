@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CourseService } from '../../service/course.service';
 import { Course } from '../../model/course.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-pop-up',
@@ -15,7 +16,7 @@ export class PopUpComponent implements OnInit {
   disabeld: boolean = false;
   form!: FormGroup;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<PopUpComponent>, private builder: FormBuilder, private courseService: CourseService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<PopUpComponent>, private builder: FormBuilder, private courseService: CourseService, private snackbat: MatSnackBar) { }
 
   ngOnInit(): void {
     console.log(this.data);
@@ -49,6 +50,11 @@ export class PopUpComponent implements OnInit {
         },
         error: (error) => {
           //console.log(error);
+          //const message = error.error.message;
+          this.snackbat.open("Error updating course", undefined, {
+            duration: 2000
+          });
+          
         }
       });
     }
@@ -60,6 +66,11 @@ export class PopUpComponent implements OnInit {
         },
         error: (error) => {
           //console.log(error);
+          //const message = error.error.message;
+          this.snackbat.open("Error creating course", undefined, {
+            duration: 2000
+          });
+          
         }
       });
     }

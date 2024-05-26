@@ -26,7 +26,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatCardModule,
     MatIconModule,
     DragDropModule,
-    
   ],
   bootstrap: [AppComponent],
 })

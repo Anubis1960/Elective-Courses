@@ -161,11 +161,7 @@ public class CourseScheduleServiceImpl implements CourseScheduleService{
     @Override
     public CourseSchedule getCourseScheduleById(Long courseId) throws ObjectNotFound {
 
-        CourseSchedule courseSchedule = courseScheduleRepository.findById(courseId).orElse(null);
-        if (courseSchedule == null) {
-            throw new ObjectNotFound("Course Schedule not found");
-        }
-        return courseSchedule;
+        return courseScheduleRepository.findById(courseId).orElse(null);
     }
 
     @Override

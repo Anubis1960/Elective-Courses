@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -83,23 +84,14 @@ public class EnrollmentController {
 
 
     @GetMapping("/export")
-    public void exportEnrollmentsToPDF(HttpServletResponse response, @RequestParam String facultySection, @RequestParam Integer year) throws IOException {
+    public void exportEnrollmentsToPDF(HttpServletResponse response, @RequestParam Optional<String> facultySection, @RequestParam Optional<Integer> year) throws IOException {
         response.setContentType("application/pdf");
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormater.format(System.currentTimeMillis());
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
-
-        if (facultySection != null && year != null) {
-            pdfGeneratorService.exportEnrollmentByFacultySectionAndYearToPDF(response.getOutputStream(), facultySection, year);
-        } else if (facultySection != null) {
-            pdfGeneratorService.exportEnrollmentByFacultySectionToPDF(response.getOutputStream(), facultySection);
-        } else if (year != null) {
-            pdfGeneratorService.exportEnrollmentByYearToPDF(response.getOutputStream(), year);
-        } else {
-            pdfGeneratorService.exportEnrollmentsToPDF(response.getOutputStream());
-        }
+        pdfGeneratorService.exportEnrollments(response.getOutputStream(), facultySection, year);
     }
 
     @PutMapping("/")

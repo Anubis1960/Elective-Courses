@@ -3,6 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { LoginService } from '../../service/login.service';
 import { User } from '../../model/user.model';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ApplicationPeriodService } from '../../service/application-period.service';
+import { app } from '../../../../server';
+import { stat } from 'fs';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +18,7 @@ export class LoginComponent {
   password: string;
   user: User | undefined;
 
-  constructor(private http: HttpClient, private loginService: LoginService, private router: Router) { 
+  constructor(private http: HttpClient, private loginService: LoginService, private router: Router, private snackbar: MatSnackBar, private applicationPeriodService: ApplicationPeriodService) { 
     this.email = '';
     this.password = '';
   }
@@ -30,9 +34,20 @@ export class LoginComponent {
         } else if(this.user.role === 'STUDENT'){
           this.router.navigateByUrl('/student/courses');
         }
+        this.applicationPeriodService.getApplicationPeriodStatus().subscribe({
+          next: (data: boolean) => {
+            localStorage.setItem('status', data.toString());
+          },
+          error: (error) => {
+            //console.log(error);
+          }
+        });
       },
       error: (error) => {
         //console.log(error);
+        this.snackbar.open('Invalid email or password', undefined, {
+          duration: 2000
+        });
       }
     });
   }

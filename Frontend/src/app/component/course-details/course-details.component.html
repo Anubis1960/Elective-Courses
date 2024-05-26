@@ -1,22 +1,10 @@
 <app-top-bar></app-top-bar>
-
-<div class="course-details">
-  <div class="header">
-    <h2>{{ course?.name }}</h2>
-  </div>
-  <div class="content">
-    <p><strong>Description:</strong> {{ course?.description }}</p>
-    <p><strong>Category:</strong> {{ course?.category }}</p>
-    <p><strong>Maximum Students:</strong> {{ course?.maximumStudents }}</p>
-    <p><strong>Faculty Section:</strong> {{ course?.facultySection }}</p>
-    <p><strong>Year:</strong> {{ course?.year }}</p>
-    <p><strong>Teacher Name:</strong> {{ course?.teacherName }}</p>
-    <p><strong>Number of Students:</strong> {{ course?.numberOfStudents }}</p>
-  </div>
+<app-course-info [courseId]="courseId"></app-course-info>
+@if (status){
   <div class="footer">
     <button (click)="onEnroll()">Enroll</button>
   </div>
-</div>
+}
 
 
 
