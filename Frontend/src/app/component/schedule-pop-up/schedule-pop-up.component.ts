@@ -13,7 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class SchedulePopUpComponent implements OnInit {
   input: CourseSchedule | undefined;
   form!: FormGroup;
-  daysOfWeek: string[] = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
+  daysOfWeek: string[] = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY'];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: CourseSchedule,

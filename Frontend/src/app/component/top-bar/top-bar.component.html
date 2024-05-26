@@ -17,6 +17,8 @@
         <mat-icon class="profile-icon">account_circle</mat-icon>
     </a>
     @if(status == 'false'){
-        <button (click)="closePeriod()"></button>
+        <div class="period-icon-container">
+            <button (click)="closePeriod()">date_range</button>
+        </div>
     }
 }
