@@ -117,4 +117,9 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public List<String> getFacultySections() { return courseRepository.findFacultySections();}
+
+    @Override
+    public List<Course> getPendingCoursesByStudentId(Long studentId) {
+        return courseRepository.findPendingCoursesByStudentId(studentId);
+    }
 }

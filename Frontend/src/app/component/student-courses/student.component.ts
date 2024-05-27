@@ -73,13 +73,13 @@ export class StudentComponent {
     console.log(this.user.id);
     this.courseScheduleService.exportCourseSchedules(this.user.id).subscribe({
       next: (data) => {
-        console.log(data);
+        //console.log(data);
         const blob = new Blob([data], { type: 'application/pdf' });
         const url = window.URL.createObjectURL(blob);
         window.open(url);
       },
       error: (error) => {
-        console.log(error);
+        //console.log(error);
       }
     });
   }

@@ -25,6 +25,8 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     private StudentRepository studentRepository;
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired
+    private StudentServiceImpl studentServiceImpl;
 
     @Override
     public Enrollment addEnrollment(Long studentId, Long courseId, Integer priority) throws ObjectNotFound {
@@ -96,12 +98,16 @@ public class EnrollmentServiceImpl implements EnrollmentService{
 
     @Override
     public Integer countByCourseId(Long courseId){
-        return enrollmentRepository.countByCourseId(courseId);
+//        System.out.println("courseId: " + courseId);
+//        System.out.println("count: " + enrollmentRepository.countByCourseId(courseId).orElse(0));
+        return enrollmentRepository.countByCourseId(courseId).orElse(0);
     }
 
     @Override
     public Integer countByStudentId(Long studentId){
-        return enrollmentRepository.countByStudentId(studentId);
+//        System.out.println("studentId: " + studentId);
+//        System.out.println("count: " + enrollmentRepository.countByStudentId(studentId).orElse(0));
+        return enrollmentRepository.countByStudentId(studentId).orElse(0);
     }
 
     @Override
@@ -110,27 +116,38 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     }
 
     @Override
-    public List<Enrollment> assignStudents(){
+    public List<Enrollment> assignStudents() throws ObjectNotFound {
         List<Enrollment> enrollments = enrollmentRepository.findAll(Sort.by(Sort.Direction.DESC, "student.grade").and(Sort.by(Sort.Direction.ASC, "student.id")).and(Sort.by(Sort.Direction.ASC, "priority")));
-        Long currentStudentId = enrollments.get(0).getStudent().getId();
-        List<String> categoriesTaken = new ArrayList<>();
         List<Long> courseIds = courseRepository.findAllCourseIds();
         Map<Long, Integer> mapCourseIdByMaxStudents = new HashMap<>();
         for(Long courseId : courseIds){
-            mapCourseIdByMaxStudents.put(courseId, courseRepository.findById(courseId).get().getMaximumStudentsAllowed());
+            mapCourseIdByMaxStudents.put(courseId, Objects.requireNonNull(courseRepository.findById(courseId).orElse(null)).getMaximumStudentsAllowed());
         }
-
         Map<Integer, Integer> mapYearByNoCategories = new HashMap<>();
         mapYearByNoCategories.put(1, courseRepository.countDistinctCategoriesByYear(1));
         mapYearByNoCategories.put(2, courseRepository.countDistinctCategoriesByYear(2));
         mapYearByNoCategories.put(3, courseRepository.countDistinctCategoriesByYear(3));
+
+        for (Map.Entry<Integer, Integer> entry : mapYearByNoCategories.entrySet()) {
+            System.out.println("Year: " + entry.getKey() + " No of Categories: " + entry.getValue());
+        }
+
+        if(enrollments.isEmpty()){
+            Map<Student, List<String>> unassignedStudents = new HashMap<>();
+            studentRepository.findStudentsNotEnrolled().forEach(student -> unassignedStudents.put(student, new ArrayList<>()));
+            completeAssignment(unassignedStudents, mapCourseIdByMaxStudents, mapYearByNoCategories);
+            return enrollmentRepository.findAll();
+        }
+        Long currentStudentId = enrollments.get(0).getStudent().getId();
+        List<String> categoriesTaken = new ArrayList<>();
 
         Map<Student, List<String>> unassignedStudents = new HashMap<>();
 
         for (Enrollment enrollment : enrollments) {
             if (!enrollment.getStudent().getId().equals(currentStudentId)) {
                 if (categoriesTaken.size() < mapYearByNoCategories.get(enrollment.getStudent().getYear())) {
-                    unassignedStudents.put(studentRepository.findById(currentStudentId).orElse(null), categoriesTaken);
+                    System.out.println("Student: " + studentRepository.findById(currentStudentId).orElse(null) + " Categories Taken: " + categoriesTaken);
+                    unassignedStudents.put(studentRepository.findById(currentStudentId).orElse(null), new ArrayList<>(categoriesTaken));
                 }
                 categoriesTaken.clear();
                 currentStudentId = enrollment.getStudent().getId();
@@ -155,27 +172,57 @@ public class EnrollmentServiceImpl implements EnrollmentService{
         return enrollmentRepository.findAll();
     }
 
-    public void completeAssignment(Map<Student, List<String>> students,Map<Long, Integer> mapCourseIdByMaxStudents, Map<Integer, Integer> mapYearByNoCategories){
+    public void completeAssignment(Map<Student, List<String>> students,Map<Long, Integer> mapCourseIdByMaxStudents, Map<Integer, Integer> mapYearByNoCategories) throws ObjectNotFound {
+//        for(Map.Entry<Long, Integer> entry : mapCourseIdByMaxStudents.entrySet()){
+//            System.out.println("courseId: " + entry.getKey() + " maxStudents: " + entry.getValue());
+//        }
+//        for(Map.Entry<Integer, Integer> entry : mapYearByNoCategories.entrySet()){
+//            System.out.println("year: " + entry.getKey() + " noCategories: " + entry.getValue());
+//        }
         for (Map.Entry<Student, List<String>> entry : students.entrySet()) {
-            List<String> categoriesTaken = entry.getValue();
-            for (Map.Entry<Long, Integer> entry1 : mapCourseIdByMaxStudents.entrySet()) {
-                if (entry1.getValue() == 0) {
-                    mapCourseIdByMaxStudents.remove(entry1.getKey());
+            System.out.println("student: " + entry.getKey());
+            for (String category : entry.getValue()) {
+                System.out.println("category: " + category);
+            }
+        }
+//        System.out.println("student size: " + students.size());
+//        System.out.println("course size: " + mapCourseIdByMaxStudents.size());
+//        System.out.println("year size: " + mapYearByNoCategories.size());
+//        Integer studentSizeTracker = 0;
+
+        for (Map.Entry<Student, List<String>> studentEntry : students.entrySet()) {
+            Student student = studentEntry.getKey();
+            List<String> categoriesTaken = studentEntry.getValue();
+
+            Iterator<Map.Entry<Long, Integer>> iterator = mapCourseIdByMaxStudents.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<Long, Integer> courseEntry = iterator.next();
+                Long courseId = courseEntry.getKey();
+                Integer maxStudents = courseEntry.getValue();
+
+                if (maxStudents == 0) {
+                    iterator.remove();
                     continue;
                 }
-                Course course = courseRepository.findById(entry1.getKey()).orElse(null);
+
+                Course course = courseRepository.findById(courseId).orElse(null);
                 if (course == null)
                     continue;
-                if (categoriesTaken.size() < mapYearByNoCategories.get(entry.getKey().getYear())) {
-                    if (!categoriesTaken.contains(course.getCategory())) {
-                        mapCourseIdByMaxStudents.put(course.getCourseId(), mapCourseIdByMaxStudents.get(course.getCourseId()) - 1);
-                        Enrollment enrollment = new Enrollment(entry.getKey(), course, 0, Status.valueOf("ACCEPTED"));
-                        enrollmentRepository.save(enrollment);
-                        categoriesTaken.add(course.getCategory());
-                    }
+
+                if (categoriesTaken.size() < mapYearByNoCategories.getOrDefault(student.getYear(), 0) &&
+                        student.getFacultySection() == course.getFacultySection() &&
+                        student.getYear().equals(course.getYear()) &&
+                        !categoriesTaken.contains(course.getCategory())) {
+
+                    mapCourseIdByMaxStudents.put(courseId, maxStudents - 1);
+                    Enrollment enrollment = new Enrollment(student, course, 0, Status.ACCEPTED);
+                    enrollmentRepository.save(enrollment);
+                    categoriesTaken.add(course.getCategory());
                 }
             }
         }
+
+
     }
 
     @Override

@@ -22,6 +22,9 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query("SELECT c FROM Course c, Enrollment e WHERE e.student.id = ?1 AND e.course.courseId = c.courseId AND e.status = 'ACCEPTED'")
     List<Course> findAcceptedCoursesByStudentId(Long studentId);
 
+    @Query("SELECT c FROM Course c, Enrollment e WHERE e.student.id = ?1 AND e.course.courseId = c.courseId AND e.status = 'PENDING'")
+    List<Course> findPendingCoursesByStudentId(Long studentId);
+
     @Query("SELECT c FROM Course c WHERE c.maximumStudentsAllowed > (SELECT COUNT(e) FROM Enrollment e WHERE e.course.courseId = c.courseId AND e.status = 'ACCEPTED') ")
     List<Course> findAvailableCourses();
 

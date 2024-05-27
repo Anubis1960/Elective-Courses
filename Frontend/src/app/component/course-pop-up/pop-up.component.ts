@@ -20,7 +20,7 @@ export class PopUpComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: Course, private ref: MatDialogRef<PopUpComponent>, private builder: FormBuilder, private courseService: CourseService, private snackbat: MatSnackBar) { }
 
   ngOnInit(): void {
-    console.log(this.data);
+    //console.log(this.data);
     this.input = this.data;
     this.form = this.builder.group({
       id: [this.input.id],
@@ -41,7 +41,7 @@ export class PopUpComponent implements OnInit {
         this.facultySections = data;
       },
       error: (error) => {
-        console.log(error);
+        //console.log(error);
       }
     })
     

@@ -42,7 +42,9 @@ public class EnrollmentController {
             @RequestParam Long studentId,
             @RequestParam Long courseId) throws ObjectNotFound {
         //System.out.println("studentId: " + studentId + " courseId: " + courseId + " priority: " + priority);
+
         Integer priority = enrollmentService.countByStudentId(studentId) + 1;
+        System.out.println("priority: " + priority);
         Enrollment enrollment = enrollmentService.addEnrollment(studentId, courseId, priority);
         EnrollmentDTO enrollmentDTO = new EnrollmentDTO(enrollment.getEnrollmentId(), enrollment.getStudent().getName(), enrollment.getCourse().getCourseName(), enrollment.getPriority(), enrollment.getStatus().toString());
         return new ResponseEntity<>(enrollmentDTO, HttpStatus.CREATED);
@@ -118,7 +120,7 @@ public class EnrollmentController {
     }
 
     @GetMapping("/assign")
-    public ResponseEntity<List<EnrollmentDTO>> assignStudents() {
+    public ResponseEntity<List<EnrollmentDTO>> assignStudents() throws ObjectNotFound{
         List<Enrollment> enrollments = enrollmentService.assignStudents();
         if (enrollments.isEmpty()) {
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);

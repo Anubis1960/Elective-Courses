@@ -91,6 +91,18 @@ public class CourseController {
         return getListResponseEntity(courses);
     }
 
+    @GetMapping("/available")
+    public ResponseEntity<List<CourseDTO>> getAvailableCourses() {
+        List<Course> courses = courseService.getAvailableCourses();
+        return getListResponseEntity(courses);
+    }
+
+    @GetMapping("/pending/{studentId}")
+    public ResponseEntity<List<CourseDTO>> getPendingCoursesByStudentId(@PathVariable("studentId") Long studentId) {
+        List<Course> courses = courseService.getPendingCoursesByStudentId(studentId);
+        return getListResponseEntity(courses);
+    }
+
     @GetMapping("/student/{studentId}")
     public ResponseEntity<List<CourseDTO>> getCoursesOfStudent(@PathVariable("studentId") Long studentId) throws ObjectNotFound {
 //        System.out.println("studentId = " + studentId);
