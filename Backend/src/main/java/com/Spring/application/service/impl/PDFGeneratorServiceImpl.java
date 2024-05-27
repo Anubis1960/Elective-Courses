@@ -528,7 +528,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
             facultySectionCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(facultySectionCell);
 
-            PdfPCell yearCell = new PdfPCell(new Phrase(enrollment.getCourse().getYear().toString(), cellFont));
+            PdfPCell yearCell = new PdfPCell(new Phrase(enrollment.getStudent().getYear().toString(), cellFont));
             yearCell.setHorizontalAlignment(Element.ALIGN_CENTER);
             yearCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(yearCell);

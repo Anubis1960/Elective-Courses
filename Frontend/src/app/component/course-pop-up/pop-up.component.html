@@ -5,40 +5,61 @@
         <form [formGroup]="form">
         <mat-form-field appearance="outline">
             <mat-label>Name</mat-label>
-            <input matInput placeholder="Name" formControlName="name">
+            <input matInput placeholder="Name" formControlName="name" required>
+            <mat-error *ngIf="form.controls['name'].invalid && (form.controls['name'].dirty || form.controls['name'].touched)">
+                Name is required
+            </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Description</mat-label>
-            <input matInput placeholder="Description" formControlName="description">
+            <input matInput placeholder="Description" formControlName="description" required>
+            <mat-error *ngIf="form.controls['description'].invalid && (form.controls['description'].dirty || form.controls['description'].touched)">
+                Description is required
+            </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Category</mat-label>
-            <input matInput placeholder="Category" formControlName="category">
+            <input matInput placeholder="Category" formControlName="category" required>
+            <mat-error *ngIf="form.controls['category'].invalid && (form.controls['category'].dirty || form.controls['category'].touched)">
+                Category is required
+            </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Faculty Section</mat-label>
-            <mat-select formControlName="facultySection">
+            <mat-select formControlName="facultySection" required>
                 <mat-option *ngFor="let section of facultySections" [value]="section" [disabled]="!checkTitle()">{{ section }}</mat-option>
-              </mat-select>
+            </mat-select>
+            <mat-error *ngIf="form.controls['facultySection'].invalid && (form.controls['facultySection'].dirty || form.controls['facultySection'].touched)">
+                Faculty Section is required
+            </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Maximum Students Allowed</mat-label>
-            <input matInput placeholder="Maximum Students Allowed" formControlName="maximumStudentsAllowed">
+            <input matInput placeholder="Maximum Students Allowed" formControlName="maximumStudentsAllowed" required>
+            <mat-error *ngIf="form.controls['maximumStudentsAllowed'].invalid && (form.controls['maximumStudentsAllowed'].dirty || form.controls['maximumStudentsAllowed'].touched)">
+                Maximum Students Allowed is required
+            </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Teacher Name</mat-label>
-            <input matInput placeholder="Teacher Name" formControlName="teacherName">
+            <input matInput placeholder="Teacher Name" formControlName="teacherName" required>
+            <mat-error *ngIf="form.controls['teacherName'].invalid && (form.controls['teacherName'].dirty || form.controls['teacherName'].touched)">
+                Teacher Name is required
+            </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Year</mat-label>
-            <mat-select formControlName="year">
+            <mat-select formControlName="year" required>
                 <mat-option *ngFor="let year of years" [value]="year" [disabled]="!checkTitle()">{{ year }}</mat-option>
-              </mat-select>
+            </mat-select>
+            <mat-error *ngIf="form.controls['year'].invalid && (form.controls['year'].dirty || form.controls['year'].touched)">
+                Year is required
+            </mat-error>
         </mat-form-field>
    
 </form>
  </div >
 <div mat-dialog-actions>
-    <button (click)="close()" mat-button mat-dialog-close>Close</button>
-    <button (click)="save()" mat-button [disabled]="form.invalid">Save</button>
+    <button mat-button (click)="close()"  mat-dialog-close>Close</button>
+    <button mat-button (click)="save()"  [disabled]="form.invalid">Save</button>
 </div>

@@ -51,12 +51,22 @@ export class EnrollmentService {
     return this.http.get<Enrollment[]>(`${this.baseUrl}/assign`);
   }
 
-  exportEnrollmentsToPDF(facultySection: string, year: string): Observable<any> {
-    const params = new HttpParams()
-    .set('facultySection', facultySection)
-    .set('year', year);
-    return this.http.get(`${this.baseUrl}/export`, {params, responseType: 'blob'});
+  exportEnrollmentsToPDF(facultySection?: string, year?: string): Observable<any> {
+    let params = new HttpParams();
+    console.log(facultySection);
+    console.log(year);
+  
+    if (facultySection) {
+      params = params.set('facultySection', facultySection);
+    }
+    if (year) {
+      params = params.set('year', year);
+    }
+  
+    console.log(params.toString());
+    return this.http.get(`${this.baseUrl}/export`, { params, responseType: 'blob' });
   }
+  
 
   reassignStudent(studentId: number, courseId: number, newCourseId: number): Observable<Enrollment> {
     const params = new HttpParams()

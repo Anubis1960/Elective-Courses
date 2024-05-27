@@ -56,7 +56,7 @@ export class PopUpComponent implements OnInit {
   }
 
   save() {
-    if (this.checkTitle()) {
+    if (!this.checkTitle()) {
       this.courseService.updateCourse(this.form.value.id, this.form.value.name, this.form.value.description, this.form.value.category, this.form.value.facultySection, this.form.value.maximumStudentsAllowed, this.form.value.year, this.form.value.teacherName).subscribe({
         next: (data) => {
           //console.log(data);
