@@ -19,6 +19,7 @@ export class ProfileComponent implements OnInit {
   enrollment_service: EnrollmentService | undefined;
   event: Event | undefined;
   user: User | undefined;
+  status: string = localStorage.getItem('status') ?? '';
   constructor(private httpClient: HttpClient, private _snackbar: MatSnackBar) { }
 
   ngOnInit() {

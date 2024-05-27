@@ -18,7 +18,6 @@ export class CourseInfoComponent {
   courseSchedule: CourseSchedule | undefined;
   role: string = JSON.parse(sessionStorage.getItem('user') || '{}').role;
   status: string | undefined;
-
   constructor( private dialog: MatDialog, private courseService: CourseService, private courseScheduleService: CourseScheduleService) { }
 
   ngOnInit() {

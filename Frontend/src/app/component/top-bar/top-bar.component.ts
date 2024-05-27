@@ -9,10 +9,7 @@ import { ApplicationPeriodService } from '../../service/application-period.servi
 })
 export class TopBarComponent {
   userRole = JSON.parse(sessionStorage.getItem('user') || '{}').role;
-  status = localStorage.getItem('status') || '';
-
   constructor(private router:Router, private applicationPeriodService: ApplicationPeriodService ) { }
-  
   onLogout() {
     sessionStorage.removeItem('user');
     this.router.navigateByUrl('/login');
