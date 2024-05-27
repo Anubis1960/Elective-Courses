@@ -7,6 +7,8 @@ import { EnrollmentService } from '../../service/enrollment.service';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../../model/user.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { StudentService } from '../../service/student.service';
+import { Student } from '../../model/student.model';
 @Component({
   selector: 'app-course-details',
   templateUrl: './course-details.component.html',
@@ -15,8 +17,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class CourseDetailsComponent implements OnInit{
   status: string | undefined;
   courseId: number | undefined;
+  studentColleagues: Student[] | undefined
   enrollmentService: EnrollmentService | undefined;
-  constructor(private route: ActivatedRoute, private httpClient: HttpClient,private snackbar: MatSnackBar) { }
+  constructor(private route: ActivatedRoute, private httpClient: HttpClient,private snackbar: MatSnackBar, private studentService: StudentService) { }
 
   ngOnInit() {
     this.status = localStorage.getItem('status') || '';
@@ -24,6 +27,18 @@ export class CourseDetailsComponent implements OnInit{
       this.courseId = Number(params.get('id'));
       //console.log(this.courseId);
     });
+    if(this.status == 'false' && this.courseId){
+      this.studentService.getAcceptedStudentsByCourseId(this.courseId).subscribe({
+        next: (data: Student[]) => {
+          this.studentColleagues = data;
+          console.log(data);
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
+    }
+
   }
 
   
