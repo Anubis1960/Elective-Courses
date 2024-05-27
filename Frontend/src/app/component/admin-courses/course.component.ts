@@ -100,7 +100,7 @@ export class CourseComponent implements OnInit {
         } else {
           this.courses.push(result);
         }
-        this.updateDataSource();
+        this.dataSource.data = this.courses;
       }
     });
   }
@@ -109,7 +109,7 @@ export class CourseComponent implements OnInit {
     this.courseService.getCoursesList().subscribe({
       next: (data: Course[]) => {
         this.courses = data;
-        this.updateDataSource();
+        this.dataSource.data = this.courses;
       },
       error: (error) => {
         //console.log(error);
