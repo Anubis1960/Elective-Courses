@@ -85,7 +85,11 @@ public class CourseController {
         if (course == null) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
-        CourseDTO courseDTO = new CourseDTO(course.getCourseId(), course.getCourseName(), course.getDescription(), course.getCategory(), course.getMaximumStudentsAllowed(), course.getFacultySection().toString(), course.getYear(), course.getTeacherName(), enrollmentServiceImpl.countByCourseId(courseId));
+        CourseDTO courseDTO;
+        if(applicationPeriodService.getApplicationPeriod())
+            courseDTO = new CourseDTO(course.getCourseId(), course.getCourseName(), course.getDescription(), course.getCategory(), course.getMaximumStudentsAllowed(), course.getFacultySection().toString(), course.getYear(), course.getTeacherName(), enrollmentServiceImpl.countByCourseId(courseId));
+        else
+            courseDTO = new CourseDTO(course.getCourseId(),course.getCourseName(),course.getDescription(),course.getCategory(),course.getMaximumStudentsAllowed(), course.getFacultySection().toString(),course.getYear(),course.getTeacherName(),enrollmentServiceImpl.countByCourseIdAndStatusIsAccepted(courseId));
         return new ResponseEntity<>(courseDTO, HttpStatus.OK);
     }
 
@@ -159,4 +163,5 @@ public class CourseController {
     public ResponseEntity<List<String>> getAllFacultySections(){
         return new ResponseEntity<>(courseService.getFacultySections(),HttpStatus.OK);
     }
+
 }
