@@ -13,12 +13,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrl: './course-details.component.css'
 })
 export class CourseDetailsComponent implements OnInit{
-  status: string = localStorage.getItem('status') || '';
+  status: string | undefined;
   courseId: number | undefined;
   enrollmentService: EnrollmentService | undefined;
   constructor(private route: ActivatedRoute, private httpClient: HttpClient,private snackbar: MatSnackBar) { }
 
   ngOnInit() {
+    this.status = localStorage.getItem('status') || '';
     this.route.paramMap.subscribe(params => {
       this.courseId = Number(params.get('id'));
       //console.log(this.courseId);

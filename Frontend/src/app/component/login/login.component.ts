@@ -29,19 +29,19 @@ export class LoginComponent {
         this.user = data;
         //console.log(this.user);
         sessionStorage.setItem('user', JSON.stringify(this.user));
-        if(this.user.role === 'ADMIN'){
-          this.router.navigateByUrl('/admin/courses');
-        } else if(this.user.role === 'STUDENT'){
-          this.router.navigateByUrl('/student/courses');
-        }
         this.applicationPeriodService.getApplicationPeriodStatus().subscribe({
           next: (data: boolean) => {
-            sessionStorage.setItem('status', data.toString());
+            localStorage.setItem('status', data.toString());
           },
           error: (error) => {
             //console.log(error);
           }
         });
+        if(this.user.role === 'ADMIN'){
+          this.router.navigateByUrl('/admin/courses');
+        } else if(this.user.role === 'STUDENT'){
+          this.router.navigateByUrl('/student/courses');
+        }
       },
       error: (error) => {
         //console.log(error);
