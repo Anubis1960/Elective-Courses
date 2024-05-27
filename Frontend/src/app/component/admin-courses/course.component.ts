@@ -28,7 +28,8 @@ export class CourseComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   
   ngOnInit(): void {
-    console.log(this.status);
+    this.status = localStorage.getItem('status') || '';
+    //console.log(this.status);
     this.refresh();
   }
   
