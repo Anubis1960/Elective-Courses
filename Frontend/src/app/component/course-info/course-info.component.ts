@@ -5,27 +5,33 @@ import { CourseSchedule } from '../../model/course-schedule.model';
 import { CourseScheduleService } from '../../service/course-schedule.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SchedulePopUpComponent } from '../schedule-pop-up/schedule-pop-up.component';
+import { ApplicationPeriodService } from '../../service/application-period.service';
 
 @Component({
   selector: 'app-course-info',
   templateUrl: './course-info.component.html',
   styleUrl: './course-info.component.css'
-})export class CourseInfoComponent {
+})
+export class CourseInfoComponent {
   @Input() courseId!: number | undefined;
   course!: Course | undefined;
   courseSchedule: CourseSchedule | undefined;
-  role: string = '';
-  status: string = '';
+  role: string = JSON.parse(sessionStorage.getItem('user') || '{}').role;
+  status: boolean | undefined;
 
-  constructor(private dialog: MatDialog, private courseService: CourseService, private courseScheduleService: CourseScheduleService) { }
+  constructor( private dialog: MatDialog, private courseService: CourseService, private courseScheduleService: CourseScheduleService, private appliactionPeriodService: ApplicationPeriodService) { }
 
   ngOnInit() {
-    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
-    this.role = user.role;
-    this.status = sessionStorage.getItem('status') || '';
-    
+    const role = JSON.parse(sessionStorage.getItem('user') || '{}').role;
+    this.appliactionPeriodService.getApplicationPeriodStatus().subscribe({
+      next: (data: boolean) => {
+        this.status = data;
+      },
+      error: () => {
+        //console.log(error);
+      }
+    });
     console.error(this.status);
-    
     if (this.courseId) {
       this.courseService.getCourse(this.courseId).subscribe({
         next: (data: Course) => {
@@ -67,7 +73,7 @@ import { SchedulePopUpComponent } from '../schedule-pop-up/schedule-pop-up.compo
     });
   }
 
-  exportPDF() {
+  exportPDF(){
     if (!this.courseId) {
       return;
     }
@@ -82,4 +88,5 @@ import { SchedulePopUpComponent } from '../schedule-pop-up/schedule-pop-up.compo
       }
     });
   }
+
 }
