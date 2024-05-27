@@ -149,6 +149,7 @@ export class CourseComponent implements OnInit {
             //console.log(error);
           }
         });
+        this.refresh();
       },
       error: (error) => {
         //console.log(error);

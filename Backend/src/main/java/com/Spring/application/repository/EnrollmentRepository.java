@@ -25,6 +25,9 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     @Query("SELECT count(e) FROM Enrollment e WHERE e.course.courseId = :courseId GROUP BY e.course.courseId")
     Optional<Integer> countByCourseId(Long courseId);
 
+    @Query("SELECT count(e) FROM Enrollment e WHERE e.course.courseId = :courseId AND e.status = 'ACCEPTED' GROUP BY e.course.courseId")
+    Optional<Integer> countAcceptedByCourseId(Long courseId);
+
     @Query("SELECT count(e) FROM Enrollment e WHERE e.student.id = :studentId GROUP BY e.student.id")
     Optional<Integer> countByStudentId(Long studentId);
 

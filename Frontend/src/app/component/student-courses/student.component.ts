@@ -21,6 +21,7 @@ export class StudentComponent {
   displyedColumns: string[] = ['id', 'name', 'description', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year'];
   courseScheduleService: CourseScheduleService | undefined;
   user = JSON.parse(sessionStorage.getItem('user') || '{}');
+  status: string = localStorage.getItem('status') || '';
 
   constructor(private http: HttpClient, private courseService: CourseService, private dialog: MatDialog, private router: Router) { }
 
@@ -28,8 +29,7 @@ export class StudentComponent {
   @ViewChild(MatSort) sort!: MatSort;
   ngOnInit(): void {
     //console.log(user);
-    const status: string = localStorage.getItem('status') || '';
-    if(status == 'true'){
+    if(this.status == 'true'){
       this.courseService.getCoursesByStudentId(this.user.id).subscribe({
         next: (data: Course[]) => {
           this.courses = data;
