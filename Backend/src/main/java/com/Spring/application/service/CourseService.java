@@ -16,7 +16,5 @@ public interface CourseService {
     Course getCourseByName(String name);
     List<Course> getAcceptedCoursesByStudentId(Long studentId);
     List<Course> getAvailableCourses();
-
     List<String> getFacultySections();
-
 }

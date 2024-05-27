@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CourseSchedule } from '../model/course-schedule.model';
 
@@ -25,15 +25,9 @@ export class CourseScheduleService {
     return this.http.put<CourseSchedule>(`${this.baseUrl}/${courseSchedule.id}`, courseSchedule);
   }
 
-  deleteCourseSchedule(id: number): Observable<CourseSchedule> {
-    return this.http.delete<CourseSchedule>(`${this.baseUrl}/${id}`)
-  }
-
-  getCourseSchedulesList(): Observable<CourseSchedule> {
-    return this.http.get<CourseSchedule>(`${this.baseUrl}/`);
-  }
-
-  exportCourseSchedules(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/export`);
+  exportCourseSchedules(id: number): Observable<any> {
+    const params = new HttpParams()
+      .set('id', id);
+    return this.http.get(`${this.baseUrl}/export`, { params, responseType: 'blob' });
   }
 }
