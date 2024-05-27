@@ -13,7 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrl: './course-details.component.css'
 })
 export class CourseDetailsComponent implements OnInit{
-  status: boolean = localStorage.getItem('status') === 'true';
+  status: string = localStorage.getItem('status') || '';
   courseId: number | undefined;
   enrollmentService: EnrollmentService | undefined;
   constructor(private route: ActivatedRoute, private httpClient: HttpClient,private snackbar: MatSnackBar) { }

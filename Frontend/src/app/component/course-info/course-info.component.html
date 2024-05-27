@@ -23,8 +23,10 @@
             <p><strong>No schedule available</strong></p>
         }
     </div>
-  
-  @if(role === 'ADMIN'){
+</div>
+
+@if(status == false){
+  @if(role == 'ADMIN'){
     @if(courseSchedule != undefined){
         <button (click)="openDialog()">Edit Schedule</button>
     }
@@ -33,4 +35,4 @@
     }
     <button (click)="exportPDF()">Export PDF</button>
   }
-</div>
+}

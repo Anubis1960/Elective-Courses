@@ -5,6 +5,7 @@ import { CourseSchedule } from '../../model/course-schedule.model';
 import { CourseScheduleService } from '../../service/course-schedule.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SchedulePopUpComponent } from '../schedule-pop-up/schedule-pop-up.component';
+import { ApplicationPeriodService } from '../../service/application-period.service';
 
 @Component({
   selector: 'app-course-info',
@@ -16,11 +17,21 @@ export class CourseInfoComponent {
   course!: Course | undefined;
   courseSchedule: CourseSchedule | undefined;
   role: string = JSON.parse(sessionStorage.getItem('user') || '{}').role;
+  status: boolean | undefined;
 
-  constructor( private dialog: MatDialog, private courseService: CourseService, private courseScheduleService: CourseScheduleService) { }
+  constructor( private dialog: MatDialog, private courseService: CourseService, private courseScheduleService: CourseScheduleService, private appliactionPeriodService: ApplicationPeriodService) { }
 
   ngOnInit() {
     const role = JSON.parse(sessionStorage.getItem('user') || '{}').role;
+    this.appliactionPeriodService.getApplicationPeriodStatus().subscribe({
+      next: (data: boolean) => {
+        this.status = data;
+      },
+      error: () => {
+        //console.log(error);
+      }
+    });
+    console.error(this.status);
     if (this.courseId) {
       this.courseService.getCourse(this.courseId).subscribe({
         next: (data: Course) => {

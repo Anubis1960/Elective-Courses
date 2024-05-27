@@ -31,7 +31,7 @@ export class CourseStudentComponent {
       if (!this.studentService) {
         this.studentService = new StudentService(this.httpClient);
       }
-      const status: string = JSON.parse(localStorage.getItem('status') || 'true');
+      const status: string = localStorage.getItem('status') || '';
       if(status == 'true'){
         this.studentService.getStudentsByCourseId(this.courseId).subscribe({
           next: (data: Student[]) => {
