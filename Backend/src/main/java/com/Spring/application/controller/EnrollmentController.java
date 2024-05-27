@@ -125,4 +125,14 @@ public class EnrollmentController {
         return new ResponseEntity<>(enrollmentDTOs, HttpStatus.OK);
     }
 
+    @PutMapping("/reassign")
+    public ResponseEntity<EnrollmentDTO> reassignStudents(@RequestParam Long studentId,@RequestParam Long courseId,@RequestParam Long newCourseId) throws ObjectNotFound {
+        Enrollment enrollment = enrollmentService.reassingStudent(studentId, courseId, newCourseId);
+        if (enrollment == null) {
+            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
+        }
+        EnrollmentDTO enrollmentDTO = new EnrollmentDTO(enrollment.getEnrollmentId(), enrollment.getStudent().getName(), enrollment.getCourse().getCourseName(), enrollment.getPriority(), enrollment.getStatus().toString());
+        return new ResponseEntity<>(enrollmentDTO, HttpStatus.OK);
+    }
+
 }

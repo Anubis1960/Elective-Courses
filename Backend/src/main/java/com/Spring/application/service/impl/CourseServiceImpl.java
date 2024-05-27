@@ -30,10 +30,10 @@ public class CourseServiceImpl implements CourseService{
     @Override
     public Course addCourse(String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) throws ObjectNotFound, InvalidInput {
         if (year <= 0){
-            throw new InvalidInput("Invalid year");
+            return null;
         }
         if (maxStudentsAllowed <= 0){
-            throw new InvalidInput("Invalid number of students");
+            return null;
         }
         Course course = new Course(courseName, category, description, year, maxStudentsAllowed, FacultySection.valueOf(facultySection), teacherName);
         courseRepository.save(course);
@@ -44,13 +44,13 @@ public class CourseServiceImpl implements CourseService{
     public Course updateCourse(Long courseId, String courseName, String category, String description, Integer year, Integer maxStudentsAllowed, String facultySection, String teacherName) throws InvalidInput, ObjectNotFound {
         Course course = courseRepository.findById(courseId).orElse(null);
         if (course == null) {
-            throw new ObjectNotFound("Course not found");
+            return null;
         }
         if (year <= 0){
-            throw new InvalidInput("Invalid year");
+            return null;
         }
         if (maxStudentsAllowed <= 0){
-            throw new InvalidInput("Invalid number of students");
+            return null;
         }
         course.setCourseName(courseName);
         course.setCategory(category);
@@ -68,7 +68,7 @@ public class CourseServiceImpl implements CourseService{
     public Course deleteCourse(Long courseId) throws ObjectNotFound {
         Course course = courseRepository.findById(courseId).orElse(null);
         if (course == null) {
-            throw new ObjectNotFound("Course not found");
+            return null;
         }
         courseScheduleRepository.deleteById(courseId);
         enrollmentRepository.deleteByCourseId(courseId);
@@ -80,7 +80,7 @@ public class CourseServiceImpl implements CourseService{
     public Course getCourseById(Long courseId) throws ObjectNotFound {
         Course course = courseRepository.findById(courseId).orElse(null);
         if (course == null) {
-            throw new ObjectNotFound("Course not found");
+            return null;
         }
         return course;
     }

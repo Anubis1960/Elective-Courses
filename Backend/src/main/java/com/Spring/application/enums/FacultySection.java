@@ -2,7 +2,8 @@ package com.Spring.application.enums;
 
 public enum FacultySection {
     IR("IR"),
-    IE("IE"),;
+    IE("IE"),
+    FEAA("FEAA");
 
     public final String section;
 

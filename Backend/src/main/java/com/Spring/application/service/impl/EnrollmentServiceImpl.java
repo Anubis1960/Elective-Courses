@@ -187,4 +187,16 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     public List<Enrollment> getEnrollmentsByFacultySectionAndStatusIsAccepted(String facultySection){
         return enrollmentRepository.findEnrollmentByFacultySectionAndStatusIsAccepted(FacultySection.valueOf(facultySection));
     }
+
+    @Override
+    public Enrollment reassingStudent(Long studentId, Long courseId, Long newCourseId){
+        Enrollment enrollment = enrollmentRepository.findEnrollmentByStudentIdAndCourseIdAndStatusIsAccepted(studentId, courseId);
+        //System.out.println("enrollment: " + enrollment);
+        if(enrollment == null){
+            return null;
+        }
+        enrollment.setCourse(courseRepository.findById(newCourseId).orElse(null));
+        enrollmentRepository.save(enrollment);
+        return enrollment;
+    }
 }

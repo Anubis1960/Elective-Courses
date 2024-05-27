@@ -5,7 +5,6 @@ import com.Spring.application.entity.Student;
 import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.service.impl.StudentServiceImpl;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +29,9 @@ public class StudentController {
             @RequestParam String email,
             @RequestParam String password) throws NoSuchAlgorithmException, InvalidInput {
         Student student = studentService.addStudent(name, grade, facultySection, year, email, password);
+        if (student == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         StudentDTO studentDTO = new StudentDTO(student.getId(), student.getName(), student.getEmail(), student.getRole().toString(), student.getFacultySection().toString(), student.getYear(), student.getGrade());
         return new ResponseEntity<>(studentDTO, HttpStatus.CREATED);
     }
@@ -44,6 +46,9 @@ public class StudentController {
             @RequestParam String email,
             @RequestParam String password) throws InvalidInput, ObjectNotFound, NoSuchAlgorithmException {
         Student student = studentService.updateStudent(userId, name, role, grade, facultySection, year, email, password);
+        if (student == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         StudentDTO studentDTO = new StudentDTO(student.getId(), student.getName(), student.getEmail(), student.getRole().toString(), student.getFacultySection().toString(), student.getYear(), student.getGrade());
         return new ResponseEntity<>(studentDTO, HttpStatus.OK);
     }
@@ -51,6 +56,9 @@ public class StudentController {
     @DeleteMapping("/{id}")
     public ResponseEntity<StudentDTO> deleteStudent(@PathVariable("id")  Long id) throws ObjectNotFound {
         Student student = studentService.deleteStudent(id);
+        if (student == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         StudentDTO studentDTO = new StudentDTO(student.getId(), student.getName(), student.getEmail(), student.getRole().toString(), student.getFacultySection().toString(), student.getYear(), student.getGrade());
         return new ResponseEntity<>(studentDTO, HttpStatus.OK);
     }
@@ -58,6 +66,9 @@ public class StudentController {
     @GetMapping("/{id}")
     public ResponseEntity<StudentDTO> getStudentById(@PathVariable("id")  Long id) throws ObjectNotFound {
         Student student = studentService.getStudentById(id);
+        if (student == null) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
         StudentDTO studentDTO = new StudentDTO(student.getId(), student.getName(), student.getEmail(), student.getRole().toString(), student.getFacultySection().toString(), student.getYear(), student.getGrade());
         return new ResponseEntity<>(studentDTO, HttpStatus.OK);
     }
