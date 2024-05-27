@@ -99,6 +99,9 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
     @Override
     public void exportScheduleToPDF(OutputStream out, Long id) throws IOException {
         List<CourseSchedule> courseSchedules = courseScheduleRepository.findCourseScheduleOfStudent(id);
+        for(CourseSchedule courseSchedule : courseSchedules){
+            System.out.println(courseSchedule);
+        }
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, out);
         document.open();
