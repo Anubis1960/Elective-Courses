@@ -111,8 +111,8 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public List<Course> getAvailableCourses() {
-        return courseRepository.findAvailableCourses();
+    public List<Course> getAvailableCourses(Long courseId, Integer year, FacultySection facultySection, String category) {
+        return courseRepository.findAvailableCourses(courseId, year, facultySection, category);
     }
 
     @Override

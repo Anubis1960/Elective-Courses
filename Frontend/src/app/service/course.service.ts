@@ -74,4 +74,14 @@ export class CourseService {
   getPendingCoursesByStudentId(id: number): Observable<Course[]> {
     return this.http.get<Course[]>(`${this.baseUrl}/pending/${id}`);
   }
+
+  getAvailableCourses(id: number, year: number, facultySection: string, category: string): Observable<Course[]> {
+    const params = new HttpParams()
+    .set('courseId', id)
+    .set('year', year)
+    .set('facultySection', facultySection)
+    .set('category', category);
+    return this.http.get<Course[]>(`${this.baseUrl}/available`, {params});
+  }
+
 }

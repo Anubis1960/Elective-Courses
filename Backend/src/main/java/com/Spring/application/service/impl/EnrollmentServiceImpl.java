@@ -104,6 +104,11 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     }
 
     @Override
+    public Integer countByCourseIdAndStatusIsAccepted(Long courseId){
+        return enrollmentRepository.countAcceptedByCourseId(courseId).orElse(0);
+    }
+
+    @Override
     public Integer countByStudentId(Long studentId){
 //        System.out.println("studentId: " + studentId);
 //        System.out.println("count: " + enrollmentRepository.countByStudentId(studentId).orElse(0));

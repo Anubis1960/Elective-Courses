@@ -2,8 +2,10 @@ package com.Spring.application.controller;
 
 import com.Spring.application.dto.CourseDTO;
 import com.Spring.application.entity.Course;
+import com.Spring.application.enums.FacultySection;
 import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
+import com.Spring.application.service.ApplicationPeriodService;
 import com.Spring.application.service.impl.CourseServiceImpl;
 import com.Spring.application.service.impl.EnrollmentServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,6 +31,8 @@ public class CourseController {
     private EnrollmentServiceImpl enrollmentServiceImpl;
     @Autowired
     private PDFGeneratorService pdfGeneratorService;
+    @Autowired
+    private ApplicationPeriodService applicationPeriodService;
 
     @PostMapping("/")
     public ResponseEntity<CourseDTO> addCourse(
@@ -92,10 +96,14 @@ public class CourseController {
     }
 
     @GetMapping("/available")
-    public ResponseEntity<List<CourseDTO>> getAvailableCourses() {
-        List<Course> courses = courseService.getAvailableCourses();
+    public ResponseEntity<List<CourseDTO>> getAvailableCourses(@RequestParam Long courseId,@RequestParam Integer year, @RequestParam String facultySection, @RequestParam String category) {
+        List<Course> courses = courseService.getAvailableCourses(courseId, year, FacultySection.valueOf(facultySection), category);
+        if (courses.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
         return getListResponseEntity(courses);
     }
+
 
     @GetMapping("/pending/{studentId}")
     public ResponseEntity<List<CourseDTO>> getPendingCoursesByStudentId(@PathVariable("studentId") Long studentId) {
@@ -115,7 +123,12 @@ public class CourseController {
 
     private ResponseEntity<List<CourseDTO>> getListResponseEntity(List<Course> courses) {
         List<Integer> numberOfStudents = new ArrayList<>();
-        courses.forEach(course -> numberOfStudents.add(enrollmentServiceImpl.countByCourseId(course.getCourseId())));
+        if (applicationPeriodService.getApplicationPeriod()) {
+            courses.forEach(course -> numberOfStudents.add(enrollmentServiceImpl.countByCourseId(course.getCourseId())));
+        }
+        else{
+            courses.forEach(course -> numberOfStudents.add(enrollmentServiceImpl.countByCourseIdAndStatusIsAccepted(course.getCourseId())));
+        }
         if (courses.isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }

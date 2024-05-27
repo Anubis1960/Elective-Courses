@@ -1,6 +1,7 @@
 package com.Spring.application.service;
 
 import com.Spring.application.entity.Course;
+import com.Spring.application.enums.FacultySection;
 import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
 
@@ -15,7 +16,7 @@ public interface CourseService {
     List<Course> getCoursesOfStudent(Long studentId) throws ObjectNotFound;
     Course getCourseByName(String name);
     List<Course> getAcceptedCoursesByStudentId(Long studentId);
-    List<Course> getAvailableCourses();
+    List<Course> getAvailableCourses(Long courseId, Integer year, FacultySection facultySection, String category);
     List<String> getFacultySections();
     List<Course> getPendingCoursesByStudentId(Long studentId);
 }
