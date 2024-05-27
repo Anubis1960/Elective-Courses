@@ -17,7 +17,9 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Faculty Section</mat-label>
-            <input matInput placeholder="Faculty Section" formControlName="facultySection" [readonly]="!checkTitle()">
+            <mat-select formControlName="facultySection">
+                <mat-option *ngFor="let section of facultySections" [value]="section" [disabled]="!checkTitle()">{{ section }}</mat-option>
+              </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Maximum Students Allowed</mat-label>
@@ -29,7 +31,9 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
             <mat-label>Year</mat-label>
-            <input matInput placeholder="Year" formControlName="year" [readonly]="!checkTitle()">
+            <mat-select formControlName="year">
+                <mat-option *ngFor="let year of years" [value]="year" [disabled]="!checkTitle()">{{ year }}</mat-option>
+              </mat-select>
         </mat-form-field>
    
 </form>
