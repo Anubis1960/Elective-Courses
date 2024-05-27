@@ -9,25 +9,10 @@ import { ApplicationPeriodService } from '../../service/application-period.servi
 })
 export class TopBarComponent {
   userRole = JSON.parse(sessionStorage.getItem('user') || '{}').role;
-  status = JSON.parse(sessionStorage.getItem('user') || '{}').status;
-
   constructor(private router:Router, private applicationPeriodService: ApplicationPeriodService ) { }
-  
   onLogout() {
     sessionStorage.removeItem('user');
     this.router.navigateByUrl('/login');
   } 
 
-  closePeriod() {
-    this.applicationPeriodService.reverseApplicationPeriodStatus().subscribe({
-      next: (data) => {
-        console.log(data);
-        this.status = data;
-        localStorage.setItem('status', JSON.stringify(data));
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    });
-  }
 }

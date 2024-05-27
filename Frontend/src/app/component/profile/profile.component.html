@@ -1,5 +1,6 @@
 <app-top-bar></app-top-bar>
 <app-student-info [studentId]="user?.id"></app-student-info>
+<div class = priority-container [ngStyle]="status === 'false' ? {'pointer-events': 'none', 'user-select': 'none', 'opacity': '0.6'} : {}">
 <div class="dragAndDrop">
   <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
     <div class="example-box" *ngFor="let enroll of enrollments_list; let i = index" cdkDrag>
@@ -12,3 +13,4 @@
   </div>
 </div>
 <button class="save-button" mat-button (click)="saveOrder()">Save</button>
+</div>

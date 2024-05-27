@@ -8,7 +8,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { PopUpComponent } from '../course-pop-up/pop-up.component';
 import { Router } from '@angular/router';
-
+import { ApplicationPeriodService } from '../../service/application-period.service';
+import { EnrollmentService } from '../../service/enrollment.service';
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
@@ -17,17 +18,18 @@ import { Router } from '@angular/router';
 export class CourseComponent implements OnInit {
 
   courses!: Course[];
+
   dataSource: MatTableDataSource<Course> = new MatTableDataSource<Course>();
   displayedColumns: string[] = ['id', 'name', 'description', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year', 'action'];
-  status: string = JSON.parse(localStorage.getItem('status') || 'true');
-
-  constructor(private http: HttpClient, private courseService: CourseService, private dialog: MatDialog, private router: Router) { }
+  status: string = localStorage.getItem('status') ?? '';
+  constructor(private http: HttpClient, private courseService: CourseService, private dialog: MatDialog, private router: Router,private applicationPeriodService: ApplicationPeriodService, private enrollmentService: EnrollmentService) { }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   
   ngOnInit(): void {
     this.refresh();
+    console.log(this.status);
   }
   
   ngAfterViewInit() {
@@ -110,5 +112,25 @@ export class CourseComponent implements OnInit {
   checkStatus() {
     console.log(this.status);
     return this.status == 'false';
+  }
+  closePeriod() {
+    this.applicationPeriodService.reverseApplicationPeriodStatus().subscribe({
+      next: (data) => {
+        console.log(data);
+        this.status = data.toString();
+        localStorage.setItem('status', JSON.stringify(data));
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
+    this.enrollmentService.assignStudentsToCourse().subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
   }
 }

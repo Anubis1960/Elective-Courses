@@ -25,12 +25,14 @@
     </div>
   
   @if(role === 'ADMIN'){
-    @if(courseSchedule != undefined){
+    @if(status == 'false'){
+      @if(courseSchedule != undefined){
         <button (click)="openDialog()">Edit Schedule</button>
-    }
-    @else{
+      }
+      @else{
         <button (click)="openDialog()">Add Schedule</button>
-    }
+      }
     <button (click)="exportPDF()">Export PDF</button>
+    }
   }
 </div>
