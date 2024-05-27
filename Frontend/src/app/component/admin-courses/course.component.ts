@@ -52,7 +52,7 @@ export class CourseComponent implements OnInit {
         this.facultySections = data;
       },
       error: (error) => {
-        console.log(error);
+        //console.log(error);
       }
     });
   }
@@ -69,7 +69,7 @@ export class CourseComponent implements OnInit {
         this.updateDataSource();
       },
       error: (error) => {
-        console.log(error);
+        //console.log(error);
       }
     });
   }
@@ -112,7 +112,7 @@ export class CourseComponent implements OnInit {
         this.updateDataSource();
       },
       error: (error) => {
-        console.log(error);
+        //console.log(error);
       }
     });
   }
@@ -143,15 +143,15 @@ export class CourseComponent implements OnInit {
         localStorage.setItem('status', JSON.stringify(data));
         this.enrollmentService.assignStudentsToCourse().subscribe({
           next: (data) => {
-            console.log(data);
+            //console.log(data);
           },
           error: (error) => {
-            console.log(error);
+            //console.log(error);
           }
         });
       },
       error: (error) => {
-        console.log(error);
+        //console.log(error);
       }
     });
   }
@@ -168,7 +168,7 @@ export class CourseComponent implements OnInit {
         window.open(url);
       },
       error: (error) => {
-        console.log(error);
+        //console.log(error);
       }
     });
   }

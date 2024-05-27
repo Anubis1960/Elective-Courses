@@ -14,7 +14,7 @@ public interface EnrollmentService {
     Integer countByCourseId(Long courseId);
     Integer countByStudentId(Long studentId);
     List<Enrollment> getEnrollmentsByStudentId(Long studentId);
-    List<Enrollment> assignStudents();
+    List<Enrollment> assignStudents() throws ObjectNotFound;
     List<Enrollment> getEnrollmentsByYearAndStatusIsAccepted(Integer year);
     List<Enrollment> getEnrollmentsByFacultySectionAndStatusIsAccepted(String facultySection);
     Enrollment reassingStudent(Long studentId, Long courseId, Long newCourseId);

@@ -36,7 +36,7 @@ export class CourseStudentComponent {
         this.studentService.getStudentsByCourseId(this.courseId).subscribe({
           next: (data: Student[]) => {
             this.students = data;
-            this.dataSource = new MatTableDataSource<Student>(this.students);
+            this.dataSource.data = this.students;
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
             //console.log(this.students);
@@ -50,10 +50,10 @@ export class CourseStudentComponent {
         this.studentService.getAcceptedStudentsByCourseId(this.courseId).subscribe({
           next: (data: Student[]) => {
             this.students = data;
-            this.dataSource = new MatTableDataSource<Student>(this.students);
+            this.dataSource.data = this.students;
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
-            // console.log(this.students);
+            //console.log(this.students);
           },
           error: (error) => {
             //console.log(error);
@@ -66,7 +66,7 @@ export class CourseStudentComponent {
   }
 
   ngAfterViewInit() {
-    console.log('status: '+this.status)
+    //console.log('status: '+this.status)
     this.dataSource.paginator = this.paginator
     this.dataSource.sort = this.sort;
   }

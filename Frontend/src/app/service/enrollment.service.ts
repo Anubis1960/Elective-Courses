@@ -53,8 +53,8 @@ export class EnrollmentService {
 
   exportEnrollmentsToPDF(facultySection?: string, year?: string): Observable<any> {
     let params = new HttpParams();
-    console.log(facultySection);
-    console.log(year);
+    // console.log(facultySection);
+    // console.log(year);
   
     if (facultySection) {
       params = params.set('facultySection', facultySection);

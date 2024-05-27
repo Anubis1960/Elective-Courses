@@ -31,7 +31,7 @@ export class StudentDetailsComponent implements OnInit{
         this.courseService = new CourseService(this.httpClient);
       }
       if (status == 'true'){
-        this.courseService.getCoursesByStudentId(this.id).subscribe({
+        this.courseService.getPendingCoursesByStudentId(this.id).subscribe({
           next: (data: Course[]) => {
             this.courses = data;
             //console.log(this.courses);

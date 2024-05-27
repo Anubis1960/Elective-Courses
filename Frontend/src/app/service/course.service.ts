@@ -70,4 +70,8 @@ export class CourseService {
   getAllFacultySections(): Observable<string[]>{
     return this.http.get<string[]>(`${this.baseUrl}/faculty-section`);
   }
+
+  getPendingCoursesByStudentId(id: number): Observable<Course[]> {
+    return this.http.get<Course[]>(`${this.baseUrl}/pending/${id}`);
+  }
 }

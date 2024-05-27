@@ -31,10 +31,10 @@ export class CourseDetailsComponent implements OnInit{
       this.studentService.getAcceptedStudentsByCourseId(this.courseId).subscribe({
         next: (data: Student[]) => {
           this.studentColleagues = data;
-          console.log(data);
+          //console.log(data);
         },
         error: (error) => {
-          console.log(error);
+          //console.log(error);
         }
       });
     }
@@ -45,7 +45,7 @@ export class CourseDetailsComponent implements OnInit{
   onEnroll() {
     let message: string;
     const user = JSON.parse(sessionStorage.getItem('user') || '{}') as User;
-    console.log(user);
+    //console.log(user);
     if (!this.enrollmentService) {
       this.enrollmentService = new EnrollmentService(this.httpClient);
     }

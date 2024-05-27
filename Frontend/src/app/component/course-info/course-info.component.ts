@@ -23,7 +23,7 @@ export class CourseInfoComponent {
   ngOnInit() {
     this.status = localStorage.getItem('status') || '';
     const role = JSON.parse(sessionStorage.getItem('user') || '{}').role;
-    console.error(this.status);
+    //console.error(this.status);
     if (this.courseId) {
       this.courseService.getCourse(this.courseId).subscribe({
         next: (data: Course) => {
