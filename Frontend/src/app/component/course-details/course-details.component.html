@@ -5,6 +5,10 @@
     <button (click)="onEnroll()">Enroll</button>
   </div>
 }
-
+@else{
+  @for(student of studentColleagues; track student){
+    <app-student-info [studentId]="student.id"></app-student-info>
+  }
+}
 
 
