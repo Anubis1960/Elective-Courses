@@ -28,4 +28,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query("SELECT c.courseId FROM Course c")
     List<Long> findAllCourseIds();
 
+    @Query("SELECT DISTINCT c.facultySection FROM Course c")
+    List<String> findFacultySections();
 }
