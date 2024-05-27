@@ -118,4 +118,8 @@ public class CourseController {
         response.setHeader(headerKey, headerValue);
         pdfGeneratorService.exportStudentsOfCourseToPDF(response.getOutputStream(), id);
     }
+    @GetMapping("/faculty-section")
+    public ResponseEntity<List<String>> getAllFacultySections(){
+        return new ResponseEntity<>(courseService.getFacultySections(),HttpStatus.OK);
+    }
 }

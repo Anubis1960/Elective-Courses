@@ -15,7 +15,8 @@ export class PopUpComponent implements OnInit {
   input: Course | undefined;
   disabeld: boolean = false;
   form!: FormGroup;
-
+  facultySections: string[] | undefined;
+  years: number[]=[1,2,3];
   constructor(@Inject(MAT_DIALOG_DATA) public data: Course, private ref: MatDialogRef<PopUpComponent>, private builder: FormBuilder, private courseService: CourseService, private snackbat: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -35,7 +36,14 @@ export class PopUpComponent implements OnInit {
     const contentHeight = 320 + (Object.keys(this.input).length - 1) * 80;
     const contentWidth = 590;
     this.ref.updateSize(contentWidth + 'px', contentHeight + 'px');
-  
+    this.courseService.getAllFacultySections().subscribe({
+      next: (data: string[]) => {
+        this.facultySections = data;
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
     
   }
 

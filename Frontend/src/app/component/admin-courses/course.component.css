@@ -10,7 +10,7 @@ button {
 }
 .card {
     margin: 3%;
-    width: 18%;
+    width: 100%;
     text-align: left;
     float:left;
 }
