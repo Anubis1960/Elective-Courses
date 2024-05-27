@@ -26,7 +26,7 @@ public class StudentServiceImpl implements StudentService{
     @Override
     public Student addStudent(String name, Float grade, String facultySection, Integer year, String email, String password) throws NoSuchAlgorithmException, InvalidInput {
         if (grade <= 0 || grade > 10){
-            throw new InvalidInput("Invalid grade");
+            return null;
         }
         Student student = new Student(name, Role.STUDENT, grade, FacultySection.valueOf(facultySection), year, email, Encrypt.toHexString(Encrypt.encrypt(password)));
         studentRepository.save(student);
@@ -37,10 +37,10 @@ public class StudentServiceImpl implements StudentService{
     public Student updateStudent(Long userId, String name, String role, Float grade, String facultySection, Integer year, String email, String password) throws ObjectNotFound, NoSuchAlgorithmException, InvalidInput {
         Student student = studentRepository.findById(userId).orElse(null);
         if (student == null) {
-            throw new ObjectNotFound("Student not found");
+            return null;
         }
         if (grade <= 0 || grade > 10){
-            throw new InvalidInput("Invalid grade");
+            return null;
         }
         student.setName(name);
         student.setRole(Role.valueOf(role));
@@ -57,7 +57,7 @@ public class StudentServiceImpl implements StudentService{
     public Student deleteStudent(Long id) throws ObjectNotFound {
         Student student = studentRepository.findById(id).orElse(null);
         if (student == null) {
-            throw new ObjectNotFound("Student not found");
+            return null;
         }
         enrollmentRepository.deleteByStudentId(id);
         studentRepository.deleteById(id);
@@ -69,7 +69,7 @@ public class StudentServiceImpl implements StudentService{
         Student student = studentRepository.findById(id).orElse(null);
         if (student == null) {
 //            System.out.println("Student not found");
-            throw new ObjectNotFound("Student not found");
+            return null;
         }
         return student;
     }

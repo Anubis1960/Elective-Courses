@@ -152,7 +152,7 @@ public class CourseScheduleServiceImpl implements CourseScheduleService{
     public CourseSchedule deleteCourseSchedule(Long courseId) throws ObjectNotFound {
         CourseSchedule courseSchedule = courseScheduleRepository.findById(courseId).orElse(null);
         if (courseSchedule == null) {
-            throw new ObjectNotFound("Course Schedule not found");
+            return null;
         }
         courseScheduleRepository.delete(courseSchedule);
         return courseSchedule;

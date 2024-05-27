@@ -40,6 +40,9 @@ public class CourseController {
             @RequestParam Integer year,
             @RequestParam String teacherName) throws ObjectNotFound, InvalidInput {
         Course course = courseService.addCourse(courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
+        if (course == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         CourseDTO courseDTO = new CourseDTO(course.getCourseId(), course.getCourseName(), course.getDescription(), course.getCategory(), course.getMaximumStudentsAllowed(), course.getFacultySection().toString(), course.getYear(), course.getTeacherName(), 0);
         return new ResponseEntity<>(courseDTO, HttpStatus.CREATED);
     }
@@ -55,6 +58,9 @@ public class CourseController {
             @RequestParam Integer year,
             @RequestParam String teacherName) throws ObjectNotFound, InvalidInput {
         Course course = courseService.updateCourse(courseId, courseName, category, description, year, maxStudentsAllowed, facultySection, teacherName);
+        if (course == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         CourseDTO courseDTO = new CourseDTO(course.getCourseId(), course.getCourseName(), course.getDescription(), course.getCategory(), course.getMaximumStudentsAllowed(), course.getFacultySection().toString(), course.getYear(), course.getTeacherName(), enrollmentServiceImpl.countByCourseId(courseId));
         return new ResponseEntity<>(courseDTO, HttpStatus.OK);
     }
@@ -62,6 +68,9 @@ public class CourseController {
     @DeleteMapping("/{id}")
     public ResponseEntity<CourseDTO> deleteCourse(@PathVariable("id") Long courseId) throws ObjectNotFound {
         Course course = courseService.deleteCourse(courseId);
+        if (course == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         CourseDTO courseDTO = new CourseDTO(course.getCourseId(), course.getCourseName(), course.getDescription(), course.getCategory(), course.getMaximumStudentsAllowed(), course.getFacultySection().toString(), course.getYear(), course.getTeacherName(), 0);
         return new ResponseEntity<>(courseDTO, HttpStatus.OK);
     }
@@ -69,6 +78,9 @@ public class CourseController {
     @GetMapping("/{id}")
     public ResponseEntity<CourseDTO> getCourseById(@PathVariable("id") Long courseId) throws ObjectNotFound {
         Course course = courseService.getCourseById(courseId);
+        if (course == null) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
         CourseDTO courseDTO = new CourseDTO(course.getCourseId(), course.getCourseName(), course.getDescription(), course.getCategory(), course.getMaximumStudentsAllowed(), course.getFacultySection().toString(), course.getYear(), course.getTeacherName(), enrollmentServiceImpl.countByCourseId(courseId));
         return new ResponseEntity<>(courseDTO, HttpStatus.OK);
     }

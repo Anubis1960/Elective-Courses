@@ -23,6 +23,9 @@ public class AdminController {
             @RequestParam String email,
             @RequestParam String password) throws NoSuchAlgorithmException{
         Admin admin = adminService.addAdmin(adminName, email,password);
+        if (admin == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         UserDTO userDTO = new UserDTO(admin.getId(), admin.getName(), admin.getEmail(), admin.getRole().toString());
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
@@ -34,6 +37,9 @@ public class AdminController {
             @RequestParam String email,
             @RequestParam String password) throws ObjectNotFound, NoSuchAlgorithmException {
         Admin admin = adminService.updateAdmin(adminId, adminName, email, password);
+        if (admin == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         UserDTO userDTO = new UserDTO(admin.getId(), admin.getName(), admin.getEmail(), admin.getRole().toString());
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
@@ -41,6 +47,9 @@ public class AdminController {
     @DeleteMapping("/{id}")
     public ResponseEntity<UserDTO> deleteAdmin(@PathVariable(value = "id") Long adminId) throws ObjectNotFound {
         Admin admin = adminService.deleteAdmin(adminId);
+        if (admin == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         UserDTO userDTO = new UserDTO(admin.getId(), admin.getName(), admin.getEmail(), admin.getRole().toString());
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
@@ -48,6 +57,9 @@ public class AdminController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getAdminById(@PathVariable(value = "id") Long adminId) throws ObjectNotFound {
         Admin admin = adminService.getAdminById(adminId);
+        if (admin == null) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
         UserDTO userDTO = new UserDTO(admin.getId(), admin.getName(), admin.getEmail(), admin.getRole().toString());
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }

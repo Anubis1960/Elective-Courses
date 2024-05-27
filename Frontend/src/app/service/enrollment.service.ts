@@ -57,4 +57,12 @@ export class EnrollmentService {
     .set('year', year);
     return this.http.get(`${this.baseUrl}/export`, {params, responseType: 'blob'});
   }
+
+  reassignStudent(studentId: number, courseId: number, newCourseId: number): Observable<Enrollment> {
+    const params = new HttpParams()
+    .set('studentId', studentId)
+    .set('courseId', courseId)
+    .set('newCourseId', newCourseId);
+    return this.http.put<Enrollment>(`${this.baseUrl}/reassign`, params);
+  }
 }

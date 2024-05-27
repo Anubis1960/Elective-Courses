@@ -40,6 +40,9 @@ public class CourseScheduleController {
     @DeleteMapping("/{id}")
     public ResponseEntity<CourseScheduleDTO> deleteCourseSchedule(@PathVariable("id") Long id) throws ObjectNotFound {
         CourseSchedule courseSchedule = courseScheduleService.deleteCourseSchedule(id);
+        if (courseSchedule == null) {
+            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
+        }
         CourseScheduleDTO courseScheduleDTO = new CourseScheduleDTO(courseSchedule.getCourseId(), courseSchedule.getDay().toString(), courseSchedule.getStartTime().toString(), courseSchedule.getEndTime().toString());
         return new ResponseEntity<>(courseScheduleDTO, HttpStatus.OK);
     }

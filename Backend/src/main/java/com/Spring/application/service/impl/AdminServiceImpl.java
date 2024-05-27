@@ -27,7 +27,7 @@ public class AdminServiceImpl implements AdminService {
     public Admin updateAdmin(Long adminId, String adminName, String email,  String password) throws ObjectNotFound, NoSuchAlgorithmException {
         Admin admin = adminRepository.findById(adminId).orElse(null);
         if (admin == null) {
-            throw new ObjectNotFound("Admin not found");
+            return null;
         }
         admin.setName(adminName);
         admin.setEmail(email);
@@ -40,7 +40,7 @@ public class AdminServiceImpl implements AdminService {
     public Admin deleteAdmin(Long adminId) throws ObjectNotFound {
         Admin admin = adminRepository.findById(adminId).orElse(null);
         if (admin == null) {
-            throw new ObjectNotFound("Admin not found");
+            return null;
         }
         adminRepository.delete(admin);
         return admin;
@@ -50,7 +50,7 @@ public class AdminServiceImpl implements AdminService {
     public Admin getAdminById(Long adminId) throws ObjectNotFound {
         Admin admin = adminRepository.findById(adminId).orElse(null);
         if (admin == null) {
-            throw new ObjectNotFound("Admin not found");
+            return null;
         }
         return admin;
     }

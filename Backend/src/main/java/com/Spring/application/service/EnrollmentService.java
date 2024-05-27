@@ -17,4 +17,5 @@ public interface EnrollmentService {
     List<Enrollment> assignStudents();
     List<Enrollment> getEnrollmentsByYearAndStatusIsAccepted(Integer year);
     List<Enrollment> getEnrollmentsByFacultySectionAndStatusIsAccepted(String facultySection);
+    Enrollment reassingStudent(Long studentId, Long courseId, Long newCourseId);
 }
