@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ApplicationPeriodServiceImpl implements ApplicationPeriodService {
-    private boolean isOpen = false;
+    private boolean isOpen = true;
     @Override
     public boolean getApplicationPeriod() {
         return isOpen;

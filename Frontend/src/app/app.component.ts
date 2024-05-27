@@ -18,9 +18,7 @@ export class AppComponent {
       next: (data) => {
         console.log(data);
         if (isPlatformBrowser(this.platformId)) {
-          if (localStorage.getItem('status') == null) {
             localStorage.setItem('status', data.toString());
-          }
         }
       }
     });
