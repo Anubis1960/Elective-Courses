@@ -24,7 +24,7 @@ export class StudentDetailsComponent implements OnInit{
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   ngOnInit(): void {
-    let status: string = JSON.parse(localStorage.getItem('status') || 'true');
+    let status: string = localStorage.getItem('status') || '';
     this.route.paramMap.subscribe(params => {
       this.id = Number(params.get('id'));
       if (!this.courseService) {

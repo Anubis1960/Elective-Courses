@@ -36,7 +36,7 @@ export class LoginComponent {
         }
         this.applicationPeriodService.getApplicationPeriodStatus().subscribe({
           next: (data: boolean) => {
-            localStorage.setItem('status', data.toString());
+            sessionStorage.setItem('status', data.toString());
           },
           error: (error) => {
             //console.log(error);

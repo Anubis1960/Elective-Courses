@@ -23,14 +23,16 @@
             <p><strong>No schedule available</strong></p>
         }
     </div>
-  
-  @if(role === 'ADMIN'){
-    @if(courseSchedule != undefined){
-        <button (click)="openDialog()">Edit Schedule</button>
-    }
-    @else{
-        <button (click)="openDialog()">Add Schedule</button>
-    }
+</div>
+
+<div *ngIf="status === 'false'">
+  <div *ngIf="role === 'ADMIN'">
+    <div *ngIf="courseSchedule !== undefined; else addSchedule">
+      <button (click)="openDialog()">Edit Schedule</button>
+    </div>
+    <ng-template #addSchedule>
+      <button (click)="openDialog()">Add Schedule</button>
+    </ng-template>
     <button (click)="exportPDF()">Export PDF</button>
-  }
+  </div>
 </div>

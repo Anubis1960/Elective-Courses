@@ -9,6 +9,11 @@
         <input matInput placeholder="Search" (keyup)="filterChange($event)" style="height: 20px;">
       </mat-form-field>
     </mat-card-subtitle>
+    @if(status == 'true'){
+    <mat-card-subtitle>
+      <button mat-raised-button color="primary" (click)="closePeriod()">Open Period</button>
+    </mat-card-subtitle>
+    }
   </mat-card-header>
   <mat-card-content>
     <table mat-table [dataSource]="dataSource" matSort>

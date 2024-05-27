@@ -9,7 +9,7 @@ import { ApplicationPeriodService } from '../../service/application-period.servi
 })
 export class TopBarComponent {
   userRole = JSON.parse(sessionStorage.getItem('user') || '{}').role;
-  status = JSON.parse(sessionStorage.getItem('user') || '{}').status;
+  status = JSON.parse(localStorage.getItem('status') || '{}');
 
   constructor(private router:Router, private applicationPeriodService: ApplicationPeriodService ) { }
   

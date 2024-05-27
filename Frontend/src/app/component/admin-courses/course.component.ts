@@ -8,6 +8,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { PopUpComponent } from '../course-pop-up/pop-up.component';
 import { Router } from '@angular/router';
+import { ApplicationPeriodService } from '../../service/application-period.service';
 
 @Component({
   selector: 'app-course',
@@ -19,14 +20,15 @@ export class CourseComponent implements OnInit {
   courses!: Course[];
   dataSource: MatTableDataSource<Course> = new MatTableDataSource<Course>();
   displayedColumns: string[] = ['id', 'name', 'description', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year', 'action'];
-  status: string = JSON.parse(localStorage.getItem('status') || 'true');
+  status: string = localStorage.getItem('status') || '';
 
-  constructor(private http: HttpClient, private courseService: CourseService, private dialog: MatDialog, private router: Router) { }
+  constructor(private http: HttpClient, private courseService: CourseService, private dialog: MatDialog, private router: Router, private applicationPeriodService: ApplicationPeriodService) { }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   
   ngOnInit(): void {
+    console.log(this.status);
     this.refresh();
   }
   
@@ -110,5 +112,18 @@ export class CourseComponent implements OnInit {
   checkStatus() {
     console.log(this.status);
     return this.status == 'false';
+  }
+
+  closePeriod() {
+    this.applicationPeriodService.reverseApplicationPeriodStatus().subscribe({
+      next: (data) => {
+        console.log(data);
+        this.status = data.toString();
+        localStorage.setItem('status', JSON.stringify(data));
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
   }
 }

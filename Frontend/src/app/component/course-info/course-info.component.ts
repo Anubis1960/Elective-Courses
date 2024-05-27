@@ -10,17 +10,22 @@ import { SchedulePopUpComponent } from '../schedule-pop-up/schedule-pop-up.compo
   selector: 'app-course-info',
   templateUrl: './course-info.component.html',
   styleUrl: './course-info.component.css'
-})
-export class CourseInfoComponent {
+})export class CourseInfoComponent {
   @Input() courseId!: number | undefined;
   course!: Course | undefined;
   courseSchedule: CourseSchedule | undefined;
-  role: string = JSON.parse(sessionStorage.getItem('user') || '{}').role;
+  role: string = '';
+  status: string = '';
 
-  constructor( private dialog: MatDialog, private courseService: CourseService, private courseScheduleService: CourseScheduleService) { }
+  constructor(private dialog: MatDialog, private courseService: CourseService, private courseScheduleService: CourseScheduleService) { }
 
   ngOnInit() {
-    const role = JSON.parse(sessionStorage.getItem('user') || '{}').role;
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+    this.role = user.role;
+    this.status = sessionStorage.getItem('status') || '';
+    
+    console.error(this.status);
+    
     if (this.courseId) {
       this.courseService.getCourse(this.courseId).subscribe({
         next: (data: Course) => {
@@ -62,7 +67,7 @@ export class CourseInfoComponent {
     });
   }
 
-  exportPDF(){
+  exportPDF() {
     if (!this.courseId) {
       return;
     }
@@ -77,5 +82,4 @@ export class CourseInfoComponent {
       }
     });
   }
-
 }
