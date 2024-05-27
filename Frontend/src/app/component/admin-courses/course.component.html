@@ -14,6 +14,26 @@
         <button mat-raised-button color="primary" (click)="closePeriod()">Close Period</button>
       </mat-card-subtitle>
       }
+      @else{
+        <form [formGroup]="form">
+          <mat-form-field appearance="outline">
+            <mat-label>Faculty Section</mat-label>
+            <mat-select formControlName="facultySection">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let section of facultySections" [value]="section">{{ section }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Year</mat-label>
+            <mat-select formControlName="year">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-raised-button color="primary" (click)="exportPDF()">Export PDF</button>
+        </form>
+        
+      }
     </mat-card-header>
 
   <mat-card-content>
