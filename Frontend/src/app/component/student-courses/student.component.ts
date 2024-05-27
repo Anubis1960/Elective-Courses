@@ -26,7 +26,7 @@ export class StudentComponent {
   ngOnInit(): void {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
     //console.log(user);
-    const status: string = JSON.parse(localStorage.getItem('status') || 'true');
+    const status: string = localStorage.getItem('status') || '';
     if(status == 'true'){
       this.courseService.getCoursesByStudentId(user.id).subscribe({
         next: (data: Course[]) => {

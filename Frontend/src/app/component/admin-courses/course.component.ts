@@ -10,6 +10,7 @@ import { PopUpComponent } from '../course-pop-up/pop-up.component';
 import { Router } from '@angular/router';
 import { ApplicationPeriodService } from '../../service/application-period.service';
 import { EnrollmentService } from '../../service/enrollment.service';
+
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
@@ -24,10 +25,13 @@ export class CourseComponent implements OnInit {
   status: string = localStorage.getItem('status') ?? '';
   constructor(private http: HttpClient, private courseService: CourseService, private dialog: MatDialog, private router: Router,private applicationPeriodService: ApplicationPeriodService, private enrollmentService: EnrollmentService) { }
 
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   
   ngOnInit(): void {
+    this.status = localStorage.getItem('status') || '';
+    //console.log(this.status);
     this.refresh();
     console.log(this.status);
   }
@@ -124,6 +128,7 @@ export class CourseComponent implements OnInit {
         console.log(error);
       }
     });
+
     this.enrollmentService.assignStudentsToCourse().subscribe({
       next: (data) => {
         console.log(data);
@@ -132,5 +137,6 @@ export class CourseComponent implements OnInit {
         console.log(error);
       }
     });
+
   }
 }

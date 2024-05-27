@@ -1,6 +1,6 @@
 <app-top-bar></app-top-bar>
 <app-course-info [courseId]="courseId"></app-course-info>
-@if (status){
+@if (status == 'true'){
   <div class="footer">
     <button (click)="onEnroll()">Enroll</button>
   </div>

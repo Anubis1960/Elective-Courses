@@ -14,5 +14,4 @@ export class TopBarComponent {
     sessionStorage.removeItem('user');
     this.router.navigateByUrl('/login');
   } 
-
 }
