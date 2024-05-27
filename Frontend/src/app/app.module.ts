@@ -31,6 +31,8 @@ import { CourseInfoComponent } from './component/course-info/course-info.compone
 import { SchedulePopUpComponent } from './component/schedule-pop-up/schedule-pop-up.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ReassignPopUpComponent } from './reassign-pop-up/reassign-pop-up.component';
+import {MatRadioModule} from '@angular/material/radio';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,6 +49,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     StudentDetailsComponent,
     CourseInfoComponent,
     SchedulePopUpComponent,
+    ReassignPopUpComponent,
     ],
   imports: [
     BrowserModule,
@@ -65,6 +68,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     DragDropModule,
     MatSelectModule,
     MatDialogModule,
+    MatRadioModule,
   ],
   providers: [
     provideClientHydration(),

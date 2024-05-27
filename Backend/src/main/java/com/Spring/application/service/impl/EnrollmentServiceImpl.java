@@ -149,8 +149,9 @@ public class EnrollmentServiceImpl implements EnrollmentService{
         Map<Student, List<String>> unassignedStudents = new HashMap<>();
 
         for (Enrollment enrollment : enrollments) {
+            System.out.println("Student: " + enrollment.getStudent().getId() + " Course: " + enrollment.getCourse().getCourseId() + " Category: " + enrollment.getCourse().getCategory());
             if (!enrollment.getStudent().getId().equals(currentStudentId)) {
-                if (categoriesTaken.size() < mapYearByNoCategories.get(enrollment.getStudent().getYear())) {
+                if (categoriesTaken.size() < mapYearByNoCategories.get(studentRepository.findById(currentStudentId).orElse(null).getYear())) {
                     System.out.println("Student: " + studentRepository.findById(currentStudentId).orElse(null) + " Categories Taken: " + categoriesTaken);
                     unassignedStudents.put(studentRepository.findById(currentStudentId).orElse(null), new ArrayList<>(categoriesTaken));
                 }
