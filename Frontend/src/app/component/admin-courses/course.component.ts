@@ -20,7 +20,7 @@ export class CourseComponent implements OnInit {
   courses!: Course[];
   dataSource: MatTableDataSource<Course> = new MatTableDataSource<Course>();
   displayedColumns: string[] = ['id', 'name', 'description', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year', 'action'];
-  status: string = localStorage.getItem('status') || '';
+  status:string =  localStorage.getItem('status') || '';
 
   constructor(private http: HttpClient, private courseService: CourseService, private dialog: MatDialog, private router: Router, private applicationPeriodService: ApplicationPeriodService) { }
 

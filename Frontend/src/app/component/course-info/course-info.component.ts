@@ -17,20 +17,13 @@ export class CourseInfoComponent {
   course!: Course | undefined;
   courseSchedule: CourseSchedule | undefined;
   role: string = JSON.parse(sessionStorage.getItem('user') || '{}').role;
-  status: boolean | undefined;
+  status: string | undefined;
 
-  constructor( private dialog: MatDialog, private courseService: CourseService, private courseScheduleService: CourseScheduleService, private appliactionPeriodService: ApplicationPeriodService) { }
+  constructor( private dialog: MatDialog, private courseService: CourseService, private courseScheduleService: CourseScheduleService) { }
 
   ngOnInit() {
+    this.status = localStorage.getItem('status') || '';
     const role = JSON.parse(sessionStorage.getItem('user') || '{}').role;
-    this.appliactionPeriodService.getApplicationPeriodStatus().subscribe({
-      next: (data: boolean) => {
-        this.status = data;
-      },
-      error: () => {
-        //console.log(error);
-      }
-    });
     console.error(this.status);
     if (this.courseId) {
       this.courseService.getCourse(this.courseId).subscribe({
