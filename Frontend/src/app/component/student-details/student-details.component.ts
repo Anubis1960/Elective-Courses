@@ -7,7 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { ReassignPopUpComponent } from '../../reassign-pop-up/reassign-pop-up.component';
+import { ReassignPopUpComponent } from '../reassign-pop-up/reassign-pop-up.component';
 import { EnrollmentService } from '../../service/enrollment.service';
 
 @Component({

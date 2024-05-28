@@ -31,7 +31,7 @@ import { CourseInfoComponent } from './component/course-info/course-info.compone
 import { SchedulePopUpComponent } from './component/schedule-pop-up/schedule-pop-up.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ReassignPopUpComponent } from './reassign-pop-up/reassign-pop-up.component';
+import { ReassignPopUpComponent } from './component/reassign-pop-up/reassign-pop-up.component';
 import {MatRadioModule} from '@angular/material/radio';
 @NgModule({
   declarations: [
