@@ -58,7 +58,7 @@ export class StudentComponent {
   }
 
   getDetails(id: number) {
-    this.router.navigateByUrl('/student/courses/'+id);
+    this.router.navigate(['/student/courses', id]);
   }
   
   filterchange(data:Event) {

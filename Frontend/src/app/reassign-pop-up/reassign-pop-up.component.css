@@ -1,73 +1,54 @@
-/* General Styles */
-body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: #f5f5f5;
-  }
-  
-  /* Label Styles */
-  label {
-    display: block;
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #333;
-  }
-  
-  /* Radio Group Styles */
-  .mat-radio-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  /* Radio Button Styles */
-  .mat-radio-button.course {
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .mat-radio-button.course:hover {
-    background-color: #e0e0e0;
-  }
-  
-  .mat-radio-button.course .mat-radio-label-content {
-    font-size: 14px;
-  }
-  
-  /* Selected Radio Button Style */
-  .mat-radio-button.mat-radio-checked {
-    background-color: #1976d2;
-    color: #fff;
-  }
-  
-  .mat-radio-button.mat-radio-checked:hover {
-    background-color: #1565c0;
-  }
-  
-  /* Button Styles */
-  button.mat-raised-button {
-    margin-top: 20px;
-    margin-right: 10px;
-  }
-  
-  button.mat-raised-button[color="primary"] {
-    background-color: #1976d2;
-    color: #fff;
-  }
-  
-  button.mat-raised-button[color="primary"]:hover {
-    background-color: #1565c0;
-  }
-  
-  button.mat-raised-button[color="warn"] {
-    background-color: #d32f2f;
-    color: #fff;
-  }
-  
-  button.mat-raised-button[color="warn"]:hover {
-    background-color: #c62828;
-  }
-  
+/* General styling */
+.course-selection {
+  margin-bottom: 20px;
+}
+
+.mat-radio-button {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.mat-radio-button:last-child {
+  margin-bottom: 0;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button-container button {
+  min-width: 120px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button-container button:hover {
+  transform: translateY(-2px);
+}
+
+/* Primary button */
+button.primary {
+  background-color: #4CAF50;
+  color: white;
+}
+
+button.primary:hover {
+  background-color: #45a049;
+}
+
+/* Warn button */
+button.warn {
+  background-color: #f44336;
+  color: white;
+}
+
+button.warn:hover {
+  background-color: #e53935;
+}

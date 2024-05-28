@@ -28,13 +28,4 @@ export class ReassignPopUpComponent implements OnInit{
     console.log(this.selectedValue);
     this.ref.close(this.selectedValue);
   }
-
-  checkComplition(){
-    if (this.selectedValue == undefined){
-      return true;
-    }
-    return false;
-  }
-
-
 }

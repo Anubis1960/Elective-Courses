@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Course } from '../../model/course.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../service/course.service';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
@@ -24,7 +24,7 @@ export class StudentDetailsComponent implements OnInit{
   status: string = localStorage.getItem('status') || '';
   options: Course[] | undefined;
 
-  constructor(private route: ActivatedRoute, private httpClient: HttpClient, private dialog: MatDialog, private enrollmentService: EnrollmentService) { }
+  constructor(private route: ActivatedRoute, private httpClient: HttpClient, private dialog: MatDialog, private enrollmentService: EnrollmentService, private router: Router) { }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   ngOnInit(): void {
@@ -94,8 +94,8 @@ export class StudentDetailsComponent implements OnInit{
           availableCourses = data;
           console.log(availableCourses);
           const dialogRef = this.dialog.open(ReassignPopUpComponent, {
-            width: '590px',
-            height: '880px',
+            width: '400px',
+            height: '300px',
             data: {
               availableCourses: availableCourses,
             }
@@ -125,5 +125,9 @@ export class StudentDetailsComponent implements OnInit{
         }
       });
     }
+  }
+
+  goToStudentDetails(id: number){
+    this.router.navigate(['/admin/courses/', id]);
   }
 }
