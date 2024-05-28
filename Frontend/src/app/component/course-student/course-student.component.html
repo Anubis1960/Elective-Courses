@@ -15,7 +15,9 @@
 
     <ng-container matColumnDef="name">
         <th mat-sort-header *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        <td mat-cell *matCellDef="let element">
+            <button mat-button (click)="goToStudentDetails(element.id)"> {{element.name}} </button>
+            </td>
     </ng-container>
 
     <ng-container matColumnDef="email">

@@ -118,7 +118,7 @@ export class CourseComponent implements OnInit {
   }
 
   getDetails(id: number) {
-    this.router.navigateByUrl('/admin/courses/' + id);
+    this.router.navigate(['/admin/courses', id]);
   }
 
   filterChange(event: Event) {

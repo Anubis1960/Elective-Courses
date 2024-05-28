@@ -1,8 +1,14 @@
-<label for="input">Select a course:</label>
-<mat-radio-group [(ngModel)]="selectedValue">
-  @for( course of input; track course){
-    <mat-radio-button class="course" [value]="course">{{course.name}}</mat-radio-button>
-  }
-</mat-radio-group>
-<button mat-raised-button color="primary" (click)="reassign()">Reassign</button>
-<button mat-raised-button color="warn" (click)="close()">Close</button>
+<div class="course-selection">
+  <label for="input">Select a course:</label>
+  <mat-radio-group [(ngModel)]="selectedValue">
+    @for( course of input; track course){
+      <mat-radio-button class="course" [value]="course">{{course.name}}</mat-radio-button>
+    }
+  </mat-radio-group>
+</div>
+
+<div class="button-container">
+  <button mat-raised-button color="primary" class="primary" (click)="reassign()">Reassign</button>
+<button mat-raised-button color="warn" class="warn" (click)="close()">Close</button>
+
+</div>

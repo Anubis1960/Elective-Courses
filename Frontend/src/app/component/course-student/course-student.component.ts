@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Course } from '../../model/course.model';
 import { CourseService } from '../../service/course.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { StudentService } from '../../service/student.service';
 import { Student } from '../../model/student.model';
@@ -21,7 +21,7 @@ export class CourseStudentComponent {
   displayedColumns: string[]=['id', 'name', 'email', 'facultySection', 'year','grade'];
   status: string = localStorage.getItem('status') || '';
 
-  constructor(private route: ActivatedRoute, private httpClient: HttpClient, private studentService: StudentService) { }
+  constructor(private route: ActivatedRoute, private httpClient: HttpClient, private studentService: StudentService, private router: Router) { }
 
   @ViewChild(MatPaginator) paginator !: MatPaginator;
   @ViewChild(MatSort) sort !: MatSort;
@@ -69,5 +69,9 @@ export class CourseStudentComponent {
     //console.log('status: '+this.status)
     this.dataSource.paginator = this.paginator
     this.dataSource.sort = this.sort;
+  }
+
+  goToStudentDetails(id: number){
+    this.router.navigate(['/admin/students', id]);
   }
 }
