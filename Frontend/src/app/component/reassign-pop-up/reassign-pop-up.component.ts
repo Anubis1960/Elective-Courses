@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { Course } from '../model/course.model';
+import { Course } from '../../model/course.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {MatRadioModule} from '@angular/material/radio';
 
