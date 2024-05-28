@@ -6,6 +6,7 @@
     <div class="example-box" *ngFor="let enroll of enrollments_list; let i = index" cdkDrag>
       <span class="number">{{ i + 1 }}</span>
       <span>{{ enroll.courseName }}</span>
+      <span>{{ enroll.status }}</span>
       <span>
         <button (click)="delEnrollment(enroll.id || 0)">Delete Enrollment</button>
       </span>
