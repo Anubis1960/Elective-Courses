@@ -63,6 +63,14 @@ Values (5, 1, CURRENT_DATE, CURRENT_DATE, nextval('student_user_id_seq'), 'Rober
 INSERT INTO student(grade, year_of_study, created_date, last_modified_date, user_id, created_by, email, faculty_section, last_modified_by, name, password, role)
 Values (7, 2, CURRENT_DATE, CURRENT_DATE, nextval('student_user_id_seq'), 'Roberto', 'peter.quill@gmail.com', 'IR', 'Roberto', 'Peter Quill', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'STUDENT');
 
+INSERT INTO student(grade, year_of_study, created_date, last_modified_date, user_id, created_by, email, faculty_section, last_modified_by, name, password, role)
+Values (7, 1, CURRENT_DATE, CURRENT_DATE, nextval('student_user_id_seq'), 'Roberto', 'Morris@gmail.com', 'IE', 'Roberto', 'Morris', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'STUDENT');
+
+INSERT INTO student(grade, year_of_study, created_date, last_modified_date, user_id, created_by, email, faculty_section, last_modified_by, name, password, role)
+Values (7, 1, CURRENT_DATE, CURRENT_DATE, nextval('student_user_id_seq'), 'Roberto', 'monica@gmail.com', 'IE', 'Roberto', 'Monica', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'STUDENT');
+
+INSERT INTO student(grade, year_of_study, created_date, last_modified_date, user_id, created_by, email, faculty_section, last_modified_by, name, password, role)
+Values (7, 1, CURRENT_DATE, CURRENT_DATE, nextval('student_user_id_seq'), 'Roberto', 'alex@gmail.com', 'IE', 'Roberto', 'Alex', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'STUDENT');
 
 --Admin
 INSERT INTO admin(created_date, last_modified_date, user_id, created_by, email, last_modified_by, name, password, role)
@@ -97,6 +105,13 @@ INSERT INTO public.course (maximum_students_allowed, year_of_study, course_id, c
 INSERT INTO public.course (maximum_students_allowed, year_of_study, course_id, created_date, last_modified_date, category, course_name, created_by, description, faculty_section, last_modified_by, teacher_name) VALUES (50, 1, nextval('course_course_id_seq'), '2024-05-27 18:21:06.609564', '2024-05-27 18:21:06.609564', 'Advanced AI and Robotics', 'Advanced Machine Learning', 'Ion', 'Reinforcement Learning', 'IR', 'Ion', 'marin');
 INSERT INTO public.course (maximum_students_allowed, year_of_study, course_id, created_date, last_modified_date, category, course_name, created_by, description, faculty_section, last_modified_by, teacher_name) VALUES (50, 1, nextval('course_course_id_seq'), '2024-05-27 18:21:26.547274', '2024-05-27 18:21:26.547274', 'Advanced AI and Robotics', 'Robotics', 'Ion', 'Autonomous Robotics', 'IR', 'Ion', 'marin');
 INSERT INTO public.course (maximum_students_allowed, year_of_study, course_id, created_date, last_modified_date, category, course_name, created_by, description, faculty_section, last_modified_by, teacher_name) VALUES (50, 1, nextval('course_course_id_seq'), '2024-05-27 18:21:46.331358', '2024-05-27 18:21:46.331358', 'Advanced AI and Robotics', 'Cognitive Computing', 'Ion', 'Cognitive Architectures', 'IR', 'Ion', 'dorin');
+
+
+INSERT INTO public.course (maximum_students_allowed, year_of_study, course_id, created_date, last_modified_date, category, course_name, created_by, description, faculty_section, last_modified_by, teacher_name) VALUES (50, 1, nextval('course_course_id_seq'), '2024-05-27 18:21:46.331358', '2024-05-27 18:21:46.331358', 'Advanced AI', 'AI 101', 'Ion', 'Cognitive Architectures', 'IE', 'Ion', 'dorin');
+INSERT INTO public.course (maximum_students_allowed, year_of_study, course_id, created_date, last_modified_date, category, course_name, created_by, description, faculty_section, last_modified_by, teacher_name) VALUES (50, 1, nextval('course_course_id_seq'), '2024-05-27 18:21:46.331358', '2024-05-27 18:21:46.331358', 'Advanced AI', 'AI 102', 'Ion', 'Cognitive Architectures', 'IE', 'Ion', 'dorin');
+INSERT INTO public.course (maximum_students_allowed, year_of_study, course_id, created_date, last_modified_date, category, course_name, created_by, description, faculty_section, last_modified_by, teacher_name) VALUES (50, 1, nextval('course_course_id_seq'), '2024-05-27 18:21:46.331358', '2024-05-27 18:21:46.331358', 'Robotics', 'Robotics 101', 'Ion', 'Cognitive Architectures', 'IE', 'Ion', 'dorin');
+INSERT INTO public.course (maximum_students_allowed, year_of_study, course_id, created_date, last_modified_date, category, course_name, created_by, description, faculty_section, last_modified_by, teacher_name) VALUES (50, 1, nextval('course_course_id_seq'), '2024-05-27 18:21:46.331358', '2024-05-27 18:21:46.331358', 'Robotics', 'Robotics 102', 'Ion', 'Cognitive Architectures', 'IE', 'Ion', 'dorin');
+
 
 
 INSERT INTO public.enrollment (priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status) VALUES (1, 18-6, '2024-05-27 19:55:24.320179', nextval('enrollment_enrollment_id_seq'), '2024-05-27 19:55:24.320179', 3, 'Lazar Catalin', 'Lazar Catalin', 'PENDING');
