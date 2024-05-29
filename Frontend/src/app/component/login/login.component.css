@@ -16,7 +16,6 @@ body {
   margin-top: 200px;
   border: 2px solid #ccc;
   border-radius: 5px;
-  background-color: #ffd1e4;
 }
 
 h3 {
@@ -58,8 +57,8 @@ button {
   border: none;
   margin: 50px auto 0 auto; /* Centrează butonul și adaugă spațiu sus */
   border-radius: 10px;
-  background-color: #ace7ff;
-  color: #0d47a1;
+  background-color: #000000;
+  color: #ffffff;
   font-size: 16px;
   cursor: pointer;
   text-align: center; /* Centrează textul */
