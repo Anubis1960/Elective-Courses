@@ -1,6 +1,33 @@
-/* General styling */
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  height: 100%; /* Ensures the host takes full height */
+  position: relative;
+}
+
+.course-selection-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ensures the container takes full height */
+}
+
 .course-selection {
-  margin-bottom: 20px;
+  flex: 1; /* Allows the course selection to grow and take available space */
+  overflow-y: auto; /* Makes the radio buttons scrollable if they overflow */
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-top: 1px solid #ccc; /* Optional: adds a top border to separate buttons from the content */
+  background: white; /* Ensures background color is consistent */
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 .mat-radio-button {
@@ -12,12 +39,6 @@
 
 .mat-radio-button:last-child {
   margin-bottom: 0;
-}
-
-.button-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .button-container button {
@@ -51,4 +72,15 @@ button.warn {
 
 button.warn:hover {
   background-color: #e53935;
+}
+
+/* Stil pentru textul "Select a course" */
+label[for="input"] {
+  font-size: 20px; /* Desired font size */
+  font-family: monospace; /* Monospaced font */
+  margin-left: 20px;
+}
+.radio-group-vertical mat-radio-button {
+  display: block;
+  margin-bottom: 10px; /* Optional: adds space between radio buttons */
 }
