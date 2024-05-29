@@ -95,7 +95,7 @@ export class StudentDetailsComponent implements OnInit{
           console.log(availableCourses);
           const dialogRef = this.dialog.open(ReassignPopUpComponent, {
             width: '400px',
-            height: '300px',
+            height: '600px',
             data: {
               availableCourses: availableCourses,
             }
