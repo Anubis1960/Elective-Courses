@@ -9,6 +9,7 @@ import com.Spring.application.service.CourseService;
 import com.Spring.application.service.impl.CourseServiceImpl;
 import com.Spring.application.service.impl.EnrollmentServiceImpl;
 
+import com.Spring.application.service.impl.MailServiceImpl;
 import com.Spring.application.service.impl.StudentServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,8 @@ public class EnrollmentController {
     private StudentServiceImpl studentService;
     @Autowired
     private CourseServiceImpl courseService;
+    @Autowired
+    private MailServiceImpl mailService;
 
     @PostMapping("/")
     public ResponseEntity<EnrollmentDTO> enroll(
@@ -125,6 +128,7 @@ public class EnrollmentController {
         if (enrollments.isEmpty()) {
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
         }
+        //mailService.sendAllAssignedCoursesMail();
         List<EnrollmentDTO> enrollmentDTOs = EnrollmentDTO.convertToDTO(enrollments);
         return new ResponseEntity<>(enrollmentDTOs, HttpStatus.OK);
     }
@@ -135,6 +139,7 @@ public class EnrollmentController {
         if (enrollment == null) {
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
         }
+        //mailService.sendReassignment(studentId, courseId, newCourseId);
         EnrollmentDTO enrollmentDTO = new EnrollmentDTO(enrollment.getEnrollmentId(), enrollment.getStudent().getName(), enrollment.getCourse().getCourseName(), enrollment.getPriority(), enrollment.getStatus().toString());
         return new ResponseEntity<>(enrollmentDTO, HttpStatus.OK);
     }

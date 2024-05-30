@@ -1,12 +1,12 @@
 --Student
 INSERT INTO student(grade, year_of_study, created_date, last_modified_date, user_id, created_by, email, faculty_section, last_modified_by, name, password, role)
-Values (10, 2, CURRENT_DATE, CURRENT_DATE, nextval('student_user_id_seq'), 'Roberto', 'roberto.klotzl@gmail.com', 'IR', 'Roberto', 'Klotzl Roberto', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'STUDENT');
+Values (10, 2, CURRENT_DATE, CURRENT_DATE, nextval('student_user_id_seq'), 'Roberto', 'roberto.klotzl03@e-uvt.ro', 'IR', 'Roberto', 'Klotzl Roberto', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'STUDENT');
 
 INSERT INTO student(grade, year_of_study, created_date, last_modified_date, user_id, created_by, email, faculty_section, last_modified_by, name, password, role)
-Values (10, 2, CURRENT_DATE, CURRENT_DATE, nextval('student_user_id_seq'), 'Roberto', 'kiss.sergiu@gmail.com', 'IR', 'Roberto', 'Kiss Sergiu', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'STUDENT');
+Values (10, 2, CURRENT_DATE, CURRENT_DATE, nextval('student_user_id_seq'), 'Roberto', 'sergiu.kiss03@e-uvt.ro', 'IR', 'Roberto', 'Kiss Sergiu', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'STUDENT');
 
 INSERT INTO student(grade, year_of_study, created_date, last_modified_date, user_id, created_by, email, faculty_section, last_modified_by, name, password, role)
-Values (9, 2, CURRENT_DATE, CURRENT_DATE, nextval('student_user_id_seq'), 'Roberto', 'lazar.catalin@gmail.com', 'IR', 'Roberto', 'Lazar Catalin', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'STUDENT');
+Values (9, 2, CURRENT_DATE, CURRENT_DATE, nextval('student_user_id_seq'), 'Roberto', 'florin.catalin02@e-uvt.ro', 'IR', 'Roberto', 'Lazar Catalin', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'STUDENT');
 
 INSERT INTO student(grade, year_of_study, created_date, last_modified_date, user_id, created_by, email, faculty_section, last_modified_by, name, password, role)
 Values (8, 2, CURRENT_DATE, CURRENT_DATE, nextval('student_user_id_seq'), 'Roberto', 'ilea.robert@gmail.com', 'IR', 'Roberto', 'Ilea Robert', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'STUDENT');

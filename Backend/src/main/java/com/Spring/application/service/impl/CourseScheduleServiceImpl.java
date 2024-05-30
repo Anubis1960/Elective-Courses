@@ -14,6 +14,7 @@ import org.hibernate.NonUniqueObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,6 +38,30 @@ public class CourseScheduleServiceImpl implements CourseScheduleService{
         if (course == null) {
             throw new ObjectNotFound("Course not found");
         }
+
+        List<String> startTimeList = new ArrayList<>();
+        List<String> endTimeList = new ArrayList<>();
+        startTimeList.add("08:00");
+        startTimeList.add("09:40");
+        startTimeList.add("11:20");
+        startTimeList.add("13:00");
+        startTimeList.add("14:40");
+        startTimeList.add("16:20");
+        startTimeList.add("18:00");
+        startTimeList.add("19:30");
+        endTimeList.add("09:30");
+        endTimeList.add("11:10");
+        endTimeList.add("12:50");
+        endTimeList.add("14:30");
+        endTimeList.add("16:10");
+        endTimeList.add("17:50");
+        endTimeList.add("19:30");
+        endTimeList.add("21:00");
+
+        if (!startTimeList.contains(startTime) || !endTimeList.contains(endTime)) {
+            throw new InvalidInput("Invalid time");
+        }
+
 
         CourseSchedule courseSchedule = courseScheduleRepository.findById(courseId).orElse(null);
         if (courseSchedule != null) {
@@ -119,6 +144,29 @@ public class CourseScheduleServiceImpl implements CourseScheduleService{
     @Override
     @Transactional
     public void updateCourseSchedule(Long courseId, String day, String startTime, String endTime) throws ObjectNotFound, InvalidInput {
+        List<String> startTimeList = new ArrayList<>();
+        List<String> endTimeList = new ArrayList<>();
+        startTimeList.add("08:00");
+        startTimeList.add("09:40");
+        startTimeList.add("11:20");
+        startTimeList.add("13:00");
+        startTimeList.add("14:40");
+        startTimeList.add("16:20");
+        startTimeList.add("18:00");
+        startTimeList.add("19:30");
+        endTimeList.add("09:30");
+        endTimeList.add("11:10");
+        endTimeList.add("12:50");
+        endTimeList.add("14:30");
+        endTimeList.add("16:10");
+        endTimeList.add("17:50");
+        endTimeList.add("19:30");
+        endTimeList.add("21:00");
+
+        if (!startTimeList.contains(startTime) || !endTimeList.contains(endTime)) {
+            throw new InvalidInput("Invalid time");
+        }
+
         if (LocalTime.parse(startTime).isAfter(LocalTime.parse(endTime))) {
             throw new InvalidInput("Start time cannot be after end time");
         }

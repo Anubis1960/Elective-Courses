@@ -29,8 +29,8 @@ import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PDFGeneratorServiceImpl implements PDFGeneratorService {
@@ -99,56 +99,103 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
     @Override
     public void exportScheduleToPDF(OutputStream out, Long id) throws IOException {
         List<CourseSchedule> courseSchedules = courseScheduleRepository.findCourseScheduleOfStudent(id);
-        for(CourseSchedule courseSchedule : courseSchedules){
-            System.out.println(courseSchedule);
-        }
+
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, out);
         document.open();
 
-        // Define font
-        Font font = FontFactory.getFont(FontFactory.COURIER, 16, Color.BLACK);
-        Font headerFont = FontFactory.getFont(FontFactory.COURIER, 16, Color.WHITE);
+        // Define fonts
+        Font font = FontFactory.getFont(FontFactory.COURIER, 12, Color.BLACK);
+        Font headerFont = FontFactory.getFont(FontFactory.COURIER, 14, Color.WHITE);
 
-        // Create a table with 4 columns
-        PdfPTable table = new PdfPTable(4);
+        // Create a table with 6 columns (Time slots + 5 days of the week)
+        PdfPTable table = new PdfPTable(6);
         table.setWidthPercentage(100);
         table.setSpacingBefore(10f);
         table.setSpacingAfter(10f);
 
         // Set column widths
-        float[] columnWidths = {2f, 2f, 2f, 2f};
+        float[] columnWidths = {2f, 2f, 2f, 2f, 2f, 2f};
         table.setWidths(columnWidths);
 
         // Create table header
-        PdfPCell header1 = new PdfPCell(new com.lowagie.text.Phrase("Course Name", headerFont));
-        header1.setBackgroundColor(Color.GRAY);
-        table.addCell(header1);
+        String[] headers = {"Time Slot", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+        for (String header : headers) {
+            PdfPCell headerCell = new PdfPCell(new Phrase(header, headerFont));
+            headerCell.setBackgroundColor(Color.GRAY);
+            table.addCell(headerCell);
+        }
 
-        PdfPCell header2 = new PdfPCell(new Phrase("Day", headerFont));
-        header2.setBackgroundColor(Color.GRAY);
-        table.addCell(header2);
+        // Define time slots
+        String[] timeSlots = {"8:00-9:30", "9:40-11:10", "11:20-12:50", "13:00-14:30", "14:40-16:10", "16:20-17:50", "18:00-19:30", "19:40-21:10"};
 
-        PdfPCell header3 = new PdfPCell(new Phrase("Start Time", headerFont));
-        header3.setBackgroundColor(Color.GRAY);
-        table.addCell(header3);
+        // Map to store the courses based on the day and time slot
+        Map<String, Map<String, List<CourseSchedule>>> scheduleMap = new HashMap<>();
+        for (String day : new String[]{"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"}) {
+            scheduleMap.put(day, new HashMap<>());
+            for (String timeSlot : timeSlots) {
+                scheduleMap.get(day).put(timeSlot, new ArrayList<>());
+            }
+        }
 
-        PdfPCell header4 = new PdfPCell(new Phrase("End Time", headerFont));
-        header4.setBackgroundColor(Color.GRAY);
-        table.addCell(header4);
+        // Populate the schedule map
+        for (CourseSchedule courseSchedule : courseSchedules) {
+            String day = courseSchedule.getDay().toString().toUpperCase();
+            String startTime = courseSchedule.getStartTime().toString();
+            String endTime = courseSchedule.getEndTime().toString();
+            String timeSlot = getTimeSlot(startTime, endTime);
+
+            if (scheduleMap.containsKey(day) && timeSlot != null) {
+                scheduleMap.get(day).get(timeSlot).add(courseSchedule);
+            }
+        }
 
         // Add rows to the table
-        for (CourseSchedule courseSchedule : courseSchedules) {
-            table.addCell(new PdfPCell(new Phrase(courseSchedule.getCourse().getCourseName(), font)));
-            table.addCell(new PdfPCell(new Phrase(courseSchedule.getDay().toString(), font)));
-            table.addCell(new PdfPCell(new Phrase(courseSchedule.getStartTime().toString(), font)));
-            table.addCell(new PdfPCell(new Phrase(courseSchedule.getEndTime().toString(), font)));
+        for (String timeSlot : timeSlots) {
+            // Add time slot cell
+            table.addCell(new PdfPCell(new Phrase(timeSlot, font)));
+
+            // Add course cells for each day
+            for (String day : new String[]{"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"}) {
+                List<CourseSchedule> courses = scheduleMap.get(day).get(timeSlot);
+                PdfPCell cell;
+                if (!courses.isEmpty()) {
+                    StringBuilder coursesText = new StringBuilder();
+                    for (CourseSchedule course : courses) {
+                        coursesText.append(course.getCourse().getCourseName()).append("\n");
+                    }
+                    cell = new PdfPCell(new Phrase(coursesText.toString(), font));
+                } else {
+                    cell = new PdfPCell(new Phrase("", font));
+                }
+                table.addCell(cell);
+            }
         }
 
         // Add table to document
         document.add(table);
         document.close();
     }
+
+    private String getTimeSlot(String startTime, String endTime) {
+        if (startTime.equals("08:00") && endTime.equals("09:30")) {
+            return "8:00-9:30";
+        } else if (startTime.equals("09:40") && endTime.equals("11:10")) {
+            return "9:40-11:10";
+        } else if (startTime.equals("11:20") && endTime.equals("12:50")) {
+            return "11:20-12:50";
+        } else if (startTime.equals("13:00") && endTime.equals("14:30")) {
+            return "1:00-2:30";
+        } else if (startTime.equals("14:40") && endTime.equals("16:10")) {
+            return "2:40-4:10";
+        } else if (startTime.equals("16:20") && endTime.equals("17:50")) {
+            return "4:20-5:50";
+        } else {
+            return null;
+        }
+    }
+
+
 
 
 
