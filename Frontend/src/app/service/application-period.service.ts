@@ -19,6 +19,6 @@ export class ApplicationPeriodService{
     }
 
     public reverseApplicationPeriodStatus(): Observable<boolean>{
-        return this.http.get<boolean>(`${this.baseUrl}/reverse`);
+        return this.http.put<boolean>(`${this.baseUrl}/reverse`, {});
     }
 }

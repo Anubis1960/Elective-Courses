@@ -1,21 +1,24 @@
 package com.Spring.application.service.impl;
 
+import com.Spring.application.repository.ApplicationPeriodRepository;
 import com.Spring.application.service.ApplicationPeriodService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ApplicationPeriodServiceImpl implements ApplicationPeriodService {
-    private boolean isOpen = true;
+    @Autowired
+    private ApplicationPeriodRepository applicationPeriodRepository;
     @Override
     public boolean getApplicationPeriod() {
-        return isOpen;
+        return applicationPeriodRepository.findAll().get(0).getIsOpen();
     }
 
     @Override
     public boolean reverseApplicationPeriod() {
-        System.out.println("Application period is now: " + isOpen);
-        isOpen = !isOpen;
-        System.out.println("Application period is now: " + isOpen);
-        return isOpen;
+        boolean isOpen = applicationPeriodRepository.findAll().get(0).getIsOpen();
+        applicationPeriodRepository.findAll().get(0).setIsOpen(!isOpen);
+        applicationPeriodRepository.save(applicationPeriodRepository.findAll().get(0));
+        return applicationPeriodRepository.findAll().get(0).getIsOpen();
     }
 }
