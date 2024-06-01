@@ -80,6 +80,9 @@ INSERT INTO admin(created_date, last_modified_date, user_id, created_by, email, 
 VALUES (CURRENT_DATE, CURRENT_DATE, nextval('admin_user_id_seq'), 'Roberto', 'ion@gmail.com', 'Roberto', 'Ion', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'ADMIN');
 
 
+--Application Period
+INSERT INTO application_period(is_open, application_period_id, end_date, start_date) VALUES (true, nextval('application_period_application_period_id_seq'), '2024-05-27', '2024-05-27');
+
 INSERT INTO public.course (maximum_students_allowed, year_of_study, course_id, created_date, last_modified_date, category, course_name, created_by, description, faculty_section, last_modified_by, teacher_name) VALUES (30, 1, nextval('course_course_id_seq'), '2024-05-27 18:07:26.236116', '2024-05-27 18:07:26.236116', 'Core Computer Science Subjects', 'Programming and Software Development', 'Ion', 'Introduction to Programming', 'IR', 'Ion', 'dorel');
 INSERT INTO public.course (maximum_students_allowed, year_of_study, course_id, created_date, last_modified_date, category, course_name, created_by, description, faculty_section, last_modified_by, teacher_name) VALUES (30, 1, nextval('course_course_id_seq'), '2024-05-27 18:08:09.600201', '2024-05-27 18:08:09.600201', 'Core Computer Science Subjects', 'Theoretical Computer Science', 'Ion', 'Discrete Mathematics', 'IR', 'Ion', 'dorel');
 INSERT INTO public.course (maximum_students_allowed, year_of_study, course_id, created_date, last_modified_date, category, course_name, created_by, description, faculty_section, last_modified_by, teacher_name) VALUES (70, 1, nextval('course_course_id_seq'), '2024-05-27 18:08:43.654845', '2024-05-27 18:08:43.654845', 'Core Computer Science Subjects', 'Systems and Architecture', 'Ion', 'Computer Organization and Architecture', 'IR', 'Ion', 'dorel');
@@ -213,3 +216,8 @@ INSERT INTO public.enrollment (priority, course_id, created_date, enrollment_id,
 INSERT INTO public.enrollment (priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status) VALUES (2, 29-6, '2024-05-27 20:00:26.017288', nextval('enrollment_enrollment_id_seq'), '2024-05-27 20:00:26.017288', 20, 'Vision', 'Vision', 'PENDING');
 INSERT INTO public.enrollment (priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status) VALUES (4, 7-6, '2024-05-27 20:00:28.549668', nextval('enrollment_enrollment_id_seq'), '2024-05-27 20:00:28.549668', 20, 'Vision', 'Vision', 'PENDING');
 INSERT INTO public.enrollment (priority, course_id, created_date, enrollment_id, last_modified_date, student_id, created_by, last_modified_by, status) VALUES (2, 21-6, '2024-05-27 20:00:37.986780', nextval('enrollment_enrollment_id_seq'), '2024-05-27 20:00:37.986780', 21, 'Peter Quill', 'Peter Quill', 'PENDING');
+
+
+INSERT INTO public.course_schedule (end_time, start_time, course_id, created_date, last_modified_date, created_by, day, last_modified_by) VALUES ('09:30:00', '08:00:00', 12, '2024-06-01 16:38:39.176923', '2024-06-01 16:38:39.176923', null, 'MONDAY', null);
+INSERT INTO public.course_schedule (end_time, start_time, course_id, created_date, last_modified_date, created_by, day, last_modified_by) VALUES ('12:50:00', '11:20:00', 18, '2024-06-01 16:38:51.751512', '2024-06-01 16:38:51.751512', null, 'TUESDAY', null);
+INSERT INTO public.course_schedule (end_time, start_time, course_id, created_date, last_modified_date, created_by, day, last_modified_by) VALUES ('19:30:00', '18:00:00', 14, '2024-06-01 16:39:02.561595', '2024-06-01 16:39:02.561595', null, 'THURSDAY', null);
