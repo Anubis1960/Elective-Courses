@@ -128,7 +128,7 @@ public class EnrollmentController {
         if (enrollments.isEmpty()) {
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
         }
-        //mailService.sendAllAssignedCoursesMail();
+        mailService.sendAllAssignedCoursesMail();
         List<EnrollmentDTO> enrollmentDTOs = EnrollmentDTO.convertToDTO(enrollments);
         return new ResponseEntity<>(enrollmentDTOs, HttpStatus.OK);
     }
@@ -139,7 +139,7 @@ public class EnrollmentController {
         if (enrollment == null) {
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
         }
-        //mailService.sendReassignment(studentId, courseId, newCourseId);
+        mailService.sendReassignment(studentId, courseId, newCourseId);
         EnrollmentDTO enrollmentDTO = new EnrollmentDTO(enrollment.getEnrollmentId(), enrollment.getStudent().getName(), enrollment.getCourse().getCourseName(), enrollment.getPriority(), enrollment.getStatus().toString());
         return new ResponseEntity<>(enrollmentDTO, HttpStatus.OK);
     }
