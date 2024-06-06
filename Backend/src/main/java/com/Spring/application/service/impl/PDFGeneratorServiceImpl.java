@@ -127,7 +127,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
         }
 
         // Define time slots
-        String[] timeSlots = {"8:00-9:30", "9:40-11:10", "11:20-12:50", "13:00-14:30", "14:40-16:10", "16:20-17:50", "18:00-19:30", "19:40-21:10"};
+        String[] timeSlots = {"08:00-09:30", "09:40-11:10", "11:20-12:50", "13:00-14:30", "14:40-16:10", "16:20-17:50", "18:00-19:30", "19:40-21:10"};
 
         // Map to store the courses based on the day and time slot
         Map<String, Map<String, List<CourseSchedule>>> scheduleMap = new HashMap<>();
@@ -143,9 +143,9 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
             String day = courseSchedule.getDay().toString().toUpperCase();
             String startTime = courseSchedule.getStartTime().toString();
             String endTime = courseSchedule.getEndTime().toString();
-            String timeSlot = getTimeSlot(startTime, endTime);
+            String timeSlot = startTime + "-" + endTime;
 
-            if (scheduleMap.containsKey(day) && timeSlot != null) {
+            if (scheduleMap.containsKey(day)) {
                 scheduleMap.get(day).get(timeSlot).add(courseSchedule);
             }
         }
@@ -175,24 +175,6 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
         // Add table to document
         document.add(table);
         document.close();
-    }
-
-    private String getTimeSlot(String startTime, String endTime) {
-        if (startTime.equals("08:00") && endTime.equals("09:30")) {
-            return "8:00-9:30";
-        } else if (startTime.equals("09:40") && endTime.equals("11:10")) {
-            return "9:40-11:10";
-        } else if (startTime.equals("11:20") && endTime.equals("12:50")) {
-            return "11:20-12:50";
-        } else if (startTime.equals("13:00") && endTime.equals("14:30")) {
-            return "1:00-2:30";
-        } else if (startTime.equals("14:40") && endTime.equals("16:10")) {
-            return "2:40-4:10";
-        } else if (startTime.equals("16:20") && endTime.equals("17:50")) {
-            return "4:20-5:50";
-        } else {
-            return null;
-        }
     }
 
 

@@ -128,7 +128,7 @@ public class EnrollmentController {
         if (enrollments.isEmpty()) {
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
         }
-        mailService.sendAllAssignedCoursesMail();
+        //mailService.sendAllAssignedCoursesMail();
         List<EnrollmentDTO> enrollmentDTOs = EnrollmentDTO.convertToDTO(enrollments);
         return new ResponseEntity<>(enrollmentDTOs, HttpStatus.OK);
     }
