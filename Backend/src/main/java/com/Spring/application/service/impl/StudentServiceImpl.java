@@ -9,6 +9,9 @@ import com.Spring.application.repository.EnrollmentRepository;
 import com.Spring.application.repository.StudentRepository;
 import com.Spring.application.service.StudentService;
 import com.Spring.application.utils.Encrypt;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,14 @@ public class StudentServiceImpl implements StudentService{
     private StudentRepository studentRepository;
     @Autowired
     private EnrollmentRepository enrollmentRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Transactional
+    public List<Student> executeQuery(String query) {
+        return entityManager.createQuery(query).getResultList();
+    }
 
     @Override
     public Student addStudent(String name, Float grade, String facultySection, Integer year, String email, String password) throws NoSuchAlgorithmException, InvalidInput {
