@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -111,19 +113,13 @@ public class StudentController {
     }
 
     @GetMapping("/export-to-excel")
-    public ResponseEntity<List<StudentDTO>> exportExcel(HttpServletResponse response) throws IOException {
-        List<Student> students = studentService.getAllStudents();
-
-        if (students.isEmpty()) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        }
-
-        List<StudentDTO> studentDTOs = StudentDTO.convertToDTO(students);
-
+    public void exportExcel(HttpServletResponse response) throws IOException {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-Disposition", "attachment; filename=students.xlsx");
-        excelGeneratorService.exportStudentsToExcel(response, students);
-
-        return new ResponseEntity<>(studentDTOs, HttpStatus.OK);
+        DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormater.format(System.currentTimeMillis());
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=students_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+        excelGeneratorService.exportStudentsToExcel(response.getOutputStream());
     }
 }

@@ -91,12 +91,10 @@ public class EnrollmentController {
     @GetMapping("/export")
     public void exportEnrollmentsToPDF(HttpServletResponse response, @RequestParam Optional<String> facultySection, @RequestParam Optional<Integer> year) throws IOException {
         response.setContentType("application/pdf");
-        System.out.println("facultySection = " + facultySection);
-        System.out.println("year = " + year);
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormater.format(System.currentTimeMillis());
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".pdf";
+        String headerValue = "attachment; filename=students_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
         pdfGeneratorService.exportEnrollments(response.getOutputStream(), facultySection, year);
     }

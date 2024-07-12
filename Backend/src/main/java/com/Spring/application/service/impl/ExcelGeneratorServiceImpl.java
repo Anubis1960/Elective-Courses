@@ -4,6 +4,7 @@ import com.Spring.application.entity.Student;
 import com.Spring.application.entity.User;
 import com.Spring.application.enums.FacultySection;
 import com.Spring.application.enums.Role;
+import com.Spring.application.repository.StudentRepository;
 import com.Spring.application.service.ExcelGeneratorService;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,22 +15,27 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 @Service
 public class ExcelGeneratorServiceImpl implements ExcelGeneratorService {
+	@Autowired
+	private StudentRepository studentRepository;
+
 	@Override
-	public void exportStudentsToExcel(HttpServletResponse response, List<Student> students) throws IOException {
+	public void exportStudentsToExcel(OutputStream outputStream) throws IOException {
+		List<Student> students = studentRepository.findAll();
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		XSSFSheet sheet = workbook.createSheet("Students");
 
 		writeHeaderLine(sheet, workbook);
 		writeDataLines(sheet, workbook, students);
 
-		ServletOutputStream outputStream = response.getOutputStream();
 		workbook.write(outputStream);
 		workbook.close();
 
