@@ -10,6 +10,9 @@ import com.Spring.application.repository.CourseRepository;
 import com.Spring.application.repository.EnrollmentRepository;
 import com.Spring.application.repository.StudentRepository;
 import com.Spring.application.service.EnrollmentService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -28,9 +31,16 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     @Autowired
     private StudentServiceImpl studentServiceImpl;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Transactional
+    public List<Enrollment> executeQuery(String query){
+        return entityManager.createQuery(query, Enrollment.class).getResultList();
+    }
+
     @Override
     public Enrollment addEnrollment(Long studentId, Long courseId, Integer priority) throws ObjectNotFound {
-        System.out.println("studentId: " + studentId+ " courseId: " + courseId + " priority: " + priority);
         Student student = studentRepository.findById(studentId).orElse(null);
         if (student == null) {
             throw new ObjectNotFound("Student not found");
@@ -98,8 +108,6 @@ public class EnrollmentServiceImpl implements EnrollmentService{
 
     @Override
     public Integer countByCourseId(Long courseId){
-//        System.out.println("courseId: " + courseId);
-//        System.out.println("count: " + enrollmentRepository.countByCourseId(courseId).orElse(0));
         return enrollmentRepository.countByCourseId(courseId).orElse(0);
     }
 
@@ -110,8 +118,6 @@ public class EnrollmentServiceImpl implements EnrollmentService{
 
     @Override
     public Integer countByStudentId(Long studentId){
-//        System.out.println("studentId: " + studentId);
-//        System.out.println("count: " + enrollmentRepository.countByStudentId(studentId).orElse(0));
         return enrollmentRepository.countByStudentId(studentId).orElse(0);
     }
 

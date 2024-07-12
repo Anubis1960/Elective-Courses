@@ -19,4 +19,5 @@ public interface EnrollmentService {
     List<Enrollment> getEnrollmentsByFacultySectionAndStatusIsAccepted(String facultySection);
     Enrollment reassingStudent(Long studentId, Long courseId, Long newCourseId);
     Integer countByCourseIdAndStatusIsAccepted(Long courseId);
+    List<Enrollment> executeQuery(String query);
 }
