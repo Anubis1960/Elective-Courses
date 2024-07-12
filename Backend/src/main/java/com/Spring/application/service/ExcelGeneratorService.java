@@ -4,9 +4,10 @@ import com.Spring.application.entity.Student;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 
 public interface ExcelGeneratorService {
-	void exportStudentsToExcel(HttpServletResponse response, List<Student> users) throws IOException;
+	void exportStudentsToExcel(OutputStream outputStream) throws IOException;
 }
