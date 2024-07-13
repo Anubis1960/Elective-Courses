@@ -21,23 +21,12 @@ import java.util.*;
 
 @Service
 public class EnrollmentServiceImpl implements EnrollmentService{
-
     @Autowired
     private EnrollmentRepository enrollmentRepository;
     @Autowired
     private StudentRepository studentRepository;
     @Autowired
     private CourseRepository courseRepository;
-    @Autowired
-    private StudentServiceImpl studentServiceImpl;
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    @Transactional
-    public List<Enrollment> executeQuery(String query){
-        return entityManager.createQuery(query, Enrollment.class).getResultList();
-    }
 
     @Override
     public Enrollment addEnrollment(Long studentId, Long courseId, Integer priority) throws ObjectNotFound {
@@ -250,7 +239,6 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     @Override
     public Enrollment reassingStudent(Long studentId, Long courseId, Long newCourseId){
         Enrollment enrollment = enrollmentRepository.findEnrollmentByStudentIdAndCourseIdAndStatusIsAccepted(studentId, courseId);
-        //System.out.println("enrollment: " + enrollment);
         if(enrollment == null){
             return null;
         }
