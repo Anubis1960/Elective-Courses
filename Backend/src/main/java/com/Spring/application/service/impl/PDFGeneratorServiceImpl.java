@@ -376,6 +376,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
     public void exportEnrollments(OutputStream outputStream, Optional<String> facultySection, Optional<Integer> year, boolean includeEnrollmentId, boolean includeStudentId, boolean includeCourseId, boolean includeYear, boolean IncludeSection, boolean includeCourseName, boolean includeStudentName, boolean includeTeacher, boolean includeStudentMail, boolean includeGrade, boolean includeCategory) throws IOException {
         List<Enrollment> enrollments;
         if (facultySection.isPresent() && year.isPresent()) {
+            System.out.println();
             enrollments = enrollmentRepository.findEnrollmentByFacultySectionAndYearAndStatusIsAccepted(FacultySection.valueOf(facultySection.get()), year.get());
         } else if (facultySection.isPresent()) {
             enrollments = enrollmentRepository.findEnrollmentByFacultySectionAndStatusIsAccepted(FacultySection.valueOf(facultySection.get()));
@@ -415,7 +416,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
             int numColumns = 0;
             if (includeEnrollmentId) numColumns++;
             if (includeStudentId) numColumns++;
-            if(includeCourseId) numColumns++;
+            if (includeCourseId) numColumns++;
             if (includeYear) numColumns++;
             if (includeSection) numColumns++;
             if (includeCourseName) numColumns++;
@@ -579,7 +580,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
                 }
 
                 if (includeCategory) {
-                    PdfPCell categoryCell = new PdfPCell(new Paragraph(enrollment.getCourse().getCategory().toString(), cellFont));
+                    PdfPCell categoryCell = new PdfPCell(new Paragraph(enrollment.getCourse().getCategory(), cellFont));
                     categoryCell.setHorizontalAlignment(Element.ALIGN_CENTER);
                     table.addCell(categoryCell);
                 }
