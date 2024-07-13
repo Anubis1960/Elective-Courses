@@ -28,6 +28,15 @@ public class ApplicationPeriodServiceImpl implements ApplicationPeriodService {
     }
 
     @Override
+    public boolean updateApplicationPeriod(LocalDate endDate) {
+        if (applicationPeriodRepository.findAll().isEmpty()) {
+            return false;
+        }
+        applicationPeriodRepository.findAll().get(0).setEndDate(endDate);
+        return true;
+    }
+
+    @Override
     @Scheduled(cron = "0 0 0 * * *")
     @Transactional
     public void checkApplicationPeriod() {

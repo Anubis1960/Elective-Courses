@@ -21,12 +21,13 @@ import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.*;
@@ -43,57 +44,174 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
     @Autowired
     private StudentRepository studentRepository;
 
-//    @Override
-//    public void exportEnrollmentsToPDF(OutputStream out) throws IOException {
-//        List<Enrollment> enrollments = enrollmentRepository.findAllWhereStatusIsAccepted();
-//        Document document = new Document(PageSize.A4);
-//        PdfWriter.getInstance(document, out);
-//        document.open();
-//
-//        // Define font
-//        Font font = FontFactory.getFont(FontFactory.COURIER, 12, Color.BLACK);
-//        Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Color.WHITE);
-//
-//        // Create a table with 2 columns
-//        PdfPTable table = new PdfPTable(2);
-//        table.setWidthPercentage(100);
-//        table.setSpacingBefore(10f);
-//        table.setSpacingAfter(10f);
-//
-//        // Set column widths
-//        float[] columnWidths = {3f, 3f};
-//        table.setWidths(columnWidths);
-//
-//        // Create table header
-//        PdfPCell header1 = new PdfPCell(new Phrase("Student Name", headerFont));
-//        header1.setBackgroundColor(Color.GRAY);
-//        header1.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        header1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//        table.addCell(header1);
-//
-//        PdfPCell header2 = new PdfPCell(new Phrase("Course Name", headerFont));
-//        header2.setBackgroundColor(Color.GRAY);
-//        header2.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        header2.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//        table.addCell(header2);
-//
-//        // Add rows to the table
-//        for (Enrollment enrollment : enrollments) {
-//            PdfPCell studentCell = new PdfPCell(new Phrase(enrollment.getStudent().getName(), font));
-//            studentCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//            studentCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//            table.addCell(studentCell);
-//
-//            PdfPCell courseCell = new PdfPCell(new Phrase(enrollment.getCourse().getCourseName(), font));
-//            courseCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//            courseCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//            table.addCell(courseCell);
-//        }
-//
-//        // Add table to document
-//        document.add(table);
-//        document.close();
-//    }
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Transactional
+    public List<Enrollment> executeQuery(String query){
+        return entityManager.createQuery(query, Enrollment.class).getResultList();
+    }
+
+    @Override
+    public void exportStudents(OutputStream out, Optional<String> facultySection, Optional<Integer> year,boolean includeId, boolean includeName, boolean includeEmail, boolean includeGrade, boolean includeSection, boolean includeYear) throws IOException {
+        List<Student> students;
+        if (facultySection.isPresent() && year.isPresent()) {
+            students = entityManager.createQuery("SELECT s FROM Student s WHERE s.facultySection = :facultySection AND s.year = :year", Student.class)
+                    .setParameter("facultySection", FacultySection.valueOf(facultySection.get()))
+                    .setParameter("year", year.get())
+                    .getResultList();
+        } else if (facultySection.isPresent()) {
+            students = entityManager.createQuery("SELECT s FROM Student s WHERE s.facultySection = :facultySection", Student.class)
+                    .setParameter("facultySection", FacultySection.valueOf(facultySection.get()))
+                    .getResultList();
+        } else if (year.isPresent()) {
+            students = entityManager.createQuery("SELECT s FROM Student s WHERE s.year = :year", Student.class)
+                    .setParameter("year", year.get())
+                    .getResultList();
+        } else {
+            students = studentRepository.findAll();
+        }
+
+        writeStudentsToPDF(out, students, includeId, includeName, includeEmail, includeGrade, includeSection, includeYear);
+    }
+
+
+    public void writeStudentsToPDF(OutputStream out, List<Student> students,
+                                   boolean includeId, boolean includeName, boolean includeEmail,
+                                   boolean includeGrade, boolean includeSection, boolean includeYear) {
+
+        Document document = new Document();
+
+        try {
+            PdfWriter.getInstance(document, out);
+            document.open();
+
+            // Define fonts
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16, Color.BLACK);
+            Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Color.WHITE);
+            Font cellFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Color.BLACK);
+
+            // Add title
+            Paragraph title = new Paragraph("Students", titleFont);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+            document.add(new Paragraph(" ")); // Add a blank line
+
+            // Calculate number of columns based on include flags
+            int numColumns = 0;
+            if (includeId) numColumns++;
+            if (includeName) numColumns++;
+            if (includeEmail) numColumns++;
+            if (includeGrade) numColumns++;
+            if (includeSection) numColumns++;
+            if (includeYear) numColumns++;
+
+            // Create table with calculated number of columns
+            PdfPTable table = new PdfPTable(numColumns);
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(10f);
+            table.setSpacingAfter(10f);
+
+            // Set column widths evenly
+            float[] columnWidths = new float[numColumns];
+            for (int i = 0; i < numColumns; i++) {
+                columnWidths[i] = 1f;
+            }
+            table.setWidths(columnWidths);
+
+            // Add table headers
+            if (includeId) {
+                PdfPCell idHeader = new PdfPCell(new Paragraph("ID", headerFont));
+                idHeader.setBackgroundColor(Color.GRAY);
+                idHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(idHeader);
+            }
+
+            if (includeName) {
+                PdfPCell nameHeader = new PdfPCell(new Paragraph("Name", headerFont));
+                nameHeader.setBackgroundColor(Color.GRAY);
+                nameHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(nameHeader);
+            }
+
+            if (includeEmail) {
+                PdfPCell emailHeader = new PdfPCell(new Paragraph("Email", headerFont));
+                emailHeader.setBackgroundColor(Color.GRAY);
+                emailHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(emailHeader);
+            }
+
+            if (includeGrade) {
+                PdfPCell gradeHeader = new PdfPCell(new Paragraph("Grade", headerFont));
+                gradeHeader.setBackgroundColor(Color.GRAY);
+                gradeHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(gradeHeader);
+            }
+
+            if (includeSection) {
+                PdfPCell sectionHeader = new PdfPCell(new Paragraph("Section", headerFont));
+                sectionHeader.setBackgroundColor(Color.GRAY);
+                sectionHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(sectionHeader);
+            }
+
+            if (includeYear) {
+                PdfPCell yearHeader = new PdfPCell(new Paragraph("Year", headerFont));
+                yearHeader.setBackgroundColor(Color.GRAY);
+                yearHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(yearHeader);
+            }
+
+            // Add rows to the table
+            for (Student student : students) {
+                if (includeId) {
+                    PdfPCell idCell = new PdfPCell(new Paragraph(student.getId().toString(), cellFont));
+                    idCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(idCell);
+                }
+
+                if (includeName) {
+                    PdfPCell nameCell = new PdfPCell(new Paragraph(student.getName(), cellFont));
+                    nameCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(nameCell);
+                }
+
+                if (includeEmail) {
+                    PdfPCell emailCell = new PdfPCell(new Paragraph(student.getEmail(), cellFont));
+                    emailCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(emailCell);
+                }
+
+                if (includeGrade) {
+                    PdfPCell gradeCell = new PdfPCell(new Paragraph(student.getGrade().toString(), cellFont));
+                    gradeCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(gradeCell);
+                }
+
+                if (includeSection) {
+                    PdfPCell sectionCell = new PdfPCell(new Paragraph(student.getFacultySection().toString(), cellFont)); // Assuming getSection() retrieves the section
+                    sectionCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(sectionCell);
+                }
+
+                if (includeYear) {
+                    PdfPCell yearCell = new PdfPCell(new Paragraph(String.valueOf(student.getYear()), cellFont)); // Assuming getYear() retrieves the year
+                    yearCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(yearCell);
+                }
+            }
+
+            // Add table to document
+            document.add(table);
+
+        } catch (com.lowagie.text.DocumentException e) {
+            e.printStackTrace();
+        } finally {
+            if (document != null) {
+                document.close();
+            }
+        }
+    }
 
 
     @Override
@@ -178,9 +296,6 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
     }
 
 
-
-
-
     @Override
     public void exportStudentsOfCourseToPDF(OutputStream out, Long id) throws IOException {
         List<Student> students = studentRepository.findAcceptedStudentsByCourseId(id);
@@ -257,222 +372,8 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
         document.close();
     }
 
-//    @Override
-//    public void exportEnrollmentByFacultySectionToPDF(OutputStream out, String facultySection) throws IOException {
-//        List<Enrollment> enrollments = enrollmentRepository.findEnrollmentByFacultySectionAndStatusIsAccepted(FacultySection.valueOf(facultySection));
-//
-//        Document document = new Document(PageSize.A4);
-//        PdfWriter.getInstance(document, out);
-//        document.open();
-//
-//        // Define fonts
-//        Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16, Color.BLACK);
-//        Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Color.WHITE);
-//        Font cellFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Color.BLACK);
-//
-//        // Add title
-//        Paragraph title = new Paragraph("Faculty Section: " + facultySection, titleFont);
-//        title.setAlignment(Element.ALIGN_CENTER);
-//        document.add(title);
-//        document.add(new Paragraph(" ")); // Add a blank line
-//
-//        // Create a table with 3 columns
-//        PdfPTable table = new PdfPTable(3);
-//        table.setWidthPercentage(100);
-//        table.setSpacingBefore(10f);
-//        table.setSpacingAfter(10f);
-//
-//        // Set column widths
-//        float[] columnWidths = {3f, 3f, 2f};
-//        table.setWidths(columnWidths);
-//
-//        // Create table header
-//        PdfPCell header1 = new PdfPCell(new Phrase("Student", headerFont));
-//        header1.setBackgroundColor(Color.GRAY);
-//        header1.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        header1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//        table.addCell(header1);
-//
-//        PdfPCell header2 = new PdfPCell(new Phrase("Course", headerFont));
-//        header2.setBackgroundColor(Color.GRAY);
-//        header2.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        header2.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//        table.addCell(header2);
-//
-//        PdfPCell header3 = new PdfPCell(new Phrase("Year", headerFont));
-//        header3.setBackgroundColor(Color.GRAY);
-//        header3.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        header3.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//        table.addCell(header3);
-//
-//        // Add rows to the table
-//        for (Enrollment enrollment : enrollments) {
-//            PdfPCell studentCell = new PdfPCell(new Phrase(enrollment.getStudent().getName(), cellFont));
-//            studentCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//            studentCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//            table.addCell(studentCell);
-//
-//            PdfPCell courseCell = new PdfPCell(new Phrase(enrollment.getCourse().getCourseName(), cellFont));
-//            courseCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//            courseCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//            table.addCell(courseCell);
-//
-//            PdfPCell yearCell = new PdfPCell(new Phrase(enrollment.getCourse().getYear().toString(), cellFont));
-//            yearCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//            yearCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//            table.addCell(yearCell);
-//        }
-//
-//        // Add table to document
-//        document.add(table);
-//        document.close();
-//    }
-
-
-//    @Override
-//    public void exportEnrollmentByYearToPDF(OutputStream out, Integer year) throws IOException {
-//        List<Enrollment> enrollments = enrollmentRepository.findEnrollmentByYearAndStatusIsAccepted(year);
-//
-//        Document document = new Document(PageSize.A4);
-//        PdfWriter.getInstance(document, out);
-//        document.open();
-//
-//        // Define fonts
-//        Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16, Color.BLACK);
-//        Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Color.WHITE);
-//        Font cellFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Color.BLACK);
-//
-//        // Add title
-//        Paragraph title = new Paragraph("Year: " + year, titleFont);
-//        title.setAlignment(Element.ALIGN_CENTER);
-//        document.add(title);
-//        document.add(new Paragraph(" ")); // Add a blank line
-//
-//        // Create a table with 3 columns
-//        PdfPTable table = new PdfPTable(3);
-//        table.setWidthPercentage(100);
-//        table.setSpacingBefore(10f);
-//        table.setSpacingAfter(10f);
-//
-//        // Set column widths
-//        float[] columnWidths = {3f, 3f, 3f};
-//        table.setWidths(columnWidths);
-//
-//        // Create table header
-//        PdfPCell header1 = new PdfPCell(new Phrase("Student", headerFont));
-//        header1.setBackgroundColor(Color.GRAY);
-//        header1.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        header1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//        table.addCell(header1);
-//
-//        PdfPCell header2 = new PdfPCell(new Phrase("Course", headerFont));
-//        header2.setBackgroundColor(Color.GRAY);
-//        header2.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        header2.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//        table.addCell(header2);
-//
-//        PdfPCell header3 = new PdfPCell(new Phrase("Faculty Section", headerFont));
-//        header3.setBackgroundColor(Color.GRAY);
-//        header3.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        header3.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//        table.addCell(header3);
-//
-//        // Add rows to the table
-//        for (Enrollment enrollment : enrollments) {
-//            PdfPCell studentCell = new PdfPCell(new Phrase(enrollment.getStudent().getName(), cellFont));
-//            studentCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//            studentCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//            table.addCell(studentCell);
-//
-//            PdfPCell courseCell = new PdfPCell(new Phrase(enrollment.getCourse().getCourseName(), cellFont));
-//            courseCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//            courseCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//            table.addCell(courseCell);
-//
-//            PdfPCell facultySectionCell = new PdfPCell(new Phrase(enrollment.getCourse().getFacultySection().toString(), cellFont));
-//            facultySectionCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//            facultySectionCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//            table.addCell(facultySectionCell);
-//        }
-//
-//        // Add table to document
-//        document.add(table);
-//        document.close();
-//    }
-
-//    @Override
-//    public void exportEnrollmentByFacultySectionAndYearToPDF(OutputStream out, String facultySection, Integer year) throws IOException {
-//        List<Enrollment> enrollments = enrollmentRepository.findEnrollmentByFacultySectionAndYearAndStatusIsAccepted(FacultySection.valueOf(facultySection), year);
-//
-//        Document document = new Document(PageSize.A4);
-//        PdfWriter.getInstance(document, out);
-//        document.open();
-//
-//        // Define fonts
-//        Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16, Color.BLACK);
-//        Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Color.WHITE);
-//        Font cellFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Color.BLACK);
-//
-//        // Add title
-//        Paragraph title = new Paragraph("Faculty Section: " + facultySection + "    Year: " + year, titleFont);
-//        title.setAlignment(Element.ALIGN_CENTER);
-//        document.add(title);
-//        document.add(new Paragraph(" ")); // Add a blank line
-//
-//        // Create a table with 3 columns
-//        PdfPTable table = new PdfPTable(3);
-//        table.setWidthPercentage(100);
-//        table.setSpacingBefore(10f);
-//        table.setSpacingAfter(10f);
-//
-//        // Set column widths
-//        float[] columnWidths = {3f, 3f, 3f};
-//        table.setWidths(columnWidths);
-//
-//        // Create table header
-//        PdfPCell header1 = new PdfPCell(new Phrase("Student", headerFont));
-//        header1.setBackgroundColor(Color.GRAY);
-//        header1.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        header1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//        table.addCell(header1);
-//
-//        PdfPCell header2 = new PdfPCell(new Phrase("Course", headerFont));
-//        header2.setBackgroundColor(Color.GRAY);
-//        header2.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        header2.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//        table.addCell(header2);
-//
-//        PdfPCell header3 = new PdfPCell(new Phrase("Faculty Section", headerFont));
-//        header3.setBackgroundColor(Color.GRAY);
-//        header3.setHorizontalAlignment(Element.ALIGN_CENTER);
-//        header3.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//        table.addCell(header3);
-//
-//        // Add rows to the table
-//        for (Enrollment enrollment : enrollments) {
-//            PdfPCell studentCell = new PdfPCell(new Phrase(enrollment.getStudent().getName(), cellFont));
-//            studentCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//            studentCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//            table.addCell(studentCell);
-//
-//            PdfPCell courseCell = new PdfPCell(new Phrase(enrollment.getCourse().getCourseName(), cellFont));
-//            courseCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//            courseCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//            table.addCell(courseCell);
-//
-//            PdfPCell facultySectionCell = new PdfPCell(new Phrase(enrollment.getCourse().getFacultySection().toString(), cellFont));
-//            facultySectionCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//            facultySectionCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//            table.addCell(facultySectionCell);
-//        }
-//
-//        // Add table to document
-//        document.add(table);
-//        document.close();
-//    }
-
     @Override
-    public void exportEnrollments(OutputStream outputStream, Optional<String> facultySection, Optional<Integer> year) throws IOException {
+    public void exportEnrollments(OutputStream outputStream, Optional<String> facultySection, Optional<Integer> year, boolean includeEnrollmentId, boolean includeStudentId, boolean includeCourseId, boolean includeYear, boolean IncludeSection, boolean includeCourseName, boolean includeStudentName, boolean includeTeacher, boolean includeStudentMail, boolean includeGrade, boolean includeCategory) throws IOException {
         List<Enrollment> enrollments;
         if (facultySection.isPresent() && year.isPresent()) {
             enrollments = enrollmentRepository.findEnrollmentByFacultySectionAndYearAndStatusIsAccepted(FacultySection.valueOf(facultySection.get()), year.get());
@@ -484,87 +385,215 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
             enrollments = enrollmentRepository.findAllWhereStatusIsAccepted();
         }
 
-        writeEnrollmentsToPDF(outputStream, enrollments);
+        writeEnrollmentsToPDF(outputStream, enrollments, includeEnrollmentId, includeStudentId, includeCourseId, includeYear, IncludeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory);
     }
 
+    public void writeEnrollmentsToPDF(OutputStream outputStream, List<Enrollment> enrollments,
+                                      boolean includeEnrollmentId, boolean includeStudentId, boolean includeCourseId, boolean includeYear,
+                                      boolean includeSection, boolean includeCourseName, boolean includeStudentName,
+                                      boolean includeTeacher, boolean includeStudentMail, boolean includeGrade,
+                                      boolean includeCategory) {
 
-    @Override
-    public void writeEnrollmentsToPDF(OutputStream outputStream, List<Enrollment> enrollments) throws IOException {
-        Document document = new Document(PageSize.A4);
-        PdfWriter.getInstance(document, outputStream);
-        document.open();
+        Document document = new Document();
 
-        // Define fonts
-        Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16, Color.BLACK);
-        Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Color.WHITE);
-        Font cellFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Color.BLACK);
+        try {
+            PdfWriter.getInstance(document, outputStream);
+            document.open();
 
-        // Add title
-        Paragraph title = new Paragraph("Enrollments ", titleFont);
-        title.setAlignment(Element.ALIGN_CENTER);
-        document.add(title);
-        document.add(new Paragraph(" ")); // Add a blank line
+            // Define fonts
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16, Color.BLACK);
+            Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Color.WHITE);
+            Font cellFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Color.BLACK);
 
-        // Create a table with 3 columns
-        PdfPTable table = new PdfPTable(4);
-        table.setWidthPercentage(100);
-        table.setSpacingBefore(10f);
-        table.setSpacingAfter(10f);
+            // Add title
+            Paragraph title = new Paragraph("Enrollments", titleFont);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+            document.add(new Paragraph(" ")); // Add a blank line
 
-        // Set column widths
-        float[] columnWidths = {3f, 3f, 3f, 3f};
-        table.setWidths(columnWidths);
+            // Calculate number of columns based on include flags
+            int numColumns = 0;
+            if (includeEnrollmentId) numColumns++;
+            if (includeStudentId) numColumns++;
+            if(includeCourseId) numColumns++;
+            if (includeYear) numColumns++;
+            if (includeSection) numColumns++;
+            if (includeCourseName) numColumns++;
+            if (includeStudentName) numColumns++;
+            if (includeTeacher) numColumns++;
+            if (includeStudentMail) numColumns++;
+            if (includeGrade) numColumns++;
+            if (includeCategory) numColumns++;
 
-        // Create table header
-        PdfPCell header1 = new PdfPCell(new Phrase("Student", headerFont));
-        header1.setBackgroundColor(Color.GRAY);
-        header1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        header1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        table.addCell(header1);
+            // Create table with calculated number of columns
+            PdfPTable table = new PdfPTable(numColumns);
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(10f);
+            table.setSpacingAfter(10f);
 
-        PdfPCell header2 = new PdfPCell(new Phrase("Course", headerFont));
-        header2.setBackgroundColor(Color.GRAY);
-        header2.setHorizontalAlignment(Element.ALIGN_CENTER);
-        header2.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        table.addCell(header2);
+            // Set column widths evenly
+            float[] columnWidths = new float[numColumns];
+            for (int i = 0; i < numColumns; i++) {
+                columnWidths[i] = 1f;
+            }
+            table.setWidths(columnWidths);
 
-        PdfPCell header3 = new PdfPCell(new Phrase("Faculty Section", headerFont));
-        header3.setBackgroundColor(Color.GRAY);
-        header3.setHorizontalAlignment(Element.ALIGN_CENTER);
-        header3.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        table.addCell(header3);
+            // Add table headers
+            if (includeEnrollmentId) {
+                PdfPCell enrollmentIdHeader = new PdfPCell(new Paragraph("Enrollment ID", headerFont));
+                enrollmentIdHeader.setBackgroundColor(Color.GRAY);
+                enrollmentIdHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(enrollmentIdHeader);
+            }
 
-        PdfPCell header4 = new PdfPCell(new Phrase("Year", headerFont));
-        header4.setBackgroundColor(Color.GRAY);
-        header4.setHorizontalAlignment(Element.ALIGN_CENTER);
-        header4.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        table.addCell(header4);
+            if (includeStudentId) {
+                PdfPCell studentIdHeader = new PdfPCell(new Paragraph("Student ID", headerFont));
+                studentIdHeader.setBackgroundColor(Color.GRAY);
+                studentIdHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(studentIdHeader);
+            }
 
-        // Add rows to the table
-        for (Enrollment enrollment : enrollments) {
-            PdfPCell studentCell = new PdfPCell(new Phrase(enrollment.getStudent().getName(), cellFont));
-            studentCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            studentCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            table.addCell(studentCell);
+            if (includeCourseId) {
+                PdfPCell courseIdHeader = new PdfPCell(new Paragraph("Course ID", headerFont));
+                courseIdHeader.setBackgroundColor(Color.GRAY);
+                courseIdHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(courseIdHeader);
+            }
 
-            PdfPCell courseCell = new PdfPCell(new Phrase(enrollment.getCourse().getCourseName(), cellFont));
-            courseCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            courseCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            table.addCell(courseCell);
+            if (includeYear) {
+                PdfPCell yearHeader = new PdfPCell(new Paragraph("Year", headerFont));
+                yearHeader.setBackgroundColor(Color.GRAY);
+                yearHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(yearHeader);
+            }
 
-            PdfPCell facultySectionCell = new PdfPCell(new Phrase(enrollment.getCourse().getFacultySection().toString(), cellFont));
-            facultySectionCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            facultySectionCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            table.addCell(facultySectionCell);
+            if (includeSection) {
+                PdfPCell sectionHeader = new PdfPCell(new Paragraph("Section", headerFont));
+                sectionHeader.setBackgroundColor(Color.GRAY);
+                sectionHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(sectionHeader);
+            }
 
-            PdfPCell yearCell = new PdfPCell(new Phrase(enrollment.getStudent().getYear().toString(), cellFont));
-            yearCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            yearCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            table.addCell(yearCell);
+            if (includeCourseName) {
+                PdfPCell courseNameHeader = new PdfPCell(new Paragraph("Course Name", headerFont));
+                courseNameHeader.setBackgroundColor(Color.GRAY);
+                courseNameHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(courseNameHeader);
+            }
+
+            if (includeStudentName) {
+                PdfPCell studentNameHeader = new PdfPCell(new Paragraph("Student Name", headerFont));
+                studentNameHeader.setBackgroundColor(Color.GRAY);
+                studentNameHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(studentNameHeader);
+            }
+
+            if (includeTeacher) {
+                PdfPCell teacherHeader = new PdfPCell(new Paragraph("Teacher", headerFont));
+                teacherHeader.setBackgroundColor(Color.GRAY);
+                teacherHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(teacherHeader);
+            }
+
+            if (includeStudentMail) {
+                PdfPCell studentMailHeader = new PdfPCell(new Paragraph("Student Mail", headerFont));
+                studentMailHeader.setBackgroundColor(Color.GRAY);
+                studentMailHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(studentMailHeader);
+            }
+
+            if (includeGrade) {
+                PdfPCell gradeHeader = new PdfPCell(new Paragraph("Grade", headerFont));
+                gradeHeader.setBackgroundColor(Color.GRAY);
+                gradeHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(gradeHeader);
+            }
+
+            if (includeCategory) {
+                PdfPCell categoryHeader = new PdfPCell(new Paragraph("Category", headerFont));
+                categoryHeader.setBackgroundColor(Color.GRAY);
+                categoryHeader.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(categoryHeader);
+            }
+
+            // Add rows to the table
+            for (Enrollment enrollment : enrollments) {
+                if (includeEnrollmentId) {
+                    PdfPCell enrollmentIdCell = new PdfPCell(new Paragraph(enrollment.getEnrollmentId().toString(), cellFont));
+                    enrollmentIdCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(enrollmentIdCell);
+                }
+
+                if (includeStudentId) {
+                    PdfPCell studentIdCell = new PdfPCell(new Paragraph(enrollment.getStudent().getId().toString(), cellFont));
+                    studentIdCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(studentIdCell);
+                }
+
+                if (includeCourseId) {
+                    PdfPCell courseIdCell = new PdfPCell(new Paragraph(enrollment.getCourse().getCourseId().toString(), cellFont));
+                    courseIdCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(courseIdCell);
+                }
+
+                if (includeYear) {
+                    PdfPCell yearCell = new PdfPCell(new Paragraph(String.valueOf(enrollment.getStudent().getYear()), cellFont));
+                    yearCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(yearCell);
+                }
+
+                if (includeSection) {
+                    PdfPCell sectionCell = new PdfPCell(new Paragraph(enrollment.getStudent().getFacultySection().toString(), cellFont));
+                    sectionCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(sectionCell);
+                }
+
+                if (includeCourseName) {
+                    PdfPCell courseNameCell = new PdfPCell(new Paragraph(enrollment.getCourse().getCourseName(), cellFont));
+                    courseNameCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(courseNameCell);
+                }
+
+                if (includeStudentName) {
+                    PdfPCell studentNameCell = new PdfPCell(new Paragraph(enrollment.getStudent().getName(), cellFont));
+                    studentNameCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(studentNameCell);
+                }
+
+                if (includeTeacher) {
+                    PdfPCell teacherCell = new PdfPCell(new Paragraph(enrollment.getCourse().getTeacherName(), cellFont));
+                    teacherCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(teacherCell);
+                }
+
+                if (includeStudentMail) {
+                    PdfPCell studentMailCell = new PdfPCell(new Paragraph(enrollment.getStudent().getEmail(), cellFont));
+                    studentMailCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(studentMailCell);
+                }
+
+                if (includeGrade) {
+                    PdfPCell gradeCell = new PdfPCell(new Paragraph(enrollment.getStudent().getGrade().toString(), cellFont));
+                    gradeCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(gradeCell);
+                }
+
+                if (includeCategory) {
+                    PdfPCell categoryCell = new PdfPCell(new Paragraph(enrollment.getCourse().getCategory().toString(), cellFont));
+                    categoryCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(categoryCell);
+                }
+            }
+
+            // Add table to document
+            document.add(table);
+
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } finally {
+            if (document != null) {
+                document.close();
+            }
         }
-
-        // Add table to document
-        document.add(table);
-        document.close();
     }
 }

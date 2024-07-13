@@ -2,10 +2,11 @@ package com.Spring.application.controller;
 
 import com.Spring.application.dto.StudentDTO;
 import com.Spring.application.entity.Student;
+import com.Spring.application.enums.FacultySection;
 import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
-import com.Spring.application.service.ExcelGeneratorService;
 import com.Spring.application.service.impl.ExcelGeneratorServiceImpl;
+import com.Spring.application.service.impl.PDFGeneratorServiceImpl;
 import com.Spring.application.service.impl.StudentServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -28,6 +31,9 @@ public class StudentController {
 
     @Autowired
     private ExcelGeneratorServiceImpl excelGeneratorService;
+
+    @Autowired
+    private PDFGeneratorServiceImpl pdfGeneratorService;
 
     @PostMapping("/")
     public ResponseEntity<StudentDTO> addStudent(
@@ -112,14 +118,25 @@ public class StudentController {
         return new ResponseEntity<>(studentDTOs, HttpStatus.OK);
     }
 
-    @GetMapping("/export-to-excel")
-    public void exportExcel(HttpServletResponse response) throws IOException {
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    @GetMapping("/export")
+    public void exportPDF(HttpServletResponse response, Optional<String> facultySection, Optional<Integer> year,@RequestParam boolean includeId, @RequestParam boolean includeName, @RequestParam boolean includeGrade, @RequestParam boolean includeFacultySection, @RequestParam boolean includeYear, @RequestParam boolean includeEmail, @RequestParam String extension) throws IOException {
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormater.format(System.currentTimeMillis());
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=students_" + currentDateTime + ".xlsx";
-        response.setHeader(headerKey, headerValue);
-        excelGeneratorService.exportStudentsToExcel(response.getOutputStream());
+        if(Objects.equals(extension, "pdf")){
+            response.setContentType("application/pdf");
+            String headerValue = "attachment; filename=students_" + currentDateTime + ".pdf";
+            response.setHeader(headerKey, headerValue);
+            pdfGeneratorService.exportStudents(response.getOutputStream(), facultySection, year, includeId, includeName, includeEmail, includeGrade, includeFacultySection, includeYear);
+        }
+        else if(Objects.equals(extension, "excel")){
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            String headerValue = "attachment; filename=students_" + currentDateTime + ".xlsx";
+            response.setHeader(headerKey, headerValue);
+            excelGeneratorService.exportStudentsToExcel(response.getOutputStream(), facultySection, year, includeId, includeName, includeEmail, includeGrade, includeFacultySection, includeYear);
+        }
+        else{
+
+        }
     }
 }
