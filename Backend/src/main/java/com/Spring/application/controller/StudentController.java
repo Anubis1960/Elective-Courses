@@ -5,6 +5,8 @@ import com.Spring.application.entity.Student;
 import com.Spring.application.enums.FacultySection;
 import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
+import com.Spring.application.service.CSVGeneratorService;
+import com.Spring.application.service.impl.CSVGeneratorServiceImpl;
 import com.Spring.application.service.impl.ExcelGeneratorServiceImpl;
 import com.Spring.application.service.impl.PDFGeneratorServiceImpl;
 import com.Spring.application.service.impl.StudentServiceImpl;
@@ -34,6 +36,9 @@ public class StudentController {
 
     @Autowired
     private PDFGeneratorServiceImpl pdfGeneratorService;
+
+    @Autowired
+    private CSVGeneratorServiceImpl csvGeneratorService;
 
     @PostMapping("/")
     public ResponseEntity<StudentDTO> addStudent(
@@ -136,7 +141,10 @@ public class StudentController {
             excelGeneratorService.exportStudentsToExcel(response.getOutputStream(), facultySection, year, includeId, includeName, includeEmail, includeGrade, includeFacultySection, includeYear);
         }
         else{
-
+            response.setContentType("application/csv");
+            String headerValue = "attachment; filename=students_" + currentDateTime + ".csv";
+            response.setHeader(headerKey, headerValue);
+            csvGeneratorService.exportStudentsToCSV(response.getOutputStream(), facultySection, year, includeId, includeName, includeEmail, includeGrade, includeFacultySection, includeYear);
         }
     }
 }

@@ -164,20 +164,20 @@ public class ExcelGeneratorServiceImpl implements ExcelGeneratorService {
 	public void exportEnrollmentsToExcel(OutputStream out, Optional<String> facultySection, Optional<Integer> year, boolean includeEnrollmentId, boolean includeStudentId, boolean includeCourseId, boolean includeYear, boolean IncludeSection, boolean includeCourseName, boolean includeStudentName, boolean includeTeacher, boolean includeStudentMail, boolean includeGrade, boolean includeCategory) throws IOException {
 		List<Enrollment> enrollments;
 		if (facultySection.isPresent() && year.isPresent()) {
-			enrollments = entityManager.createQuery("SELECT e FROM Enrollment e WHERE e.student.facultySection = :facultySection AND e.student.year = :year", Enrollment.class)
+			enrollments = entityManager.createQuery("SELECT e FROM Enrollment e WHERE e.student.facultySection = :facultySection AND e.student.year = :year AND e.status = 'ACCEPTED'", Enrollment.class)
 					.setParameter("facultySection", FacultySection.valueOf(facultySection.get()))
 					.setParameter("year", year.get())
 					.getResultList();
 		} else if (facultySection.isPresent()) {
-			enrollments = entityManager.createQuery("SELECT e FROM Enrollment e WHERE e.student.facultySection = :facultySection", Enrollment.class)
+			enrollments = entityManager.createQuery("SELECT e FROM Enrollment e WHERE e.student.facultySection = :facultySection AND e.status = 'ACCEPTED'", Enrollment.class)
 					.setParameter("facultySection", FacultySection.valueOf(facultySection.get()))
 					.getResultList();
 		} else if (year.isPresent()) {
-			enrollments = entityManager.createQuery("SELECT e FROM Enrollment e WHERE e.student.year = :year", Enrollment.class)
+			enrollments = entityManager.createQuery("SELECT e FROM Enrollment e WHERE e.student.year = :year AND e.status = 'ACCEPTED'", Enrollment.class)
 					.setParameter("year", year.get())
 					.getResultList();
 		} else {
-			enrollments = entityManager.createQuery("SELECT e FROM Enrollment e", Enrollment.class)
+			enrollments = entityManager.createQuery("SELECT e FROM Enrollment e WHERE e.status = 'ACCEPTED'", Enrollment.class)
 					.getResultList();
 		}
 

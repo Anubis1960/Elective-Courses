@@ -39,6 +39,8 @@ public class EnrollmentController {
     private MailServiceImpl mailService;
     @Autowired
     private ExcelGeneratorServiceImpl excelGeneratorService;
+    @Autowired
+    private CSVGeneratorServiceImpl csvGeneratorService;
 
     @PostMapping("/")
     public ResponseEntity<EnrollmentDTO> enroll(
@@ -95,18 +97,21 @@ public class EnrollmentController {
         String headerKey = "Content-Disposition";
         if (Objects.equals(extension, "pdf")) {
             response.setContentType("application/pdf");
-            String headerValue = "attachment; filename=students_" + currentDateTime + ".pdf";
+            String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".pdf";
             response.setHeader(headerKey, headerValue);
             pdfGeneratorService.exportEnrollments(response.getOutputStream(), facultySection, year, includeEnrollmentId, includeStudentId, includeCourseId, includeYear, IncludeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory);
         }
         else if (Objects.equals(extension, "excel")){
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            String headerValue = "attachment; filename=students_" + currentDateTime + ".xlsx";
+            String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".xlsx";
             response.setHeader(headerKey, headerValue);
             excelGeneratorService.exportEnrollmentsToExcel(response.getOutputStream(), facultySection, year, includeEnrollmentId, includeStudentId, includeCourseId, includeYear, IncludeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory);
         }
         else{
-
+            response.setContentType("application/csv");
+            String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".csv";
+            response.setHeader(headerKey, headerValue);
+            csvGeneratorService.exportEnrollmentsToCSV(response.getOutputStream(), facultySection, year, includeEnrollmentId, includeStudentId, includeCourseId, includeYear, IncludeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory);
         }
     }
 
