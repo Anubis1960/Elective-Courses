@@ -35,6 +35,7 @@ import { ReassignPopUpComponent } from './component/reassign-pop-up/reassign-pop
 import {MatRadioModule} from '@angular/material/radio';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTab, MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatRadioModule,
     MatExpansionModule,
     MatCheckboxModule,
+    MatTabsModule,
   ],
   providers: [
     provideClientHydration(),

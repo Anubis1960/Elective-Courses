@@ -1,18 +1,20 @@
 <app-top-bar></app-top-bar>
 
 <mat-card>
+  @if(status == 'true'){
+    <mat-card-subtitle>
+      <button mat-raised-button color="primary" (click)="closePeriod()">Close Period</button>
+    </mat-card-subtitle>
+  }
+  <mat-tab-group animationDuration="500ms">
+    <mat-tab label="Courses"> 
   <mat-card-header>
     <mat-card-title>Courses</mat-card-title>
     <mat-card-subtitle class="button_search">
       <button mat-raised-button color="primary" (click)="openDialog(null)">Add Course</button>
       <input matInput placeholder="Search" (keyup)="filterChange($event)" style="height: 25px; margin: 10px; border-radius: 1rem; border-color: black;">
     </mat-card-subtitle>
-    @if(status == 'true'){
-      <mat-card-subtitle>
-        <button mat-raised-button color="primary" (click)="closePeriod()">Close Period</button>
-      </mat-card-subtitle>
-      }
-      @else{
+    @if(status == 'false'){
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>Export enrollments</mat-panel-title>
@@ -138,4 +140,9 @@
   <mat-card-footer style="margin-top: -30px; margin-right: 50px;">
     <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
   </mat-card-footer>
+  </mat-tab>
+    <mat-tab label="Students">
+      <app-admin-students></app-admin-students>
+    </mat-tab>
+  </mat-tab-group>
 </mat-card>
