@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import exp from "constants";
 import { Observable } from "rxjs";
@@ -7,9 +7,7 @@ import { Observable } from "rxjs";
     providedIn: "root"
 })
 export class ApplicationPeriodService{
-    static getApplicationPeriodStatus() {
-      throw new Error('Method not implemented.');
-    }
+
     private baseUrl = "http://localhost:8080/application-period";
 
     constructor(private http: HttpClient){}
@@ -21,4 +19,11 @@ export class ApplicationPeriodService{
     public reverseApplicationPeriodStatus(): Observable<boolean>{
         return this.http.put<boolean>(`${this.baseUrl}/reverse`, {});
     }
+
+    public setApplicationPeriod(endDate: string): Observable<boolean>{
+        let params = new HttpParams()
+        params = params.set('endDate', endDate);
+        return this.http.put<boolean>(`${this.baseUrl}/`, params);
+    }
+
 }

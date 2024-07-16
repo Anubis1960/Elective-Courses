@@ -36,6 +36,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTab, MatTabsModule } from '@angular/material/tabs';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { MatTab, MatTabsModule } from '@angular/material/tabs';
     MatTabsModule,
     MatCheckboxModule,
     MatTabsModule,
+    MatDatepickerModule,
   ],
   providers: [
     provideClientHydration(),

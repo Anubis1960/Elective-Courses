@@ -14,10 +14,27 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CourseSchedule } from '../../model/course-schedule.model';
 import { CourseScheduleService } from '../../service/course-schedule.service';
 import { error } from 'console';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { DatePipe } from '@angular/common';
+
+export const DATE_FORMATS = {
+  parse: {
+    dateInput: 'YYYY/MM/DD',
+  },
+  display: {
+    dateInput: 'YYYY/MM/DD',
+    monthYearLabel: 'MM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MM YYYY',
+  },
+};
 
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
+  providers: [
+    provideNativeDateAdapter(DATE_FORMATS), DatePipe,
+  ],
   styleUrls: ['./course.component.css']
 })
 export class CourseComponent implements OnInit {
@@ -30,6 +47,7 @@ export class CourseComponent implements OnInit {
   facultySections: string[] | undefined;
   form!: FormGroup;
   scheduleDetails: { [key: number]: CourseSchedule } = {};
+  openPeriodForm!: FormGroup;
 
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -64,6 +82,10 @@ export class CourseComponent implements OnInit {
       includeGrade: [false],
       includeCategory: [false],
       extension: ['', Validators.required]
+    });
+
+    this.openPeriodForm = this.fb.group({
+      endDate: ['', Validators.required]
     });
     this.courseService.getAllFacultySections().subscribe({
       next: (data: string[]) => {
@@ -220,5 +242,21 @@ export class CourseComponent implements OnInit {
         //console.log(error);
       }
     });
+  }
+
+  openPeriod() {
+    const date = this.openPeriodForm.get('endDate')?.value;
+    const formatedDate = new DatePipe('en-US').transform(date, 'yyyy-MM-dd');
+    if (formatedDate) {
+      this.applicationPeriodService.setApplicationPeriod(formatedDate).subscribe({
+        next: (data) => {
+          location.reload();
+        },
+        error: (error) => {
+          //console.log(error);
+        }
+      });
+    }
+
   }
 }
