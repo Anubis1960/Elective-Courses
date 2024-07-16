@@ -15,7 +15,7 @@ INSERT INTO student(grade, year_of_study, created_date, last_modified_date, user
 Values (10, 2, CURRENT_DATE, CURRENT_DATE, nextval('student_user_id_seq'), 'Roberto', 'iacob.alex@gmail.com', 'IR', 'Roberto', 'Iacob Alexandru', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'STUDENT');
 
 INSERT INTO student(grade, year_of_study, created_date, last_modified_date, user_id, created_by, email, faculty_section, last_modified_by, name, password, role)
-Values (5, 2, CURRENT_DATE, CURRENT_DATE, nextval('student_user_id_seq'), 'Roberto', 'gamidiov.djahid@gmail.com', 'IR', 'Roberto', 'Gamidov Djahid', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'STUDENT');
+Values (5, 2, CURRENT_DATE, CURRENT_DATE, nextval('student_user_id_seq'), 'Roberto', 'gamidov.djahid@gmail.com', 'IR', 'Roberto', 'Gamidov Djahid', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'STUDENT');
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 INSERT INTO student(grade, year_of_study, created_date, last_modified_date, user_id, created_by, email, faculty_section, last_modified_by, name, password, role)

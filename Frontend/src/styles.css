@@ -50,5 +50,5 @@ app-top-bar {
     display: block;
     text-transform: uppercase;
   }
-html, body { height: 100%; }
+html, body { height: 100%; background-color: white;}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
