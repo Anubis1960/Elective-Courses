@@ -3,15 +3,6 @@
     <div class="header">
       <h2>{{ course?.name }}</h2>
     </div>
-    <div class="content">
-      <p><strong>Description:</strong> {{ course?.description }}</p>
-      <p><strong>Category:</strong> {{ course?.category }}</p>
-      <p><strong>Maximum Students:</strong> {{ course?.maximumStudentsAllowed }}</p>
-      <p><strong>Faculty Section:</strong> {{ course?.facultySection }}</p>
-      <p><strong>Year:</strong> {{ course?.year }}</p>
-      <p><strong>Teacher Name:</strong> {{ course?.teacherName }}</p>
-      <p><strong>Number of Students:</strong> {{ course?.numberOfStudents }}</p>
-    </div>
     <div class="schedule">
         <h2>Schedule</h2>
         @if(courseSchedule != undefined){

@@ -6,11 +6,8 @@ import com.Spring.application.entity.Enrollment;
 import com.Spring.application.entity.Student;
 import com.Spring.application.exceptions.ObjectNotFound;
 import com.Spring.application.service.CourseService;
-import com.Spring.application.service.impl.CourseServiceImpl;
-import com.Spring.application.service.impl.EnrollmentServiceImpl;
+import com.Spring.application.service.impl.*;
 
-import com.Spring.application.service.impl.MailServiceImpl;
-import com.Spring.application.service.impl.StudentServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +20,7 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -39,6 +37,10 @@ public class EnrollmentController {
     private CourseServiceImpl courseService;
     @Autowired
     private MailServiceImpl mailService;
+    @Autowired
+    private ExcelGeneratorServiceImpl excelGeneratorService;
+    @Autowired
+    private CSVGeneratorServiceImpl csvGeneratorService;
 
     @PostMapping("/")
     public ResponseEntity<EnrollmentDTO> enroll(
@@ -89,16 +91,28 @@ public class EnrollmentController {
 
 
     @GetMapping("/export")
-    public void exportEnrollmentsToPDF(HttpServletResponse response, @RequestParam Optional<String> facultySection, @RequestParam Optional<Integer> year) throws IOException {
-        response.setContentType("application/pdf");
-        System.out.println("facultySection = " + facultySection);
-        System.out.println("year = " + year);
+    public void exportEnrollmentsToPDF(HttpServletResponse response, @RequestParam Optional<String> facultySection, @RequestParam Optional<Integer> year, @RequestParam boolean includeEnrollmentId, @RequestParam boolean includeStudentId, @RequestParam boolean includeCourseId, @RequestParam boolean includeYear, @RequestParam boolean IncludeSection, @RequestParam boolean includeCourseName, @RequestParam boolean includeStudentName, @RequestParam boolean includeTeacher, @RequestParam boolean includeStudentMail, @RequestParam boolean includeGrade, @RequestParam boolean includeCategory, @RequestParam String extension) throws IOException {
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormater.format(System.currentTimeMillis());
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".pdf";
-        response.setHeader(headerKey, headerValue);
-        pdfGeneratorService.exportEnrollments(response.getOutputStream(), facultySection, year);
+        if (Objects.equals(extension, "pdf")) {
+            response.setContentType("application/pdf");
+            String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".pdf";
+            response.setHeader(headerKey, headerValue);
+            pdfGeneratorService.exportEnrollments(response.getOutputStream(), facultySection, year, includeEnrollmentId, includeStudentId, includeCourseId, includeYear, IncludeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory);
+        }
+        else if (Objects.equals(extension, "excel")){
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".xlsx";
+            response.setHeader(headerKey, headerValue);
+            excelGeneratorService.exportEnrollmentsToExcel(response.getOutputStream(), facultySection, year, includeEnrollmentId, includeStudentId, includeCourseId, includeYear, IncludeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory);
+        }
+        else{
+            response.setContentType("application/csv");
+            String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".csv";
+            response.setHeader(headerKey, headerValue);
+            csvGeneratorService.exportEnrollmentsToCSV(response.getOutputStream(), facultySection, year, includeEnrollmentId, includeStudentId, includeCourseId, includeYear, IncludeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory);
+        }
     }
 
     @PutMapping("/")

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CourseService } from '../../service/course.service';
 import { Course } from '../../model/course.model';
@@ -11,6 +11,9 @@ import { Router } from '@angular/router';
 import { ApplicationPeriodService } from '../../service/application-period.service';
 import { EnrollmentService } from '../../service/enrollment.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { CourseSchedule } from '../../model/course-schedule.model';
+import { CourseScheduleService } from '../../service/course-schedule.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-course',
@@ -18,7 +21,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./course.component.css']
 })
 export class CourseComponent implements OnInit {
-
+  @Input() courseId!: number | undefined;
   courses!: Course[];
   dataSource: MatTableDataSource<Course> = new MatTableDataSource<Course>();
   displayedColumns: string[] = ['id', 'name', 'description', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year', 'action'];
@@ -26,13 +29,16 @@ export class CourseComponent implements OnInit {
   years: number[] = [1, 2, 3];
   facultySections: string[] | undefined;
   form!: FormGroup;
+  courseSchedule: CourseSchedule | undefined;
 
+  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private http: HttpClient,
     private courseService: CourseService,
+    private courseScheduleService: CourseScheduleService,
     private dialog: MatDialog,
     private router: Router,
     private applicationPeriodService: ApplicationPeriodService,
@@ -55,6 +61,7 @@ export class CourseComponent implements OnInit {
         //console.log(error);
       }
     });
+
   }
 
   ngAfterViewInit() {
@@ -116,9 +123,21 @@ export class CourseComponent implements OnInit {
       }
     });
   }
-
+  
   getDetails(id: number) {
     this.router.navigate(['/admin/courses', id]);
+  }
+
+  displayScheduleDetails(courseId: number){
+    this.courseScheduleService.getCourseSchedule(courseId).subscribe({
+      next: (data:CourseSchedule) =>{
+        this.courseSchedule = data;
+      },
+      error: (error)=>{
+        console.log("nu merge ma");
+        this.courseSchedule = undefined;
+      }
+    });
   }
 
   filterChange(event: Event) {

@@ -2,16 +2,27 @@ package com.Spring.application.controller;
 
 import com.Spring.application.dto.StudentDTO;
 import com.Spring.application.entity.Student;
+import com.Spring.application.enums.FacultySection;
 import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
+import com.Spring.application.service.CSVGeneratorService;
+import com.Spring.application.service.impl.CSVGeneratorServiceImpl;
+import com.Spring.application.service.impl.ExcelGeneratorServiceImpl;
+import com.Spring.application.service.impl.PDFGeneratorServiceImpl;
 import com.Spring.application.service.impl.StudentServiceImpl;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -19,6 +30,15 @@ import java.util.List;
 public class StudentController {
     @Autowired
     private StudentServiceImpl studentService;
+
+    @Autowired
+    private ExcelGeneratorServiceImpl excelGeneratorService;
+
+    @Autowired
+    private PDFGeneratorServiceImpl pdfGeneratorService;
+
+    @Autowired
+    private CSVGeneratorServiceImpl csvGeneratorService;
 
     @PostMapping("/")
     public ResponseEntity<StudentDTO> addStudent(
@@ -103,4 +123,28 @@ public class StudentController {
         return new ResponseEntity<>(studentDTOs, HttpStatus.OK);
     }
 
+    @GetMapping("/export")
+    public void exportPDF(HttpServletResponse response, Optional<String> facultySection, Optional<Integer> year,@RequestParam boolean includeId, @RequestParam boolean includeName, @RequestParam boolean includeGrade, @RequestParam boolean includeFacultySection, @RequestParam boolean includeYear, @RequestParam boolean includeEmail, @RequestParam String extension) throws IOException {
+        DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormater.format(System.currentTimeMillis());
+        String headerKey = "Content-Disposition";
+        if(Objects.equals(extension, "pdf")){
+            response.setContentType("application/pdf");
+            String headerValue = "attachment; filename=students_" + currentDateTime + ".pdf";
+            response.setHeader(headerKey, headerValue);
+            pdfGeneratorService.exportStudents(response.getOutputStream(), facultySection, year, includeId, includeName, includeEmail, includeGrade, includeFacultySection, includeYear);
+        }
+        else if(Objects.equals(extension, "excel")){
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            String headerValue = "attachment; filename=students_" + currentDateTime + ".xlsx";
+            response.setHeader(headerKey, headerValue);
+            excelGeneratorService.exportStudentsToExcel(response.getOutputStream(), facultySection, year, includeId, includeName, includeEmail, includeGrade, includeFacultySection, includeYear);
+        }
+        else{
+            response.setContentType("application/csv");
+            String headerValue = "attachment; filename=students_" + currentDateTime + ".csv";
+            response.setHeader(headerKey, headerValue);
+            csvGeneratorService.exportStudentsToCSV(response.getOutputStream(), facultySection, year, includeId, includeName, includeEmail, includeGrade, includeFacultySection, includeYear);
+        }
+    }
 }

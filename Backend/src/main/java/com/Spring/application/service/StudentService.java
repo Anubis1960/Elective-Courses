@@ -17,4 +17,5 @@ public interface StudentService {
     List<Student> getAllStudentsByCourseId(Long courseId);
     Student getStudentByName(String name);
     List<Student> getAcceptedStudentsByCourseId(Long courseId);
+    List<Student> executeQuery(String query);
 }
