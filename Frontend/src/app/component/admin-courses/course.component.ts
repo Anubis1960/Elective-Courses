@@ -24,7 +24,7 @@ export class CourseComponent implements OnInit {
   @Input() courseId!: number | undefined;
   courses!: Course[];
   dataSource: MatTableDataSource<Course> = new MatTableDataSource<Course>();
-  displayedColumns: string[] = ['id', 'name', 'description', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year', 'action'];
+  displayedColumns: string[] = ['id', 'name', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year', 'action'];
   status: string = localStorage.getItem('status') ?? '';
   years: number[] = [1, 2, 3];
   facultySections: string[] | undefined;
