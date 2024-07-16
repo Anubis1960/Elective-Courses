@@ -1,4 +1,3 @@
-/* Styles for the profile icon */
 .profile-icon-container {
     display: inline-table;
     align-items: center; /* Center the icon vertically */
@@ -51,6 +50,7 @@
     height: 60px;
     color: #ffffff;
     overflow: visible;
+    margin-left: 165px;
 }
 .home-icon{
     font-size: 60px;

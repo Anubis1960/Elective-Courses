@@ -3,49 +3,47 @@
     <mat-card-header>
         <mat-card-title> Students </mat-card-title>
         <mat-card-subtitle>
-            <mat-form-field appearance="outline" style="margin-left: 50px; margin-bottom: 20px; height: 60px;">
-              <input matInput placeholder="Search" (keyup)="filterChange($event)" style="height: 20px;">
-            </mat-form-field>
-          </mat-card-subtitle>
+            <input matInput placeholder="Search" (keyup)="filterChange($event)" style="height: 20px; border-radius: 1rem;  border: 2px solid black;">
+        </mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content>
-<table matSort mat-table [dataSource]="dataSource">
-    <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> ID </th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-    </ng-container>
+    <mat-card-content style=" margin: 30px; padding: 10px; border-radius: 2rem;  border: 3px solid black;">
+        <table matSort mat-table [dataSource]="dataSource" style="padding: 3px;">
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> ID </th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
 
-    <ng-container matColumnDef="name">
-        <th mat-sort-header *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let element">
-            <button mat-button (click)="getDetails(element.id)">{{ element.name }}</button>
-        </td>
-    </ng-container>
+            <ng-container matColumnDef="name">
+                <th mat-sort-header *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-button (click)="getDetails(element.id)">{{ element.name }}</button>
+                </td>
+            </ng-container>
 
-    <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef> Email </th>
-        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-    </ng-container>
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef> Email </th>
+                <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+            </ng-container>
 
-    <ng-container matColumnDef="facultySection">
-        <th mat-sort-header *matHeaderCellDef> Faculty Section </th>
-        <td mat-cell *matCellDef="let element"> {{element.facultySection}} </td>
-    </ng-container>
+            <ng-container matColumnDef="facultySection">
+                <th mat-sort-header *matHeaderCellDef> Faculty Section </th>
+                <td mat-cell *matCellDef="let element"> {{element.facultySection}} </td>
+            </ng-container>
 
-    <ng-container matColumnDef="year">
-        <th mat-sort-header *matHeaderCellDef> Year </th>
-        <td mat-cell *matCellDef="let element"> {{element.year}} </td>
-    </ng-container>
+            <ng-container matColumnDef="year">
+                <th mat-sort-header *matHeaderCellDef> Year </th>
+                <td mat-cell *matCellDef="let element"> {{element.year}} </td>
+            </ng-container>
 
-    <ng-container matColumnDef="grade">
-        <th mat-sort-header *matHeaderCellDef> Grade </th>
-        <td mat-cell *matCellDef="let element"> {{element.grade}} </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row;columns:displayedColumns"></tr>
-</table>
-</mat-card-content>
-<mat-card-footer>
-    <mat-paginator [pageSizeOptions]="[5,10,15]" showFirstLastButtons></mat-paginator>
-</mat-card-footer>
+            <ng-container matColumnDef="grade">
+                <th mat-sort-header *matHeaderCellDef> Grade </th>
+                <td mat-cell *matCellDef="let element"> {{element.grade}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row;columns:displayedColumns"></tr>
+        </table>
+    </mat-card-content>
+    <mat-card-footer style="margin-top: -30px; margin-right: 50px;">
+        <mat-paginator [pageSizeOptions]="[5,10,15]" showFirstLastButtons></mat-paginator>
+    </mat-card-footer>
 </mat-card>
