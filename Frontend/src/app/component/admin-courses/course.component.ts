@@ -73,7 +73,6 @@ export class CourseComponent implements OnInit {
         //console.log(error);
       }
     });
-
   }
 
   ngAfterViewInit() {
