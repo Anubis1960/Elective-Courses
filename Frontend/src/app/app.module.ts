@@ -36,6 +36,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTab, MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatExpansionModule,
     MatTabsModule,
     MatCheckboxModule,
+    MatTabsModule,
   ],
   providers: [
     provideClientHydration(),
