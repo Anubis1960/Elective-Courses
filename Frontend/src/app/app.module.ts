@@ -33,6 +33,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReassignPopUpComponent } from './component/reassign-pop-up/reassign-pop-up.component';
 import {MatRadioModule} from '@angular/material/radio';
+import { MatExpansionModule } from '@angular/material/expansion';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -69,6 +71,7 @@ import {MatRadioModule} from '@angular/material/radio';
     MatSelectModule,
     MatDialogModule,
     MatRadioModule,
+    MatExpansionModule,
   ],
   providers: [
     provideClientHydration(),
