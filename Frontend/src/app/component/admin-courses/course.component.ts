@@ -10,7 +10,7 @@ import { PopUpComponent } from '../course-pop-up/pop-up.component';
 import { Router } from '@angular/router';
 import { ApplicationPeriodService } from '../../service/application-period.service';
 import { EnrollmentService } from '../../service/enrollment.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CourseSchedule } from '../../model/course-schedule.model';
 import { CourseScheduleService } from '../../service/course-schedule.service';
 import { error } from 'console';
@@ -24,12 +24,12 @@ export class CourseComponent implements OnInit {
   @Input() courseId!: number | undefined;
   courses!: Course[];
   dataSource: MatTableDataSource<Course> = new MatTableDataSource<Course>();
-  displayedColumns: string[] = ['id', 'name', 'description', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year', 'action'];
+  displayedColumns: string[] = ['id', 'name', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year', 'action'];
   status: string = localStorage.getItem('status') ?? '';
   years: number[] = [1, 2, 3];
   facultySections: string[] | undefined;
   form!: FormGroup;
-  courseSchedule: CourseSchedule | undefined;
+  scheduleDetails: { [key: number]: CourseSchedule } = {};
 
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -51,7 +51,19 @@ export class CourseComponent implements OnInit {
     this.refresh();
     this.form = this.fb.group({
       facultySection: [''],
-      year: ['']
+      year: [''],
+      includeEnrollmentId: [false],
+      includeStudentId: [false],
+      includeCourseId: [false],
+      includeYear: [false],
+      includeSection: [false],
+      includeCourseName: [false],
+      includeStudentName: [false],
+      includeTeacher: [false],
+      includeStudentMail: [false],
+      includeGrade: [false],
+      includeCategory: [false],
+      extension: ['', Validators.required]
     });
     this.courseService.getAllFacultySections().subscribe({
       next: (data: string[]) => {
@@ -130,11 +142,10 @@ export class CourseComponent implements OnInit {
   displayScheduleDetails(courseId: number){
     this.courseScheduleService.getCourseSchedule(courseId).subscribe({
       next: (data:CourseSchedule) =>{
-        this.courseSchedule = data;
+        this.scheduleDetails[courseId] = data;
       },
       error: (error)=>{
-        console.log("nu merge ma");
-        this.courseSchedule = undefined;
+        //console.log(error);
       }
     });
   }
@@ -178,11 +189,30 @@ export class CourseComponent implements OnInit {
   exportPDF() {
     const facultySection = this.form.get('facultySection')?.value;
     const year = this.form.get('year')?.value;
+    const includeEnrollmentId = this.form.get('includeEnrollmentId')?.value;
+    const includeStudentId = this.form.get('includeStudentId')?.value;
+    const includeCourseId = this.form.get('includeCourseId')?.value;
+    const includeYear = this.form.get('includeYear')?.value;
+    const includeSection = this.form.get('includeSection')?.value;
+    const includeCourseName = this.form.get('includeCourseName')?.value;
+    const includeStudentName = this.form.get('includeStudentName')?.value;
+    const includeTeacher = this.form.get('includeTeacher')?.value;
+    const includeStudentMail = this.form.get('includeStudentMail')?.value;
+    const includeGrade = this.form.get('includeGrade')?.value;
+    const includeCategory = this.form.get('includeCategory')?.value;
+    const extension = this.form.get('extension')?.value;
     console.log(facultySection);
     console.log(year);
-    this.enrollmentService.exportEnrollmentsToPDF(facultySection, year).subscribe({
+    this.enrollmentService.exportEnrollmentsToPDF(includeEnrollmentId, includeStudentId, includeCourseId, includeYear, includeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory, extension, facultySection, year).subscribe({
       next: (data) => {
-        const blob = new Blob([data], { type: 'application/pdf' });
+        var fileType = 'application/pdf';
+        if (extension === 'excel') {
+          fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        }
+        if (extension === 'csv') {
+          fileType = 'text/csv';
+        }
+        const blob = new Blob([data], { type: fileType });
         const url = window.URL.createObjectURL(blob);
         window.open(url);
       },
