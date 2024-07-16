@@ -8,5 +8,5 @@ public interface ApplicationPeriodService {
     boolean getApplicationPeriod();
     boolean reverseApplicationPeriod();
     void checkApplicationPeriod();
-    boolean updateApplicationPeriod(LocalDate endDate);
+    boolean updateApplicationPeriod(String endDate);
 }

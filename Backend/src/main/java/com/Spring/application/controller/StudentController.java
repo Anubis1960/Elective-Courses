@@ -125,6 +125,8 @@ public class StudentController {
 
     @GetMapping("/export")
     public void exportPDF(HttpServletResponse response, Optional<String> facultySection, Optional<Integer> year,@RequestParam boolean includeId, @RequestParam boolean includeName, @RequestParam boolean includeGrade, @RequestParam boolean includeFacultySection, @RequestParam boolean includeYear, @RequestParam boolean includeEmail, @RequestParam String extension) throws IOException {
+        System.out.println("Exporting students to " + extension);
+        System.out.println(facultySection + " " + year + " " + includeId + " " + includeName + " " + includeGrade + " " + includeFacultySection + " " + includeYear + " " + includeEmail);
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormater.format(System.currentTimeMillis());
         String headerKey = "Content-Disposition";

@@ -28,11 +28,11 @@ public class ApplicationPeriodServiceImpl implements ApplicationPeriodService {
     }
 
     @Override
-    public boolean updateApplicationPeriod(LocalDate endDate) {
+    public boolean updateApplicationPeriod(String endDate) {
         if (applicationPeriodRepository.findAll().isEmpty()) {
             return false;
         }
-        applicationPeriodRepository.findAll().get(0).setEndDate(endDate);
+        applicationPeriodRepository.findAll().get(0).setEndDate(LocalDate.parse(endDate));
         return true;
     }
 

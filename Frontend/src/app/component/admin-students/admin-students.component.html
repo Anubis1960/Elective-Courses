@@ -6,6 +6,42 @@
             <input matInput placeholder="Search" (keyup)="filterChange($event)" style="height: 20px; border-radius: 1rem;  border: 2px solid black;">
         </mat-card-subtitle>
     </mat-card-header>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Export students</mat-panel-title>
+        </mat-expansion-panel-header>
+        <form [formGroup]="form">
+          <mat-form-field appearance="outline">
+            <mat-label>Faculty Section</mat-label>
+            <mat-select formControlName="facultySection">
+              <mat-option value="">None</mat-option>
+              <mat-option *ngFor="let section of facultySections" [value]="section">{{ section }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Year</mat-label>
+            <mat-select formControlName="year">
+              <mat-option value="">None</mat-option>
+              <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-checkbox formControlName="includeId">Include student id</mat-checkbox>
+          <mat-checkbox formControlName="includeName">Include student name</mat-checkbox>
+          <mat-checkbox formControlName="includeGrade">Include student grade</mat-checkbox>
+          <mat-checkbox formControlName="includeSection">Include faculty section</mat-checkbox>
+          <mat-checkbox formControlName="includeYear">Include year</mat-checkbox>
+          <mat-checkbox formControlName="includeMail">Include student email</mat-checkbox>
+          <mat-form-field appearance="outline">
+            <mat-label>Extension</mat-label>
+            <mat-select formControlName="extension">
+              <mat-option value="pdf">pdf</mat-option>
+              <mat-option value="csv">csv</mat-option>
+              <mat-option value="excel">excel</mat-option>
+            </mat-select> 
+          </mat-form-field>
+          <button mat-raised-button color="primary" (click)="exportPDF()">Export PDF</button>
+        </form>
+      </mat-expansion-panel>
     <mat-card-content style=" margin: 30px; padding: 10px; border-radius: 2rem;  border: 3px solid black;">
         <table matSort mat-table [dataSource]="dataSource" style="padding: 3px;">
             <ng-container matColumnDef="id">
