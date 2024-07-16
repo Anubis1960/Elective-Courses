@@ -76,7 +76,6 @@ export class EnrollmentService {
     params = params.set('includeCategory', includeCategory);
     params = params.set('extension', extension);
   
-    console.log(params.toString());
     return this.http.get(`${this.baseUrl}/export`, { params, responseType: 'blob' });
   }
   
