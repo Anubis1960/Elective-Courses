@@ -13,24 +13,47 @@
       </mat-card-subtitle>
       }
       @else{
-        <form [formGroup]="form">
-          <mat-form-field appearance="outline">
-            <mat-label>Faculty Section</mat-label>
-            <mat-select formControlName="facultySection">
-              <mat-option>None</mat-option>
-              <mat-option *ngFor="let section of facultySections" [value]="section">{{ section }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>Year</mat-label>
-            <mat-select formControlName="year">
-              <mat-option>None</mat-option>
-              <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <button mat-raised-button color="primary" (click)="exportPDF()">Export PDF</button>
-        </form>
-        
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Export enrollments</mat-panel-title>
+          </mat-expansion-panel-header>
+          <form [formGroup]="form">
+            <mat-form-field appearance="outline">
+              <mat-label>Faculty Section</mat-label>
+              <mat-select formControlName="facultySection">
+                <mat-option value="">None</mat-option>
+                <mat-option *ngFor="let section of facultySections" [value]="section">{{ section }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Year</mat-label>
+              <mat-select formControlName="year">
+                <mat-option value="">None</mat-option>
+                <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-checkbox formControlName="includeEnrollmentId">Include enrollment id</mat-checkbox>
+            <mat-checkbox formControlName="includeStudentId">Include student id</mat-checkbox>
+            <mat-checkbox formControlName="includeCourseId">Include course id</mat-checkbox>
+            <mat-checkbox formControlName="includeYear">Include year</mat-checkbox>
+            <mat-checkbox formControlName="includeSection">Include faculty section</mat-checkbox>
+            <mat-checkbox formControlName="includeCourseName">Include course name</mat-checkbox>
+            <mat-checkbox formControlName="includeStudentName">Include student name</mat-checkbox>
+            <mat-checkbox formControlName="includeTeacher">Include teacher name</mat-checkbox>
+            <mat-checkbox formControlName="includeStudentMail">Include student email</mat-checkbox>
+            <mat-checkbox formControlName="includeGrade">Include student grade</mat-checkbox>
+            <mat-checkbox formControlName="includeCategory">Include course category</mat-checkbox>
+            <mat-form-field appearance="outline">
+              <mat-label>Extension</mat-label>
+              <mat-select formControlName="extension">
+                <mat-option value="pdf">pdf</mat-option>
+                <mat-option value="csv">csv</mat-option>
+                <mat-option value="excel">excel</mat-option>
+              </mat-select> 
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="exportPDF()">Export PDF</button>
+          </form>
+        </mat-expansion-panel>
       }
     </mat-card-header>
 
@@ -44,32 +67,27 @@
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
         <td mat-cell *matCellDef="let element">
-          <mat-expansion-panel hideToggle>
+          <mat-expansion-panel hideToggle (opened)="displayScheduleDetails(element.id)">
             <mat-expansion-panel-header>
               <mat-panel-title> {{element.name }}</mat-panel-title>
-              <mat-panel-description> {{element.description}} </mat-panel-description>
             </mat-expansion-panel-header>
-            <p>
+            <div>
                <button mat-button (click)="getDetails(element.id)">{{ element.name }}</button>
-                <!-- <button mat-button (click)="displayScheduleDetails(element.id)">{{ element.name }}</button> -->
-                
-                @if(courseSchedule != undefined){
-                  <p><strong>Day:</strong> {{ courseSchedule.day }}</p>
-                  <p><strong>Start Time:</strong> {{ courseSchedule.startTime }}</p>
-                  <p><strong>End Time:</strong> {{ courseSchedule.endTime }}</p>
-                }
-                @else{
-                    <p><strong>No schedule available</strong></p>
-                }
-                
-            </p>
+               <p>{{element.description}}</p>
+               @if(scheduleDetails[element.id] != null){
+                 <p>Day: {{scheduleDetails[element.id].day}}</p>
+                 <p>Time: {{scheduleDetails[element.id].startTime}} - {{scheduleDetails[element.id].endTime}}</p>
+               }
+               @else {
+                <p>No schedule available</p>
+               }
+            </div>
           </mat-expansion-panel>
-          <!--  -->
         </td>
       </ng-container>
 
       <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
         <td mat-cell *matCellDef="let element">{{ element.description }}</td>
       </ng-container>
 
