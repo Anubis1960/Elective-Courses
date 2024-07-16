@@ -29,6 +29,7 @@ public class ApplicationPeriodController {
 
     @PutMapping("/")
     public ResponseEntity<Boolean> updateApplicationPeriod(@RequestParam String endDate) {
+        System.out.println(endDate);
         return new ResponseEntity<>(applicationPeriodService.updateApplicationPeriod(endDate), HttpStatus.OK);
     }
 }

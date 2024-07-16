@@ -6,6 +6,23 @@
       <button mat-raised-button color="primary" (click)="closePeriod()">Close Period</button>
     </mat-card-subtitle>
   }
+  @else{
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Open application period</mat-panel-title>
+      </mat-expansion-panel-header>
+      <form [formGroup] = "openPeriodForm">
+        <mat-form-field class="example-full-width">
+          <mat-label>Open application period</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="endDate">
+          <mat-hint>DD-MM-YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker touchUi #picker></mat-datepicker>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="openPeriod()">Open Period</button>
+      </form>
+      </mat-expansion-panel>
+  }
   <mat-tab-group animationDuration="500ms">
     <mat-tab label="Courses"> 
   <mat-card-header>

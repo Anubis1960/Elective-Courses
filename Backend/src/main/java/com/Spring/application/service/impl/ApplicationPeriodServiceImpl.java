@@ -33,6 +33,8 @@ public class ApplicationPeriodServiceImpl implements ApplicationPeriodService {
             return false;
         }
         applicationPeriodRepository.findAll().get(0).setEndDate(LocalDate.parse(endDate));
+        applicationPeriodRepository.findAll().get(0).setIsOpen(true);
+        applicationPeriodRepository.save(applicationPeriodRepository.findAll().get(0));
         return true;
     }
 
