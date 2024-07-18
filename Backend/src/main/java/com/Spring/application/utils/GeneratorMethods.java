@@ -29,18 +29,18 @@ public class GeneratorMethods {
 		document.add(new Paragraph(" "));
 	}
 
-	public static void addDataForPDF(String data, Font cellFont, PdfPTable table) {
+	public static void addDataForPDF(String data, PdfPTable table) {
 		// Define cell font
-//		Font cellFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Color.BLACK);
+		Font cellFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Color.BLACK);
 
 		PdfPCell cell = new PdfPCell(new Paragraph(data, cellFont));
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		table.addCell(cell);
 	}
 
-	public static void addHeadersToPDF(String name, Font headerFont, PdfPTable table) {
+	public static void addHeadersToPDF(String name, PdfPTable table) {
 		// Define header font
-//		Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Color.WHITE);
+		Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Color.WHITE);
 
 		PdfPCell header = new PdfPCell(new Paragraph(name, headerFont));
 		header.setBackgroundColor(Color.GRAY);

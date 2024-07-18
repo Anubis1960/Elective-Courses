@@ -3,9 +3,12 @@ package com.Spring.application.repository;
 import com.Spring.application.entity.Enrollment;
 import com.Spring.application.entity.Student;
 import com.Spring.application.enums.FacultySection;
+import com.Spring.application.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,4 +54,15 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     @Query("SELECT e FROM Enrollment e WHERE e.student.id = :studentId AND e.status = 'ACCEPTED' AND e.course.courseId = :courseId")
     Enrollment findEnrollmentByStudentIdAndCourseIdAndStatusIsAccepted(Long studentId, Long courseId);
 
+    @Query("SELECT DISTINCT e.student FROM Enrollment e " +
+            "WHERE e.course.courseId = :courseId AND e.status = 'ACCEPTED'")
+    List<Student> getCourseAcceptedStudents(@Param("courseId") Long courseId);
+
+    @Query("SELECT count(distinct e.student) FROM Enrollment e " +
+            "WHERE e.course.courseId = :courseId AND e.status = 'ACCEPTED'")
+    int getCourseAcceptedStudentsNumber(@Param("courseId") Long courseId);
+
+    @Query("SELECT AVG(e.student.grade) FROM Enrollment e " +
+            "WHERE e.course.courseId = :courseId AND e.status = 'ACCEPTED'")
+    Double gradeAvg(@Param("courseId") Long courseId);
 }

@@ -83,10 +83,6 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
         // Set up document
         Document document = GeneratorMethods.setUpDocument(out);
 
-        // Define fonts
-        Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Color.WHITE);
-        Font cellFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Color.BLACK);
-
         // Add title
         GeneratorMethods.addTitleToPDF("Students", document);
 
@@ -114,53 +110,53 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
 
         // Add table headers
         if (includeId) {
-            GeneratorMethods.addHeadersToPDF("ID", headerFont, table);
+            GeneratorMethods.addHeadersToPDF("ID", table);
         }
 
         if (includeName) {
-            GeneratorMethods.addHeadersToPDF("Name", headerFont, table);
+            GeneratorMethods.addHeadersToPDF("Name", table);
         }
 
         if (includeEmail) {
-            GeneratorMethods.addHeadersToPDF("Email", headerFont, table);
+            GeneratorMethods.addHeadersToPDF("Email", table);
         }
 
         if (includeGrade) {
-            GeneratorMethods.addHeadersToPDF("Grade", headerFont, table);
+            GeneratorMethods.addHeadersToPDF("Grade", table);
         }
 
         if (includeSection) {
-            GeneratorMethods.addHeadersToPDF("Faculty Section", headerFont, table);
+            GeneratorMethods.addHeadersToPDF("Faculty Section", table);
         }
 
         if (includeYear) {
-            GeneratorMethods.addHeadersToPDF("Year", headerFont, table);
+            GeneratorMethods.addHeadersToPDF("Year", table);
         }
 
         // Add rows to the table
         for (Student student : students) {
             if (includeId) {
-                GeneratorMethods.addDataForPDF(student.getId().toString(), cellFont, table);
+                GeneratorMethods.addDataForPDF(student.getId().toString(), table);
             }
 
             if (includeName) {
-                GeneratorMethods.addDataForPDF(student.getName(), cellFont, table);
+                GeneratorMethods.addDataForPDF(student.getName(), table);
             }
 
             if (includeEmail) {
-                GeneratorMethods.addDataForPDF(student.getEmail(), cellFont, table);
+                GeneratorMethods.addDataForPDF(student.getEmail(), table);
             }
 
             if (includeGrade) {
-                GeneratorMethods.addDataForPDF(student.getGrade().toString(), cellFont, table);
+                GeneratorMethods.addDataForPDF(student.getGrade().toString(), table);
             }
 
             if (includeSection) {
-                GeneratorMethods.addDataForPDF(student.getFacultySection().toString(), cellFont, table);
+                GeneratorMethods.addDataForPDF(student.getFacultySection().toString(), table);
             }
 
             if (includeYear) {
-                GeneratorMethods.addDataForPDF(student.getYear().toString(), cellFont, table);
+                GeneratorMethods.addDataForPDF(student.getYear().toString(), table);
             }
         }
 
@@ -180,7 +176,6 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
 
         // Define fonts
         Font font = FontFactory.getFont(FontFactory.COURIER, 12, Color.BLACK);
-        Font headerFont = FontFactory.getFont(FontFactory.COURIER, 14, Color.WHITE);
 
         // Create a table with 6 columns (Time slots + 5 days of the week)
         PdfPTable table = new PdfPTable(6);
@@ -195,7 +190,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
         // Create table header
         String[] headers = {"Time Slot", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
         for (String header : headers) {
-            GeneratorMethods.addHeadersToPDF(header, headerFont, table);
+            GeneratorMethods.addHeadersToPDF(header, table);
         }
 
         // Define time slots
@@ -263,10 +258,6 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
         // Set up document
         Document document = GeneratorMethods.setUpDocument(out);
 
-        // Define fonts
-        Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Color.WHITE);
-        Font cellFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Color.BLACK);
-
         // Add title
         GeneratorMethods.addTitleToPDF("Course : " + course.getCourseName(), document);
 
@@ -281,15 +272,15 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
         table.setWidths(columnWidths);
 
         // Create table header
-        GeneratorMethods.addHeadersToPDF("Name", headerFont, table);
-        GeneratorMethods.addHeadersToPDF("Grade", headerFont, table);
-        GeneratorMethods.addHeadersToPDF("Email", headerFont, table);
+        GeneratorMethods.addHeadersToPDF("Name", table);
+        GeneratorMethods.addHeadersToPDF("Grade", table);
+        GeneratorMethods.addHeadersToPDF("Email", table);
 
         // Add rows to the table
         for (Student student : students) {
-            GeneratorMethods.addDataForPDF(student.getName(), cellFont, table);
-            GeneratorMethods.addDataForPDF(student.getGrade().toString(), cellFont, table);
-            GeneratorMethods.addDataForPDF(student.getEmail(), cellFont, table);
+            GeneratorMethods.addDataForPDF(student.getName(), table);
+            GeneratorMethods.addDataForPDF(student.getGrade().toString(), table);
+            GeneratorMethods.addDataForPDF(student.getEmail(), table);
         }
 
         // Add table to document
@@ -324,11 +315,6 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
         // Set up document
         Document document = GeneratorMethods.setUpDocument(outputStream);
 
-        // Define fonts
-        Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16, Color.BLACK);
-        Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Color.WHITE);
-        Font cellFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Color.BLACK);
-
         // Add title
         GeneratorMethods.addTitleToPDF("Enrollments", document);
 
@@ -361,93 +347,93 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
 
         // Add table headers
         if (includeEnrollmentId) {
-            GeneratorMethods.addHeadersToPDF("ID", headerFont, table);
+            GeneratorMethods.addHeadersToPDF("ID", table);
         }
 
         if (includeStudentId) {
-            GeneratorMethods.addHeadersToPDF("StudentID", headerFont, table);
+            GeneratorMethods.addHeadersToPDF("StudentID", table);
         }
 
         if (includeCourseId) {
-            GeneratorMethods.addHeadersToPDF("CourseID", headerFont, table);
+            GeneratorMethods.addHeadersToPDF("CourseID", table);
         }
 
         if (includeYear) {
-            GeneratorMethods.addHeadersToPDF("Year", headerFont, table);
+            GeneratorMethods.addHeadersToPDF("Year", table);
         }
 
         if (includeSection) {
-            GeneratorMethods.addHeadersToPDF("Faculty Section", headerFont, table);
+            GeneratorMethods.addHeadersToPDF("Faculty Section", table);
         }
 
         if (includeCourseName) {
-            GeneratorMethods.addHeadersToPDF("Course Name", headerFont, table);
+            GeneratorMethods.addHeadersToPDF("Course Name", table);
         }
 
         if (includeStudentName) {
-            GeneratorMethods.addHeadersToPDF("Student Name", headerFont, table);
+            GeneratorMethods.addHeadersToPDF("Student Name", table);
         }
 
         if (includeTeacher) {
-            GeneratorMethods.addHeadersToPDF("Teacher", headerFont, table);
+            GeneratorMethods.addHeadersToPDF("Teacher", table);
         }
 
         if (includeStudentMail) {
-            GeneratorMethods.addHeadersToPDF("Student Mail", headerFont, table);
+            GeneratorMethods.addHeadersToPDF("Student Mail", table);
         }
 
         if (includeGrade) {
-            GeneratorMethods.addHeadersToPDF("Grade", headerFont, table);
+            GeneratorMethods.addHeadersToPDF("Grade", table);
         }
 
         if (includeCategory) {
-            GeneratorMethods.addHeadersToPDF("Category", headerFont, table);
+            GeneratorMethods.addHeadersToPDF("Category", table);
         }
 
         // Add rows to the table
         for (Enrollment enrollment : enrollments) {
             if (includeEnrollmentId) {
-                GeneratorMethods.addDataForPDF(enrollment.getEnrollmentId().toString(), cellFont, table);
+                GeneratorMethods.addDataForPDF(enrollment.getEnrollmentId().toString(), table);
             }
 
             if (includeStudentId) {
-                GeneratorMethods.addDataForPDF(enrollment.getStudent().getId().toString(), cellFont, table);
+                GeneratorMethods.addDataForPDF(enrollment.getStudent().getId().toString(), table);
             }
 
             if (includeCourseId) {
-                GeneratorMethods.addDataForPDF(enrollment.getCourse().getCourseId().toString(), cellFont, table);
+                GeneratorMethods.addDataForPDF(enrollment.getCourse().getCourseId().toString(), table);
             }
 
             if (includeYear) {
-                GeneratorMethods.addDataForPDF(enrollment.getStudent().getYear().toString(), cellFont, table);
+                GeneratorMethods.addDataForPDF(enrollment.getStudent().getYear().toString(), table);
             }
 
             if (includeSection) {
-                GeneratorMethods.addDataForPDF(enrollment.getStudent().getFacultySection().toString(), cellFont, table);
+                GeneratorMethods.addDataForPDF(enrollment.getStudent().getFacultySection().toString(), table);
             }
 
             if (includeCourseName) {
-                GeneratorMethods.addDataForPDF(enrollment.getCourse().getCourseName(), cellFont, table);
+                GeneratorMethods.addDataForPDF(enrollment.getCourse().getCourseName(), table);
             }
 
             if (includeStudentName) {
-                GeneratorMethods.addDataForPDF(enrollment.getStudent().getName(), cellFont, table);
+                GeneratorMethods.addDataForPDF(enrollment.getStudent().getName(), table);
             }
 
             if (includeTeacher) {
-                GeneratorMethods.addDataForPDF(enrollment.getCourse().getTeacherName(), cellFont, table);
+                GeneratorMethods.addDataForPDF(enrollment.getCourse().getTeacherName(), table);
             }
 
             if (includeStudentMail) {
-                GeneratorMethods.addDataForPDF(enrollment.getStudent().getEmail(), cellFont, table);
+                GeneratorMethods.addDataForPDF(enrollment.getStudent().getEmail(), table);
             }
 
             if (includeGrade) {
-                GeneratorMethods.addDataForPDF(enrollment.getStudent().getGrade().toString(), cellFont, table);
+                GeneratorMethods.addDataForPDF(enrollment.getStudent().getGrade().toString(), table);
             }
 
             if (includeCategory) {
-                GeneratorMethods.addDataForPDF(enrollment.getCourse().getCategory(), cellFont, table);
+                GeneratorMethods.addDataForPDF(enrollment.getCourse().getCategory(), table);
             }
         }
 
