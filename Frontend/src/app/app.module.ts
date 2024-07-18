@@ -37,6 +37,12 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTab, MatTabsModule } from '@angular/material/tabs';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { AdminHomeComponent } from './component/admin-home/admin-home.component';
+import { RouterModule,Routes } from '@angular/router';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { SidebarComponent } from './component/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +61,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     CourseInfoComponent,
     SchedulePopUpComponent,
     ReassignPopUpComponent,
+    AdminHomeComponent,
+    SidebarComponent,
     ],
   imports: [
     BrowserModule,
@@ -79,6 +87,11 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatCheckboxModule,
     MatTabsModule,
     MatDatepickerModule,
+    RouterModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+
   ],
   providers: [
     provideClientHydration(),

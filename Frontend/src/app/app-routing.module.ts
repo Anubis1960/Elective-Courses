@@ -9,6 +9,7 @@ import { CourseStudentComponent } from './component/course-student/course-studen
 import { canActivateAdminGuard, canActivateStudentGuard } from './guard/auth-guard';
 import { AdminStudentsComponent } from './component/admin-students/admin-students.component';
 import { StudentDetailsComponent } from './component/student-details/student-details.component';
+import { AdminHomeComponent } from './component/admin-home/admin-home.component';
 
 const routes: Routes = [
   {path: '', redirectTo:'/login', pathMatch: 'full'},
@@ -19,7 +20,8 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [canActivateStudentGuard]},
   {path: 'admin/courses/:id', component: CourseStudentComponent, canActivate: [canActivateAdminGuard]},
   {path: 'admin/students', component: AdminStudentsComponent, canActivate: [canActivateAdminGuard]},
-  {path: 'admin/students/:id', component: StudentDetailsComponent, canActivate: [canActivateAdminGuard]}
+  {path: 'admin/students/:id', component: StudentDetailsComponent, canActivate: [canActivateAdminGuard]},
+  {path: 'admin/home', component: AdminHomeComponent}
 ];
 
 @NgModule({

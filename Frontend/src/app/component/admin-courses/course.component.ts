@@ -16,25 +16,12 @@ import { CourseScheduleService } from '../../service/course-schedule.service';
 import { error } from 'console';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
+import { AdminService } from '../../service/admin.service';
 
-export const DATE_FORMATS = {
-  parse: {
-    dateInput: 'YYYY/MM/DD',
-  },
-  display: {
-    dateInput: 'YYYY/MM/DD',
-    monthYearLabel: 'MM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MM YYYY',
-  },
-};
 
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
-  providers: [
-    provideNativeDateAdapter(DATE_FORMATS), DatePipe,
-  ],
   styleUrls: ['./course.component.css']
 })
 export class CourseComponent implements OnInit {
@@ -47,7 +34,6 @@ export class CourseComponent implements OnInit {
   facultySections: string[] | undefined;
   form!: FormGroup;
   scheduleDetails: { [key: number]: CourseSchedule } = {};
-  openPeriodForm!: FormGroup;
 
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -59,7 +45,6 @@ export class CourseComponent implements OnInit {
     private courseScheduleService: CourseScheduleService,
     private dialog: MatDialog,
     private router: Router,
-    private applicationPeriodService: ApplicationPeriodService,
     private enrollmentService: EnrollmentService,
     private fb: FormBuilder
   ) { }
@@ -84,9 +69,15 @@ export class CourseComponent implements OnInit {
       extension: ['', Validators.required]
     });
 
-    this.openPeriodForm = this.fb.group({
-      endDate: ['', Validators.required]
-    });
+    this.getAllFacultySection();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  getAllFacultySection(){
     this.courseService.getAllFacultySections().subscribe({
       next: (data: string[]) => {
         this.facultySections = data;
@@ -95,11 +86,6 @@ export class CourseComponent implements OnInit {
         //console.log(error);
       }
     });
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   onDelete(id: number) {
@@ -187,27 +173,6 @@ export class CourseComponent implements OnInit {
     return this.status == 'false';
   }
 
-  closePeriod() {
-    this.applicationPeriodService.reverseApplicationPeriodStatus().subscribe({
-      next: (data) => {
-        this.status = data.toString();
-        localStorage.setItem('status', JSON.stringify(data));
-        this.enrollmentService.assignStudentsToCourse().subscribe({
-          next: (data) => {
-            //console.log(data);
-          },
-          error: (error) => {
-            //console.log(error);
-          }
-        });
-        this.refresh();
-      },
-      error: (error) => {
-        //console.log(error);
-      }
-    });
-  }
-
   exportPDF() {
     const facultySection = this.form.get('facultySection')?.value;
     const year = this.form.get('year')?.value;
@@ -242,21 +207,5 @@ export class CourseComponent implements OnInit {
         //console.log(error);
       }
     });
-  }
-
-  openPeriod() {
-    const date = this.openPeriodForm.get('endDate')?.value;
-    const formatedDate = new DatePipe('en-US').transform(date, 'yyyy-MM-dd');
-    if (formatedDate) {
-      this.applicationPeriodService.setApplicationPeriod(formatedDate).subscribe({
-        next: (data) => {
-          location.reload();
-        },
-        error: (error) => {
-          //console.log(error);
-        }
-      });
-    }
-
   }
 }

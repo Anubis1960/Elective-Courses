@@ -39,7 +39,7 @@ export class LoginComponent {
         // });
         if(this.user.role === 'ADMIN'){
           //console.log(localStorage.getItem('status'));
-          this.router.navigateByUrl('/admin/courses');
+          this.router.navigateByUrl('/admin/home');
         } else if(this.user.role === 'STUDENT'){
           this.router.navigateByUrl('/student/courses');
         }
