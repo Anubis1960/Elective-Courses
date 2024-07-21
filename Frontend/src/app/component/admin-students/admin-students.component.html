@@ -25,19 +25,18 @@
               <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-checkbox formControlName="includeId">Include student id</mat-checkbox>
-          <mat-checkbox formControlName="includeName">Include student name</mat-checkbox>
-          <mat-checkbox formControlName="includeGrade">Include student grade</mat-checkbox>
-          <mat-checkbox formControlName="includeSection">Include faculty section</mat-checkbox>
-          <mat-checkbox formControlName="includeYear">Include year</mat-checkbox>
-          <mat-checkbox formControlName="includeMail">Include student email</mat-checkbox>
-          <mat-form-field appearance="outline">
-            <mat-label>Extension</mat-label>
-            <mat-select formControlName="extension">
-              <mat-option value="pdf">pdf</mat-option>
-              <mat-option value="csv">csv</mat-option>
-              <mat-option value="excel">excel</mat-option>
-            </mat-select> 
+            <mat-checkbox formControlName="includeName">Include student name</mat-checkbox>
+            <mat-checkbox formControlName="includeGrade">Include student grade</mat-checkbox>
+            <mat-checkbox formControlName="includeSection">Include faculty section</mat-checkbox>
+            <mat-checkbox formControlName="includeYear">Include year</mat-checkbox>
+            <mat-checkbox formControlName="includeMail">Include student email</mat-checkbox>
+            <mat-form-field appearance="outline">
+              <mat-label>Extension</mat-label>
+              <mat-select formControlName="extension">
+                <mat-option value="pdf">pdf</mat-option>
+                <mat-option value="csv">csv</mat-option>
+                <mat-option value="excel">excel</mat-option>
+              </mat-select> 
           </mat-form-field>
           <button mat-raised-button color="primary" (click)="exportPDF()">Export PDF</button>
         </form>

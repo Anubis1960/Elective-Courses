@@ -91,7 +91,7 @@ public class EnrollmentController {
 
 
     @GetMapping("/export")
-    public void exportEnrollmentsToPDF(HttpServletResponse response, @RequestParam Optional<String> facultySection, @RequestParam Optional<Integer> year, @RequestParam boolean includeEnrollmentId, @RequestParam boolean includeStudentId, @RequestParam boolean includeCourseId, @RequestParam boolean includeYear, @RequestParam boolean includeSection, @RequestParam boolean includeCourseName, @RequestParam boolean includeStudentName, @RequestParam boolean includeTeacher, @RequestParam boolean includeStudentMail, @RequestParam boolean includeGrade, @RequestParam boolean includeCategory, @RequestParam String extension) throws IOException {
+    public void exportEnrollmentsToPDF(HttpServletResponse response, @RequestParam Optional<String> facultySection, @RequestParam Optional<Integer> year, @RequestParam boolean includeYear, @RequestParam boolean includeSection, @RequestParam boolean includeCourseName, @RequestParam boolean includeStudentName, @RequestParam boolean includeTeacher, @RequestParam boolean includeStudentMail, @RequestParam boolean includeGrade, @RequestParam boolean includeCategory, boolean includeNumOfStudents, boolean includeAVGGrade, @RequestParam String extension) throws IOException, IllegalAccessException {
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormater.format(System.currentTimeMillis());
         String headerKey = "Content-Disposition";
@@ -99,20 +99,22 @@ public class EnrollmentController {
             response.setContentType("application/pdf");
             String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".pdf";
             response.setHeader(headerKey, headerValue);
-            pdfGeneratorService.exportEnrollments(response.getOutputStream(), facultySection, year, includeEnrollmentId, includeStudentId, includeCourseId, includeYear, includeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory);
+//            pdfGeneratorService.exportEnrollments(response.getOutputStream(), facultySection, year, includeEnrollmentId, includeStudentId, includeCourseId, includeYear, includeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory);
         }
         else if (Objects.equals(extension, "excel")){
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".xlsx";
             response.setHeader(headerKey, headerValue);
-            excelGeneratorService.exportEnrollmentsToExcel(response.getOutputStream(), facultySection, year, includeEnrollmentId, includeStudentId, includeCourseId, includeYear, includeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory);
+//            excelGeneratorService.exportEnrollmentsToExcel(response.getOutputStream(), facultySection, year, includeEnrollmentId, includeStudentId, includeCourseId, includeYear, includeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory);
         }
         else{
             response.setContentType("application/csv");
             String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".csv";
             response.setHeader(headerKey, headerValue);
-            csvGeneratorService.exportEnrollmentsToCSV(response.getOutputStream(), facultySection, year, includeEnrollmentId, includeStudentId, includeCourseId, includeYear, includeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory);
+//            csvGeneratorService.exportEnrollmentsToCSV(response.getOutputStream(), facultySection, year, includeEnrollmentId, includeStudentId, includeCourseId, includeYear, includeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory);
         }
+
+        enrollmentService.export(response.getOutputStream(), facultySection, year, includeYear, includeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory, includeNumOfStudents, includeAVGGrade, extension);
     }
 
     @PutMapping("/")

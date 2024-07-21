@@ -3,6 +3,7 @@ package com.Spring.application.controller.advice;
 import com.Spring.application.exceptions.ErrorResponse;
 import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
+import com.lowagie.text.DocumentException;
 import org.hibernate.NonUniqueObjectException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -92,6 +93,18 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(IndexOutOfBoundsException.class)
     public ResponseEntity<Object> handleIndexOutOfBoundsException(IndexOutOfBoundsException ex) {
+        ErrorResponse response = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(IllegalAccessException.class)
+    public ResponseEntity<Object> handleIllegalAccessException(IllegalAccessException ex) {
+        ErrorResponse response = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(DocumentException.class)
+    public ResponseEntity<Object> handleDocumentException(DocumentException ex) {
         ErrorResponse response = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }

@@ -1,5 +1,6 @@
 package com.Spring.application.service.impl;
 
+import com.Spring.application.dto.EnrollmentExporter;
 import com.Spring.application.entity.Course;
 import com.Spring.application.entity.Enrollment;
 import com.Spring.application.entity.Student;
@@ -10,13 +11,15 @@ import com.Spring.application.repository.CourseRepository;
 import com.Spring.application.repository.EnrollmentRepository;
 import com.Spring.application.repository.StudentRepository;
 import com.Spring.application.service.EnrollmentService;
+import com.Spring.application.utils.GeneratorMethods;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
 
 @Service
@@ -27,6 +30,8 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     private StudentRepository studentRepository;
     @Autowired
     private CourseRepository courseRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public Enrollment addEnrollment(Long studentId, Long courseId, Integer priority) throws ObjectNotFound {
@@ -174,22 +179,12 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     }
 
     public void completeAssignment(Map<Student, List<String>> students,Map<Long, Integer> mapCourseIdByMaxStudents, Map<Integer, Integer> mapYearByNoCategories) throws ObjectNotFound {
-//        for(Map.Entry<Long, Integer> entry : mapCourseIdByMaxStudents.entrySet()){
-//            System.out.println("courseId: " + entry.getKey() + " maxStudents: " + entry.getValue());
-//        }
-//        for(Map.Entry<Integer, Integer> entry : mapYearByNoCategories.entrySet()){
-//            System.out.println("year: " + entry.getKey() + " noCategories: " + entry.getValue());
-//        }
         for (Map.Entry<Student, List<String>> entry : students.entrySet()) {
             System.out.println("student: " + entry.getKey());
             for (String category : entry.getValue()) {
                 System.out.println("category: " + category);
             }
         }
-//        System.out.println("student size: " + students.size());
-//        System.out.println("course size: " + mapCourseIdByMaxStudents.size());
-//        System.out.println("year size: " + mapYearByNoCategories.size());
-//        Integer studentSizeTracker = 0;
 
         for (Map.Entry<Student, List<String>> studentEntry : students.entrySet()) {
             Student student = studentEntry.getKey();
@@ -245,5 +240,100 @@ public class EnrollmentServiceImpl implements EnrollmentService{
         enrollment.setCourse(courseRepository.findById(newCourseId).orElse(null));
         enrollmentRepository.save(enrollment);
         return enrollment;
+    }
+
+    @Override
+    public void export(OutputStream out, Optional<String> facultySection, Optional<Integer> year, boolean includeYear, boolean IncludeSection, boolean includeCourseName, boolean includeStudentName, boolean includeTeacher, boolean includeStudentMail, boolean includeGrade, boolean includeCategory, boolean includeNumOfStudents, boolean includeAVGgrade, String extension) throws IOException, IllegalAccessException {
+        List<EnrollmentExporter> enrollments;
+
+        StringBuilder query = new StringBuilder();
+
+        query.append("SELECT");
+
+        if (includeCourseName) {
+            query.append(" e.course.courseName,");
+        }
+
+        if (includeCategory) {
+            query.append(" e.course.category,");
+        }
+
+        if (includeYear) {
+            query.append(" e.student.year,");
+        }
+
+        if (IncludeSection) {
+            query.append(" e.student.facultySection,");
+        }
+
+        if (includeTeacher) {
+            query.append(" e.course.teacherName,");
+        }
+
+        if (includeStudentName) {
+            query.append(" e.student.name,");
+        }
+
+        if (includeStudentMail) {
+            query.append(" e.student.email,");
+        }
+
+        if (includeGrade) {
+            query.append(" e.student.grade,");
+        }
+
+        if (includeNumOfStudents) {
+            query.append(" n.numOfStudents,");
+        }
+
+        if (includeAVGgrade) {
+            query.append(" n.avgGrade,");
+        }
+
+        query.deleteCharAt(query.length() - 1); // Remove the trailing comma
+
+        query.append(" FROM Enrollment e");
+        query.append(", (SELECT e.course.courseId AS courseId, COUNT(e.student.id) AS numOfStudents, AVG(e.student.grade) AS avgGrade FROM Enrollment e GROUP BY e.course.courseId) n");
+
+        query.append(" WHERE e.status = 'ACCEPTED' AND e.course.courseId = n.courseId");
+
+        if (facultySection.isPresent() && year.isPresent()) {
+            query.append(" AND e.student.facultySection = ").append(facultySection.get()).append(" AND e.student.year = ").append(year.get());
+        } else if (facultySection.isPresent()) {
+            query.append(" AND e.student.facultySection = ").append(facultySection.get());
+        } else if (year.isPresent()) {
+            query.append(" AND e.student.year = ").append(year.get());
+        }
+
+        List<Object> result = entityManager.createQuery(query.toString()).getResultList();
+
+        enrollments = new ArrayList<>();
+
+        for (Object obj : result) {
+            Object[] arr = (Object[]) obj;
+            EnrollmentExporter.Builder builder = new EnrollmentExporter.Builder();
+            int index = 0;
+
+            if (includeCourseName) builder.courseName((String) arr[index++]);
+            if (includeCategory) builder.category((String) arr[index++]);
+            if (includeYear) builder.year((Integer) arr[index++]);
+            if (IncludeSection) builder.section(arr[index++].toString());
+            if (includeTeacher) builder.teacher((String) arr[index++]);
+            if (includeStudentName) builder.name((String) arr[index++]);
+            if (includeStudentMail) builder.email((String) arr[index++]);
+            if (includeGrade) builder.grade((Float) arr[index++]);
+            if (includeNumOfStudents) builder.numberOfStudents((Long) arr[index++]);
+            if (includeAVGgrade) builder.avgGrade((Double) arr[index]);
+
+            enrollments.add(builder.build());
+        }
+
+        if (extension.equals("pdf")) {
+            GeneratorMethods.writePDF(enrollments, out);
+        } else if (extension.equals("csv")) {
+            GeneratorMethods.writeCSV(enrollments, out);
+        } else if (extension.equals("excel")) {
+            GeneratorMethods.writeXLSX(enrollments, out);
+        }
     }
 }

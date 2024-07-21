@@ -55,9 +55,6 @@ export class CourseComponent implements OnInit {
     this.form = this.fb.group({
       facultySection: [''],
       year: [''],
-      includeEnrollmentId: [false],
-      includeStudentId: [false],
-      includeCourseId: [false],
       includeYear: [false],
       includeSection: [false],
       includeCourseName: [false],
@@ -66,6 +63,8 @@ export class CourseComponent implements OnInit {
       includeStudentMail: [false],
       includeGrade: [false],
       includeCategory: [false],
+      includeNumOfStudents: [false],
+      includeAVGGrade: [false],
       extension: ['', Validators.required]
     });
 
@@ -176,9 +175,6 @@ export class CourseComponent implements OnInit {
   exportPDF() {
     const facultySection = this.form.get('facultySection')?.value;
     const year = this.form.get('year')?.value;
-    const includeEnrollmentId = this.form.get('includeEnrollmentId')?.value;
-    const includeStudentId = this.form.get('includeStudentId')?.value;
-    const includeCourseId = this.form.get('includeCourseId')?.value;
     const includeYear = this.form.get('includeYear')?.value;
     const includeSection = this.form.get('includeSection')?.value;
     const includeCourseName = this.form.get('includeCourseName')?.value;
@@ -187,10 +183,12 @@ export class CourseComponent implements OnInit {
     const includeStudentMail = this.form.get('includeStudentMail')?.value;
     const includeGrade = this.form.get('includeGrade')?.value;
     const includeCategory = this.form.get('includeCategory')?.value;
+    const includeNumOfStudents = this.form.get('includeNumOfStudents')?.value;
+    const includeAVGGrade = this.form.get('includeAVGGrade')?.value;
     const extension = this.form.get('extension')?.value;
     console.log(facultySection);
     console.log(year);
-    this.enrollmentService.exportEnrollmentsToPDF(includeEnrollmentId, includeStudentId, includeCourseId, includeYear, includeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory, extension, facultySection, year).subscribe({
+    this.enrollmentService.exportEnrollmentsToPDF(includeYear, includeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory, includeNumOfStudents, includeAVGGrade, extension, facultySection, year).subscribe({
       next: (data) => {
         var fileType = 'application/pdf';
         if (extension === 'excel') {

@@ -150,7 +150,7 @@ public class CourseController {
     }
 
     @GetMapping("/export/{id}")
-    public void exportCourseToPDF(HttpServletResponse response, @PathVariable("id") Long id) throws IOException {
+    public void exportCourseToPDF(HttpServletResponse response, @PathVariable("id") Long id) throws IOException, IllegalAccessException {
         response.setContentType("application/pdf");
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormater.format(System.currentTimeMillis());
