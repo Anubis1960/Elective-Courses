@@ -2,10 +2,8 @@ package com.Spring.application.controller;
 
 import com.Spring.application.dto.StudentDTO;
 import com.Spring.application.entity.Student;
-import com.Spring.application.enums.FacultySection;
 import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
-import com.Spring.application.service.CSVGeneratorService;
 import com.Spring.application.service.impl.CSVGeneratorServiceImpl;
 import com.Spring.application.service.impl.ExcelGeneratorServiceImpl;
 import com.Spring.application.service.impl.PDFGeneratorServiceImpl;
@@ -124,9 +122,7 @@ public class StudentController {
     }
 
     @GetMapping("/export")
-    public void exportPDF(HttpServletResponse response, Optional<String> facultySection, Optional<Integer> year,@RequestParam boolean includeId, @RequestParam boolean includeName, @RequestParam boolean includeGrade, @RequestParam boolean includeFacultySection, @RequestParam boolean includeYear, @RequestParam boolean includeEmail, @RequestParam String extension) throws IOException {
-        System.out.println("Exporting students to " + extension);
-        System.out.println(facultySection + " " + year + " " + includeId + " " + includeName + " " + includeGrade + " " + includeFacultySection + " " + includeYear + " " + includeEmail);
+    public void exportPDF(HttpServletResponse response, Optional<String> facultySection, Optional<Integer> year, @RequestParam boolean includeName, @RequestParam boolean includeGrade, @RequestParam boolean includeFacultySection, @RequestParam boolean includeYear, @RequestParam boolean includeEmail, @RequestParam String extension) throws IOException, IllegalAccessException {
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormater.format(System.currentTimeMillis());
         String headerKey = "Content-Disposition";
@@ -134,19 +130,22 @@ public class StudentController {
             response.setContentType("application/pdf");
             String headerValue = "attachment; filename=students_" + currentDateTime + ".pdf";
             response.setHeader(headerKey, headerValue);
-            pdfGeneratorService.exportStudents(response.getOutputStream(), facultySection, year, includeId, includeName, includeEmail, includeGrade, includeFacultySection, includeYear);
+//            studentService.export(response.getOutputStream(), facultySection, year, includeName, includeEmail, includeGrade, includeFacultySection, includeYear, extension);
         }
         else if(Objects.equals(extension, "excel")){
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             String headerValue = "attachment; filename=students_" + currentDateTime + ".xlsx";
             response.setHeader(headerKey, headerValue);
-            excelGeneratorService.exportStudentsToExcel(response.getOutputStream(), facultySection, year, includeId, includeName, includeEmail, includeGrade, includeFacultySection, includeYear);
+//            excelGeneratorService.exportStudentsToExcel(response.getOutputStream(), facultySection, year, includeId, includeName, includeEmail, includeGrade, includeFacultySection, includeYear);
         }
         else{
             response.setContentType("application/csv");
             String headerValue = "attachment; filename=students_" + currentDateTime + ".csv";
             response.setHeader(headerKey, headerValue);
-            csvGeneratorService.exportStudentsToCSV(response.getOutputStream(), facultySection, year, includeId, includeName, includeEmail, includeGrade, includeFacultySection, includeYear);
+//            csvGeneratorService.exportStudentsToCSV(response.getOutputStream(), facultySection, year, includeId, includeName, includeEmail, includeGrade, includeFacultySection, includeYear);
         }
+
+        studentService.export(response.getOutputStream(), facultySection, year, includeName, includeEmail, includeGrade, includeFacultySection, includeYear, extension);
+
     }
 }

@@ -55,42 +55,43 @@ public class CSVGeneratorServiceImpl implements CSVGeneratorService {
 			students = studentRepository.findAll();
 		}
 
-		CSVWriter csvWriter = new CSVWriter(new OutputStreamWriter(out));
+		StringBuilder csvData = new StringBuilder();
 
-		writeStudentHeader(csvWriter, includeId, includeName, includeEmail, includeGrade, includeSection, includeYear);
-		writeStudentData(csvWriter, students, includeId, includeName, includeEmail, includeGrade, includeSection, includeYear);
+		// Add header
+		writeStudentHeader(csvData, includeId, includeName, includeEmail, includeGrade, includeSection, includeYear);
 
-		csvWriter.flush();
-		csvWriter.close();
+		// Add data
+		writeStudentData(csvData, students, includeId, includeName, includeEmail, includeGrade, includeSection, includeYear);
 
+		// Write to OutputStream
+		out.write(csvData.toString().getBytes());
+		out.flush();
 		out.close();
 	}
 
-	private void writeStudentHeader(CSVWriter csvWriter, boolean includeId, boolean includeName, boolean includeEmail,
+	private void writeStudentHeader(StringBuilder csvData, boolean includeId, boolean includeName, boolean includeEmail,
 									boolean includeGrade, boolean includeSection, boolean includeYear) {
-		List<String> header = new ArrayList<>();
-		if (includeId) header.add("ID");
-		if (includeName) header.add("Name");
-		if (includeEmail) header.add("Email");
-		if (includeGrade) header.add("Grade");
-		if (includeSection) header.add("Section");
-		if (includeYear) header.add("Year");
-
-		csvWriter.writeNext(header.toArray(new String[0]));
+		if (includeId) csvData.append("ID,");
+		if (includeName) csvData.append("Name,");
+		if (includeEmail) csvData.append("Email,");
+		if (includeGrade) csvData.append("Grade,");
+		if (includeSection) csvData.append("Section,");
+		if (includeYear) csvData.append("Year,");
+		csvData.setLength(csvData.length() - 1);  // Remove trailing comma
+		csvData.append("\n");
 	}
 
-	private void writeStudentData(CSVWriter csvWriter, List<Student> students, boolean includeId, boolean includeName,
+	private void writeStudentData(StringBuilder csvData, List<Student> students, boolean includeId, boolean includeName,
 								  boolean includeEmail, boolean includeGrade, boolean includeSection, boolean includeYear) {
 		for (Student student : students) {
-			List<String> data = new ArrayList<>();
-			if (includeId) data.add(student.getId().toString());
-			if (includeName) data.add(student.getName());
-			if (includeEmail) data.add(student.getEmail());
-			if (includeGrade) data.add(student.getGrade().toString());
-			if (includeSection) data.add(student.getFacultySection().toString());
-			if (includeYear) data.add(String.valueOf(student.getYear()));
-
-			csvWriter.writeNext(data.toArray(new String[0]));
+			if (includeId) csvData.append(student.getId()).append(",");
+			if (includeName) csvData.append(student.getName()).append(",");
+			if (includeEmail) csvData.append(student.getEmail()).append(",");
+			if (includeGrade) csvData.append(student.getGrade()).append(",");
+			if (includeSection) csvData.append(student.getFacultySection()).append(",");
+			if (includeYear) csvData.append(student.getYear()).append(",");
+			csvData.setLength(csvData.length() - 1);  // Remove trailing comma
+			csvData.append("\n");
 		}
 	}
 

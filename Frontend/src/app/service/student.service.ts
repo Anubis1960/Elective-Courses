@@ -55,10 +55,8 @@ export class StudentService {
     return this.http.get<Student[]>(`${this.baseUrl}/accepted/${courseId}`);
   }
 
-  export(includeId: boolean, includeName: boolean, includeGrade: boolean , includeFacultySection: boolean, includeYear: boolean, includeEmail: boolean, extension: string, facultySection?: string, year?: number): Observable<any> {
+  export(includeName: boolean, includeGrade: boolean , includeFacultySection: boolean, includeYear: boolean, includeEmail: boolean, extension: string, facultySection?: string, year?: number): Observable<any> {
     
-    console.log(facultySection + ' ' + year + ' ' + includeId + ' ' + includeName + ' ' + includeGrade + ' ' + includeFacultySection + ' ' + includeYear + ' ' + includeEmail + ' ' + extension);
-
     let params = new HttpParams()
     if (facultySection){
       params = params.set('facultySection', facultySection);
@@ -68,7 +66,6 @@ export class StudentService {
       params = params.set('year', year);
     }
 
-    params = params.set('includeId', includeId);
     params = params.set('includeName', includeName);
     params = params.set('includeGrade', includeGrade);
     params = params.set('includeFacultySection', includeFacultySection);

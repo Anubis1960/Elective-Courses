@@ -2,15 +2,12 @@ package com.Spring.application.service.impl;
 
 import com.Spring.application.entity.Enrollment;
 import com.Spring.application.entity.Student;
-import com.Spring.application.entity.User;
 import com.Spring.application.enums.FacultySection;
 import com.Spring.application.enums.Role;
 import com.Spring.application.repository.StudentRepository;
 import com.Spring.application.service.ExcelGeneratorService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.http.HttpServletResponse;
 
 import jakarta.transaction.Transactional;
 import org.apache.poi.ss.usermodel.Cell;

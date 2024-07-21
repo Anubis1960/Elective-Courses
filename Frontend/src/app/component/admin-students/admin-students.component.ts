@@ -51,7 +51,6 @@ export class AdminStudentsComponent {
     this.form = this.fb.group({
       facultySection: [''],
       year: [''],
-      includeId: [false],
       includeName: [false],
       includeGrade: [false],
       includeSection: [false],
@@ -78,7 +77,6 @@ export class AdminStudentsComponent {
   exportPDF() {
     const facultySection = this.form.get('facultySection')?.value;
     const year = this.form.get('year')?.value;
-    const includeId = this.form.get('includeId')?.value;
     const includeName = this.form.get('includeName')?.value;
     const includeGrade = this.form.get('includeGrade')?.value;
     const includeFacultySection = this.form.get('includeSection')?.value;
@@ -86,7 +84,7 @@ export class AdminStudentsComponent {
     const includeEmail = this.form.get('includeMail')?.value;
     const extension = this.form.get('extension')?.value;
 
-    this.studentService.export(includeId, includeName, includeGrade, includeFacultySection, includeYear, includeEmail, extension, facultySection, year).subscribe({
+    this.studentService.export(includeName, includeGrade, includeFacultySection, includeYear, includeEmail, extension, facultySection, year).subscribe({
       next: (data) => {
         console.log(data);
         var fileType = 'application/pdf';
