@@ -41,44 +41,90 @@
           <button mat-raised-button color="primary" (click)="exportPDF()">Export PDF</button>
         </form>
       </mat-expansion-panel>
-    <mat-card-content style=" margin: 30px; padding: 10px; border-radius: 2rem;  border: 3px solid black;">
+
+      <mat-card-content style="margin: 30px; padding: 10px; border-radius: 2rem; border: 3px solid black;">
         <table matSort mat-table [dataSource]="dataSource" style="padding: 3px;">
+            <!-- ID -->
             <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef> ID </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    ID
+                    <mat-form-field appearance="fill" style="width: 100%;">
+                        <mat-label>Filter</mat-label>
+                        <input matInput (keyup)="applyColumnFilter($event, 'id')" placeholder="Filter ID">
+                    </mat-form-field>
+                </th>
                 <td mat-cell *matCellDef="let element"> {{element.id}} </td>
             </ng-container>
-
+    
+            <!-- Name -->
             <ng-container matColumnDef="name">
-                <th mat-sort-header *matHeaderCellDef> Name </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Name
+                    <mat-form-field appearance="fill" style="width: 100%;">
+                        <mat-label>Filter</mat-label>
+                        <input matInput (keyup)="applyColumnFilter($event, 'name')" placeholder="Filter Name">
+                    </mat-form-field>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <button mat-button (click)="getDetails(element.id)">{{ element.name }}</button>
                 </td>
             </ng-container>
-
+    
+            <!-- Email -->
             <ng-container matColumnDef="email">
-                <th mat-header-cell *matHeaderCellDef> Email </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Email
+                    <mat-form-field appearance="fill" style="width: 100%;">
+                        <mat-label>Filter</mat-label>
+                        <input matInput (keyup)="applyColumnFilter($event, 'email')" placeholder="Filter Email">
+                    </mat-form-field>
+                </th>
                 <td mat-cell *matCellDef="let element"> {{element.email}} </td>
             </ng-container>
-
+    
+            <!-- Faculty Section -->
             <ng-container matColumnDef="facultySection">
-                <th mat-sort-header *matHeaderCellDef> Faculty Section </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Faculty Section
+                    <mat-form-field appearance="fill" style="width: 100%;">
+                        <mat-label>Filter</mat-label>
+                        <input matInput (keyup)="applyColumnFilter($event, 'facultySection')" placeholder="Filter Faculty Section">
+                    </mat-form-field>
+                </th>
                 <td mat-cell *matCellDef="let element"> {{element.facultySection}} </td>
             </ng-container>
-
+    
+            <!-- Year -->
             <ng-container matColumnDef="year">
-                <th mat-sort-header *matHeaderCellDef> Year </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Year
+                    <mat-form-field appearance="fill" style="width: 100%;">
+                        <mat-label>Filter</mat-label>
+                        <input matInput (keyup)="applyColumnFilter($event, 'year')" placeholder="Filter Year">
+                    </mat-form-field>
+                </th>
                 <td mat-cell *matCellDef="let element"> {{element.year}} </td>
             </ng-container>
-
+    
+            <!-- Grade -->
             <ng-container matColumnDef="grade">
-                <th mat-sort-header *matHeaderCellDef> Grade </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Grade
+                    <mat-form-field appearance="fill" style="width: 100%;">
+                        <mat-label>Filter</mat-label>
+                        <input matInput (keyup)="applyColumnFilter($event, 'grade')" placeholder="Filter Grade">
+                    </mat-form-field>
+                </th>
                 <td mat-cell *matCellDef="let element"> {{element.grade}} </td>
             </ng-container>
+    
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row;columns:displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
-    </mat-card-content>
+    </mat-card-content>    
+
     <mat-card-footer style="margin-top: -30px; margin-right: 50px;">
         <mat-paginator [pageSizeOptions]="[5,10,15]" showFirstLastButtons></mat-paginator>
     </mat-card-footer>
+
 </mat-card>
