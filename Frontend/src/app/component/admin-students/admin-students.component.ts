@@ -22,6 +22,7 @@ export class AdminStudentsComponent {
   years: number[] = [1, 2, 3];
   facultySections: string[] | undefined;
   form!: FormGroup;
+  filterValues: any = {};
 
   constructor(private http: HttpClient, private studentService: StudentService, private dialog: MatDialog, private router: Router, private courseService: CourseService, private fb: FormBuilder) { }
 
@@ -58,6 +59,12 @@ export class AdminStudentsComponent {
       includeMail: [false],
       extension: ['', Validators.required]
     });
+
+    this.displayedColumns.forEach(column => {
+      this.filterValues[column] = '';
+    });
+
+    this.dataSource.filterPredicate = this.createFilter();
   }
 
   ngAfterViewInit() {
@@ -74,6 +81,21 @@ export class AdminStudentsComponent {
     this.dataSource.filter = value.trim().toLowerCase();
   }
 
+  applyColumnFilter(event: Event, column: string) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.filterValues[column] = filterValue.trim().toLowerCase();
+    this.dataSource.filter = JSON.stringify(this.filterValues);
+  }
+
+  createFilter() {
+    return (data: any, filter: string): boolean => {
+      const searchTerms = JSON.parse(filter);
+      return Object.keys(searchTerms).every(column => {
+        return searchTerms[column] === '' || data[column].toString().toLowerCase().indexOf(searchTerms[column]) !== -1;
+      });
+    };
+  }
+  
   exportPDF() {
     const facultySection = this.form.get('facultySection')?.value;
     const year = this.form.get('year')?.value;
