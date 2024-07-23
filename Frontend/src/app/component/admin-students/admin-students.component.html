@@ -43,28 +43,24 @@
       </mat-expansion-panel>
 
       <mat-card-content style="margin: 30px auto; padding: 10px; border-radius: 2rem; border: 3px solid black;width: 98%; max-width: 98%; overflow-x: auto;">
-        <table matSort mat-table [dataSource]="dataSource" style="padding: 3px; width: 100%;">
+        <table matSort mat-table [dataSource]="dataSource" style="padding: 10px; width: 100%;">
             <!-- ID -->
             <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>
-
-                    <mat-form-field class="filter" appearance="fill" style="width: 100%;">
-                        <input matInput (keyup)="applyColumnFilter($event, 'id')" placeholder="Filter ID" style="height: 30px; display: flex;">
-                    </mat-form-field>
+                    ID
                 </th>
-                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                <td mat-cell *matCellDef="let element" style="max-width: 50px;"> {{element.id}} </td>
             </ng-container>
     
             <!-- Name -->
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    
                     <mat-form-field class="filter" appearance="fill" style="width: 100%;">
-                        <input matInput (keyup)="applyColumnFilter($event, 'name')" placeholder="Filter Name" style="height: 30px; display: flex;">
+                        <input matInput (keyup)="applyColumnFilter($event, 'name')" placeholder="Filter Name" style="height: 30px; display: flex; text-align: center;">
                     </mat-form-field>
                 </th>
                 <td mat-cell *matCellDef="let element">
-                    <button mat-button (click)="getDetails(element.id)">{{ element.name }}</button>
+                    <button mat-button (click)="getDetails(element.id)" style="text-align: center;">{{ element.name }}</button>
                 </td>
             </ng-container>
     
@@ -73,20 +69,20 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>
                     
                     <mat-form-field class="filter" appearance="fill" style="width: 100%;">
-                        <input matInput (keyup)="applyColumnFilter($event, 'email')" placeholder="Filter Email" style="height: 30px; display: flex;">
+                        <input matInput (keyup)="applyColumnFilter($event, 'email')" placeholder="Filter Email" style="height: 30px; display: flex; text-align: center;">
                     </mat-form-field>
                 </th>
-                <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.email}} </td>
             </ng-container>
     
             <!-- Faculty Section -->
             <ng-container matColumnDef="facultySection">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>
                     <mat-form-field class="filter" appearance="fill" style="width: 100%;">
-                        <input matInput (keyup)="applyColumnFilter($event, 'facultySection')" placeholder="Filter Faculty Section" style="height: 30px; display: flex;">
+                        <input matInput (keyup)="applyColumnFilter($event, 'facultySection')" placeholder="Filter Faculty Section" style="height: 30px; display: flex; text-align: center;">
                     </mat-form-field>
                 </th>
-                <td mat-cell *matCellDef="let element"> {{element.facultySection}} </td>
+                <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.facultySection}} </td>
             </ng-container>
     
             <!-- Year -->
@@ -94,10 +90,10 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>
                     
                     <mat-form-field class="filter" appearance="fill" style="width: 100%;">
-                        <input matInput (keyup)="applyColumnFilter($event, 'year')" placeholder="Filter Year" style="height: 30px; display: flex;">
+                        <input matInput (keyup)="applyColumnFilter($event, 'year')" placeholder="Filter Year" style="height: 30px; display: flex; text-align: center;">
                     </mat-form-field>
                 </th>
-                <td mat-cell *matCellDef="let element"> {{element.year}} </td>
+                <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.year}} </td>
             </ng-container>
     
             <!-- Grade -->
@@ -105,10 +101,10 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>
 
                     <mat-form-field class="filter" appearance="fill" style="width: 100%;">
-                        <input matInput (keyup)="applyColumnFilter($event, 'grade')" placeholder="Filter Grade" style="height: 30px; display: flex;">
+                        <input matInput (keyup)="applyColumnFilter($event, 'grade')" placeholder="Filter Grade" style="height: 30px; display: flex; text-align: center;">
                     </mat-form-field>
                 </th>
-                <td mat-cell *matCellDef="let element"> {{element.grade}} </td>
+                <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.grade}} </td>
             </ng-container>
     
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
