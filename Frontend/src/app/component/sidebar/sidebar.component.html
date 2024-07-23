@@ -1,36 +1,36 @@
-<mat-toolbar color="primary">
-    <mat-toolbar-row>
-      <button mat-icon-button (click)="sidenav.toggle()">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <h1>Provincierii</h1>
-    </mat-toolbar-row>
-  </mat-toolbar>
-  
-  <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav #sidenav>
-      <mat-nav-list>
-        <a mat-list-item routerLink="/admin/home">Home</a>
-        <a mat-list-item routerLink="/admin/courses">Courses & Students</a>
-         @if(status === 'true'){
-          <button mat-raised-button color="primary" (click)="closePeriod()">Close Period</button>
-         }
-         @else {
-            <button mat-raised-button color="primary" (click)="openPeriod()">Open Period</button>
-            <form [formGroup]="openPeriodForm">
-                <mat-form-field class="example-full-width">
-                <mat-label>Open application period</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="endDate">
-                <mat-hint>DD-MM-YYYY</mat-hint>
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker touchUi #picker></mat-datepicker>
-                </mat-form-field>
-            </form>
-         }
-         <button mat-raised-button color="primary" (click)="onLogout()">Log out</button>
-        </mat-nav-list>
-    </mat-sidenav>
-    <mat-sidenav-content class="sidenav-content">
-        <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+<mat-toolbar color="primary" style="position: fixed; z-index: 1000;">
+  <mat-toolbar-row>
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1>Provincierii</h1>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container" autosize>
+  <mat-sidenav #sidenav mode="side" class="sidenav">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/admin/home">Home</a>
+      <a mat-list-item routerLink="/admin/courses">Courses & Students</a>
+      <ng-container *ngIf="status === 'true'; else elseBlock">
+        <button mat-raised-button color="primary" (click)="closePeriod()">Close Period</button>
+      </ng-container>
+      <ng-template #elseBlock>
+        <button mat-raised-button color="primary" (click)="openPeriod()">Open Period</button>
+        <form [formGroup]="openPeriodForm">
+          <mat-form-field class="example-full-width">
+            <mat-label>Open application period</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="endDate">
+            <mat-hint>DD-MM-YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker touchUi #picker></mat-datepicker>
+          </mat-form-field>
+        </form>
+      </ng-template>
+      <button mat-raised-button color="primary" (click)="onLogout()">Log out</button>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

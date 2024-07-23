@@ -50,5 +50,22 @@ app-top-bar {
     display: block;
     text-transform: uppercase;
   }
+
+  mat-sidenav-container {
+    height: 100vh; /* Full viewport height */
+    display: flex;
+  }
+  
+  /* Sidebar styling */
+  app-sidebar {
+    height: 100%; /* Full height of the container */
+    overflow: auto; /* Allow scrolling if content overflows */
+  }
+  
+  /* Content area */
+  mat-sidenav-content {
+    flex: 1; /* Fill remaining space */
+    padding: 20px;
+  }
 html, body { height: 100%; background-color: white;}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
