@@ -22,8 +22,7 @@ export const DATE_FORMATS = {
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   providers: [
-    { provide: 'MAT_DATE_FORMATS', useValue: DATE_FORMATS },
-    DatePipe,
+    provideNativeDateAdapter(DATE_FORMATS), DatePipe,
   ],
   styleUrls: ['./sidebar.component.css']
 })
@@ -38,7 +37,7 @@ export class SidebarComponent implements OnInit {
     private router: Router,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.status = localStorage.getItem('status') || '';
     this.openPeriodForm = this.fb.group({
       endDate: ['', Validators.required]
