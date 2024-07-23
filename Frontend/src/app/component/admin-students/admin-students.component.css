@@ -4,3 +4,9 @@ app-top-bar {
     padding: 10px 0;
     text-align: center;
   }
+
+  .filter{
+    
+    height: 70px;
+    display: flex;
+}

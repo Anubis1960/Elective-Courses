@@ -1,10 +1,31 @@
+/* sidebar.component.css */
 .sidenav-container {
-    display: flex;
-    height: 100vh;
-  }
+  height: 100%;
+  width: 100%;
+}
+
+.sidenav {
+  width: 250px;
+  position: fixed;
+  top: 64px;
   
-  .sidenav-content {
-    flex: 1;
-    padding: 20px;
-  }
+}
+
+mat-sidenav {
+  width: 250px;
   
+  z-index: 1000;
+  
+}
+
+mat-sidenav-content {
+  flex: 1;
+  padding: 16px;
+  overflow: auto;
+}
+
+mat-card {
+  position: relative;
+  z-index: 1; /* Ensure it's below the sidenav */
+  margin: 16px; /* Adjust margin as needed */
+}

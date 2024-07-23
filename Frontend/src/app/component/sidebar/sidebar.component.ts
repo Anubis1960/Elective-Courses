@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { ApplicationPeriodService } from '../../service/application-period.service';
@@ -17,15 +17,17 @@ export const DATE_FORMATS = {
     monthYearA11yLabel: 'MM YYYY',
   },
 };
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   providers: [
-    provideNativeDateAdapter(DATE_FORMATS), DatePipe,
+    { provide: 'MAT_DATE_FORMATS', useValue: DATE_FORMATS },
+    DatePipe,
   ],
-  styleUrl: './sidebar.component.css'
+  styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   status: string | undefined;
   openPeriodForm!: FormGroup;
 
@@ -33,7 +35,7 @@ export class SidebarComponent {
     private applicationPeriodService: ApplicationPeriodService,
     private enrollmentService: EnrollmentService,
     private fb: FormBuilder,
-    private router:Router,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -47,40 +49,39 @@ export class SidebarComponent {
     this.applicationPeriodService.reverseApplicationPeriodStatus().subscribe({
       next: (data) => {
         this.status = data.toString();
-        localStorage.setItem('status', JSON.stringify(data));
+        localStorage.setItem('status', data.toString());
         this.enrollmentService.assignStudentsToCourse().subscribe({
           next: (data) => {
-            // console.log(data);
             location.reload();
           },
           error: (error) => {
-            // console.log(error);
+            console.error(error);
           }
         });
-        
       },
       error: (error) => {
-        // console.log(error);
+        console.error(error);
       }
     });
   }
 
   openPeriod() {
     const date = this.openPeriodForm.get('endDate')?.value;
-    const formatedDate = new DatePipe('en-US').transform(date, 'yyyy-MM-dd');
-    if (formatedDate) {
-      this.applicationPeriodService.setApplicationPeriod(formatedDate).subscribe({
+    const formattedDate = new DatePipe('en-US').transform(date, 'yyyy-MM-dd');
+    if (formattedDate) {
+      this.applicationPeriodService.setApplicationPeriod(formattedDate).subscribe({
         next: (data) => {
           location.reload();
         },
         error: (error) => {
-          // console.log(error);
+          console.error(error);
         }
       });
     }
   }
+
   onLogout() {
     sessionStorage.removeItem('user');
     this.router.navigateByUrl('/login');
-  } 
+  }
 }
