@@ -1,6 +1,7 @@
 package com.Spring.application.service.impl;
 
 import com.Spring.application.dto.EnrollmentExporter;
+import com.Spring.application.dto.StudentDTO;
 import com.Spring.application.dto.StudentExporter;
 import com.Spring.application.entity.Course;
 import com.Spring.application.entity.CourseSchedule;
@@ -309,12 +310,13 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
     @Override
     public void exportStudentsOfCourseToPDF(OutputStream out, Long id) throws IOException, IllegalAccessException {
         List<Student> students = studentRepository.findAcceptedStudentsByCourseId(id);
+        List<StudentDTO> studentDTOs = StudentDTO.convertToDTO(students);
         Course course = courseRepository.findById(id).orElse(null);
 
         if (course == null) {
             throw new IllegalArgumentException("Course with ID " + id + " not found.");
         }
-        GeneratorMethods.writePDF(students, out);
+        GeneratorMethods.writePDF(studentDTOs, out);
     }
 
     @Override
