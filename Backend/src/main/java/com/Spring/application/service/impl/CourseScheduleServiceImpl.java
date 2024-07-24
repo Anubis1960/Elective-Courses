@@ -9,13 +9,26 @@ import com.Spring.application.repository.CourseRepository;
 import com.Spring.application.repository.CourseScheduleRepository;
 import com.Spring.application.repository.EnrollmentRepository;
 import com.Spring.application.service.CourseScheduleService;
+import com.Spring.application.utils.GeneratorMethods;
+import com.lowagie.text.Document;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
 import jakarta.transaction.Transactional;
 import org.hibernate.NonUniqueObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.awt.*;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CourseScheduleServiceImpl implements CourseScheduleService{
@@ -215,5 +228,83 @@ public class CourseScheduleServiceImpl implements CourseScheduleService{
     @Override
     public List<CourseSchedule> getAllCourseSchedules() {
         return courseScheduleRepository.findAll();
+    }
+
+    @Override
+    public void export(OutputStream out, Long id) throws IOException {
+        List<CourseSchedule> courseSchedules = courseScheduleRepository.findCourseScheduleOfStudent(id);
+
+        // Set up document
+        Document document = GeneratorMethods.setUpDocument(out);
+
+        // Define fonts
+        Font font = FontFactory.getFont(FontFactory.COURIER, 12, Color.BLACK);
+
+        // Create a table with 6 columns (Time slots + 5 days of the week)
+        PdfPTable table = new PdfPTable(6);
+        table.setWidthPercentage(100);
+        table.setSpacingBefore(10f);
+        table.setSpacingAfter(10f);
+
+        // Set column widths
+        float[] columnWidths = {2f, 2f, 2f, 2f, 2f, 2f};
+        table.setWidths(columnWidths);
+
+        // Create table header
+        String[] headers = {"Time Slot", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+        for (String header : headers) {
+            GeneratorMethods.writeHeadersPDF(header, table);
+        }
+
+        // Define time slots
+        String[] timeSlots = {"08:00-09:30", "09:40-11:10", "11:20-12:50", "13:00-14:30", "14:40-16:10", "16:20-17:50", "18:00-19:30", "19:40-21:10"};
+
+        // Map to store the courses based on the day and time slot
+        Map<String, Map<String, List<CourseSchedule>>> scheduleMap = new HashMap<>();
+        for (String day : new String[]{"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"}) {
+            scheduleMap.put(day, new HashMap<>());
+            for (String timeSlot : timeSlots) {
+                scheduleMap.get(day).put(timeSlot, new ArrayList<>());
+            }
+        }
+
+        // Populate the schedule map
+        for (CourseSchedule courseSchedule : courseSchedules) {
+            String day = courseSchedule.getDay().toString().toUpperCase();
+            String startTime = courseSchedule.getStartTime().toString();
+            String endTime = courseSchedule.getEndTime().toString();
+            String timeSlot = startTime + "-" + endTime;
+
+            if (scheduleMap.containsKey(day)) {
+                scheduleMap.get(day).get(timeSlot).add(courseSchedule);
+            }
+        }
+
+        // Add rows to the table
+        for (String timeSlot : timeSlots) {
+            // Add time slot cell
+            table.addCell(new PdfPCell(new Phrase(timeSlot, font)));
+
+            // Add course cells for each day
+            for (String day : new String[]{"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"}) {
+                List<CourseSchedule> courses = scheduleMap.get(day).get(timeSlot);
+                PdfPCell cell;
+                if (!courses.isEmpty()) {
+                    StringBuilder coursesText = new StringBuilder();
+                    for (CourseSchedule course : courses) {
+                        coursesText.append(course.getCourse().getCourseName()).append("\n");
+                    }
+                    cell = new PdfPCell(new Phrase(coursesText.toString(), font));
+                } else {
+                    cell = new PdfPCell(new Phrase("", font));
+                }
+                table.addCell(cell);
+            }
+        }
+
+        // Add table to document
+        document.add(table);
+        // Close document
+        document.close();
     }
 }

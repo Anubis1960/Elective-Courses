@@ -25,11 +25,13 @@ import java.util.List;
 
 public class GeneratorMethods {
 
-	public static <T> void writePDF(List<T> data, OutputStream out) throws IllegalAccessException{
+	public static <T> void writePDF(List<T> data, OutputStream out) throws IllegalAccessException, IOException {
 		Document document = setUpDocument(out);
 		writeTitlePDF(data.get(0).getClass().getSimpleName(), document);
 		document.add(writeTable(data));
 		document.close();
+		out.flush();
+		out.close();
 	}
 
 	public static <T> PdfPTable writeTable(List<T> data) throws IllegalAccessException {
@@ -162,7 +164,6 @@ public class GeneratorMethods {
 
 		out.flush();
 		out.close();
-
 	}
 
 	public static void writeHeadersXLSX(XSSFSheet sheet, XSSFWorkbook workbook, List<String> headers) {

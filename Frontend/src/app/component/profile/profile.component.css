@@ -1,15 +1,9 @@
-/* Top bar styles */
-app-top-bar {
-  background-color: #333;
-  color: #fff;
-  padding: 10px 0;
-  text-align: center;
-}
 
 /* Student info container styles */
 app-student-info {
   display: block;
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 /* Drag and drop container styles */

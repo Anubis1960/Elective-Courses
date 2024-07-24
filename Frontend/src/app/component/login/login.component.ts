@@ -27,25 +27,14 @@ export class LoginComponent {
     this.loginService.getUser(this.email, this.password).subscribe({
       next: (data: User) => {
         this.user = data;
-        //console.log(this.user);
         sessionStorage.setItem('user', JSON.stringify(this.user));
-        // this.applicationPeriodService.getApplicationPeriodStatus().subscribe({
-        //   next: (data: boolean) => {
-        //     localStorage.setItem('status', data.toString());
-        //   },
-        //   error: (error) => {
-        //     //console.log(error);
-        //   }
-        // });
         if(this.user.role === 'ADMIN'){
-          //console.log(localStorage.getItem('status'));
           this.router.navigateByUrl('/admin/home');
         } else if(this.user.role === 'STUDENT'){
           this.router.navigateByUrl('/student/courses');
         }
       },
       error: (error) => {
-        //console.log(error);
         this.snackbar.open('Invalid email or password', undefined, {
           duration: 2000
         });

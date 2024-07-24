@@ -17,10 +17,9 @@ export class PopUpComponent implements OnInit {
   form!: FormGroup;
   facultySections: string[] | undefined;
   years: number[]=[1,2,3];
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Course, private ref: MatDialogRef<PopUpComponent>, private builder: FormBuilder, private courseService: CourseService, private snackbat: MatSnackBar) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Course, private ref: MatDialogRef<PopUpComponent>, private builder: FormBuilder, private courseService: CourseService, private snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
-    //console.log(this.data);
     this.input = this.data;
     this.form = this.builder.group({
       id: [this.input.id],
@@ -41,7 +40,9 @@ export class PopUpComponent implements OnInit {
         this.facultySections = data;
       },
       error: (error) => {
-        //console.log(error);
+        this.snackbar.open('Error fetching data', undefined, {
+          duration: 2000
+        });
       }
     })
     
@@ -59,13 +60,10 @@ export class PopUpComponent implements OnInit {
     if (!this.checkTitle()) {
       this.courseService.updateCourse(this.form.value.id, this.form.value.name, this.form.value.description, this.form.value.category, this.form.value.facultySection, this.form.value.maximumStudentsAllowed, this.form.value.year, this.form.value.teacherName).subscribe({
         next: (data) => {
-          //console.log(data);
           this.ref.close(data);
         },
         error: (error) => {
-          //console.log(error);
-          //const message = error.error.message;
-          this.snackbat.open("Error updating course", undefined, {
+          this.snackbar.open("Error updating course", undefined, {
             duration: 2000
           });
           
@@ -75,13 +73,10 @@ export class PopUpComponent implements OnInit {
     else {
       this.courseService.createCourse(this.form.value.name, this.form.value.description, this.form.value.category, this.form.value.facultySection, this.form.value.maximumStudentsAllowed, this.form.value.year, this.form.value.teacherName).subscribe({
         next: (data : Course) => {
-          //console.log(data);
           this.ref.close(data);
         },
         error: (error) => {
-          //console.log(error);
-          //const message = error.error.message;
-          this.snackbat.open("Error creating course", undefined, {
+          this.snackbar.open("Error creating course", undefined, {
             duration: 2000
           });
           

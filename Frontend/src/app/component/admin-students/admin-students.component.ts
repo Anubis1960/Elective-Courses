@@ -9,6 +9,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { CourseService } from '../../service/course.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-admin-students',
@@ -18,13 +19,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class AdminStudentsComponent {
   students!: Student[];
   dataSource: MatTableDataSource<Student> = new MatTableDataSource<Student>();
-  displayedColumns: string[] = ['id', 'name', 'email', 'facultySection', 'year', 'grade'];
+  displayedColumns: string[] = ['name', 'email', 'facultySection', 'year', 'grade'];
   years: number[] = [1, 2, 3];
   facultySections: string[] | undefined;
   form!: FormGroup;
   filterValues: any = {};
 
-  constructor(private http: HttpClient, private studentService: StudentService, private dialog: MatDialog, private router: Router, private courseService: CourseService, private fb: FormBuilder) { }
+  constructor(private http: HttpClient, private studentService: StudentService, private dialog: MatDialog, private router: Router, private courseService: CourseService, private fb: FormBuilder, private snackbar: MatSnackBar) { }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -34,7 +35,9 @@ export class AdminStudentsComponent {
         this.facultySections = data;
       },
       error: (error) => {
-        //console.log(error);
+        this.snackbar.open('Error fetching data', undefined, {
+          duration: 2000
+        });
       }
     });
     this.studentService.getStudentsList().subscribe({
@@ -45,7 +48,9 @@ export class AdminStudentsComponent {
         this.dataSource.sort = this.sort;
       },
       error: (error) => {
-        //console.log(error);
+        this.snackbar.open('Error fetching data', undefined, {
+          duration: 2000
+        });
       }
     });
 

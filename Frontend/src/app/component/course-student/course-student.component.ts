@@ -8,6 +8,7 @@ import { Student } from '../../model/student.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-course-student',
@@ -21,7 +22,7 @@ export class CourseStudentComponent {
   displayedColumns: string[]=['id', 'name', 'email', 'facultySection', 'year','grade'];
   status: string = localStorage.getItem('status') || '';
 
-  constructor(private route: ActivatedRoute, private httpClient: HttpClient, private studentService: StudentService, private router: Router) { }
+  constructor(private snackbar: MatSnackBar,private route: ActivatedRoute, private httpClient: HttpClient, private studentService: StudentService, private router: Router) { }
 
   @ViewChild(MatPaginator) paginator !: MatPaginator;
   @ViewChild(MatSort) sort !: MatSort;
@@ -39,10 +40,11 @@ export class CourseStudentComponent {
             this.dataSource.data = this.students;
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
-            //console.log(this.students);
           },
           error: (error) => {
-            //console.log(error);
+            this.snackbar.open('Error fetching data', undefined, {
+              duration: 2000
+            });
           }
         });
       }

@@ -6,6 +6,7 @@ import { CourseScheduleService } from '../../service/course-schedule.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SchedulePopUpComponent } from '../schedule-pop-up/schedule-pop-up.component';
 import { ApplicationPeriodService } from '../../service/application-period.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-course-info',
@@ -18,7 +19,7 @@ export class CourseInfoComponent {
   courseSchedule: CourseSchedule | undefined;
   role: string = JSON.parse(sessionStorage.getItem('user') || '{}').role;
   status: string | undefined;
-  constructor( private dialog: MatDialog, private courseService: CourseService, private courseScheduleService: CourseScheduleService) { }
+  constructor(private snackbar: MatSnackBar, private dialog: MatDialog, private courseService: CourseService, private courseScheduleService: CourseScheduleService) { }
 
   ngOnInit() {
     this.status = localStorage.getItem('status') || '';
@@ -30,7 +31,10 @@ export class CourseInfoComponent {
           this.course = data;
         },
         error: (error) => {
-          //console.log(error);
+          this.course = undefined;
+          this.snackbar.open('Course doesn\'t exist', undefined, {
+            duration: 2000
+          });
         }
       });
       this.courseScheduleService.getCourseSchedule(this.courseId).subscribe({
@@ -38,7 +42,6 @@ export class CourseInfoComponent {
           this.courseSchedule = data;
         },
         error: (error) => {
-          //console.log(error);
           this.courseSchedule = undefined;
         }
       });
@@ -58,7 +61,6 @@ export class CourseInfoComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      //console.log(result);
       if (result) {
         this.courseSchedule = result;
       }
@@ -76,7 +78,9 @@ export class CourseInfoComponent {
         window.open(url);
       },
       error: (error) => {
-        //console.log(error);
+        this.snackbar.open('Error exporting pdf', undefined, {
+          duration: 2000
+        });
       }
     });
   }

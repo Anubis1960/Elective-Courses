@@ -25,16 +25,16 @@ export class CourseDetailsComponent implements OnInit{
     this.status = localStorage.getItem('status') || '';
     this.route.paramMap.subscribe(params => {
       this.courseId = Number(params.get('id'));
-      //console.log(this.courseId);
     });
     if(this.status == 'false' && this.courseId){
       this.studentService.getAcceptedStudentsByCourseId(this.courseId).subscribe({
         next: (data: Student[]) => {
           this.studentColleagues = data;
-          //console.log(data);
         },
         error: (error) => {
-          //console.log(error);
+          this.snackbar.open('Error fetching data', undefined, {
+            duration: 2000
+          });
         }
       });
     }
@@ -45,12 +45,9 @@ export class CourseDetailsComponent implements OnInit{
   onEnroll() {
     let message: string;
     const user = JSON.parse(sessionStorage.getItem('user') || '{}') as User;
-    //console.log(user);
     if (!this.enrollmentService) {
       this.enrollmentService = new EnrollmentService(this.httpClient);
     }
-      //console.log(user.id);
-      //console.log(this.course.id);
       if (this.courseId && user.id) {
         this.enrollmentService.createEnrollment(user.id, this.courseId).subscribe({
           next: (data: Enrollment) => {
@@ -58,7 +55,6 @@ export class CourseDetailsComponent implements OnInit{
             this.snackbar.open(message, undefined, {
               duration: 2000
             });
-            //console.log(data);
           },
           error: (error) => {
             message = "You are already enrolled in this course";

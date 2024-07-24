@@ -5,6 +5,8 @@ import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
 import org.hibernate.NonUniqueObjectException;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 public interface CourseScheduleService {
@@ -13,4 +15,5 @@ public interface CourseScheduleService {
     CourseSchedule deleteCourseSchedule(Long courseId) throws ObjectNotFound;
     CourseSchedule getCourseScheduleById(Long courseId) throws ObjectNotFound;
     List<CourseSchedule> getAllCourseSchedules();
+    void export(OutputStream out, Long id) throws IOException, IllegalAccessException;
 }
