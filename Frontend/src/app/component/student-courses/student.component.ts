@@ -8,6 +8,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { CourseScheduleService } from '../../service/course-schedule.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-student',
@@ -18,17 +19,16 @@ import { CourseScheduleService } from '../../service/course-schedule.service';
 export class StudentComponent {
   courses!: Course[] | undefined;
   dataSource: MatTableDataSource<Course> = new MatTableDataSource<Course>();
-  displyedColumns: string[] = ['id', 'name', 'description', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year'];
+  displyedColumns: string[] = ['name', 'description', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year'];
   courseScheduleService: CourseScheduleService | undefined;
   user = JSON.parse(sessionStorage.getItem('user') || '{}');
   status: string = localStorage.getItem('status') || '';
 
-  constructor(private http: HttpClient, private courseService: CourseService, private dialog: MatDialog, private router: Router) { }
+  constructor(private snackbar: MatSnackBar,private http: HttpClient, private courseService: CourseService, private dialog: MatDialog, private router: Router) { }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   ngOnInit(): void {
-    //console.log(user);
     if(this.status == 'true'){
       this.courseService.getCoursesByStudentId(this.user.id).subscribe({
         next: (data: Course[]) => {
@@ -38,8 +38,10 @@ export class StudentComponent {
           this.dataSource.sort = this.sort;
         },
         error: (error) => {
-          //console.log(error);
-        }
+          this.snackbar.open('Error fetching data', undefined, {
+            duration: 2000
+          });
+       }
       });
     }
     else{
@@ -51,7 +53,9 @@ export class StudentComponent {
           this.dataSource.sort = this.sort;
         },
         error: (error) => {
-          //console.log(error);
+          this.snackbar.open('Error fetching data', undefined, {
+            duration: 2000
+          });
         }
       });
     }
@@ -73,14 +77,14 @@ export class StudentComponent {
     console.log(this.user.id);
     this.courseScheduleService.exportCourseSchedules(this.user.id).subscribe({
       next: (data) => {
-        //console.log(data);
         const blob = new Blob([data], { type: 'application/pdf' });
         const url = window.URL.createObjectURL(blob);
         window.open(url);
       },
       error: (error) => {
-        //console.log(error);
-      }
+        this.snackbar.open('Error exporting pdf', undefined, {
+          duration: 2000
+        });      }
     });
   }
 }

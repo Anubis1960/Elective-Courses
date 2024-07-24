@@ -17,7 +17,6 @@ export class ReassignPopUpComponent implements OnInit{
 
   ngOnInit(): void {
     this.input = this.data.availableCourses;
-    console.log(this.input);
   }
 
   close() {
@@ -25,7 +24,6 @@ export class ReassignPopUpComponent implements OnInit{
   }
 
   reassign() {
-    console.log(this.selectedValue);
     this.ref.close(this.selectedValue);
   }
 }

@@ -5,6 +5,8 @@ import com.Spring.application.enums.FacultySection;
 import com.Spring.application.exceptions.InvalidInput;
 import com.Spring.application.exceptions.ObjectNotFound;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 public interface CourseService {
@@ -19,4 +21,5 @@ public interface CourseService {
     List<Course> getAvailableCourses(Long courseId, Integer year, FacultySection facultySection, String category);
     List<String> getFacultySections();
     List<Course> getPendingCoursesByStudentId(Long studentId);
+    void export(OutputStream out, Long id) throws IOException, IllegalAccessException;
 }

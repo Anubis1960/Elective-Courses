@@ -76,6 +76,6 @@ public class CourseScheduleController {
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=schedule_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
-        pdfGeneratorService.exportScheduleToPDF(response.getOutputStream(), id);
+        courseScheduleService.export(response.getOutputStream(), id);
     }
 }

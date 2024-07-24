@@ -31,11 +31,9 @@ export class ProfileComponent implements OnInit {
         this.enrollment_service.getStudentEnrollmentsList(this.user.id).subscribe({
           next: (data: Enrollment[]) => {
             this.enrollments_list = data;
-
-            //console.log(this.enrollments_list);
           },
           error: (error) => {
-            //console.log(error);
+
           }
         });
       }
@@ -44,9 +42,6 @@ export class ProfileComponent implements OnInit {
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.enrollments_list, event.previousIndex, event.currentIndex);
-    for (let i = 0; i < this.enrollments_list.length; i++) {
-      //console.log(this.enrollments_list[i]);
-    }
   }
   
   saveOrder() {
@@ -60,10 +55,8 @@ export class ProfileComponent implements OnInit {
         this._snackbar.open("Your changes have been saved", undefined, {
           duration: 2000
         });
-        //console.log(this.enrollments_list);
       },
       error: (error) => {
-        //console.log(error);
         this._snackbar.open("Error saving order", undefined, {
           duration: 2000
         });
@@ -84,7 +77,6 @@ export class ProfileComponent implements OnInit {
         });
       },
       error: (error) => {
-        //console.log(error);
         this._snackbar.open("Error deleting enrollment", undefined, {
           duration: 2000
         });

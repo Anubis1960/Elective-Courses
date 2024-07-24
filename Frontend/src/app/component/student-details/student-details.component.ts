@@ -9,6 +9,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { ReassignPopUpComponent } from '../reassign-pop-up/reassign-pop-up.component';
 import { EnrollmentService } from '../../service/enrollment.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-student-details',
@@ -24,7 +25,7 @@ export class StudentDetailsComponent implements OnInit{
   status: string = localStorage.getItem('status') || '';
   options: Course[] | undefined;
 
-  constructor(private route: ActivatedRoute, private httpClient: HttpClient, private dialog: MatDialog, private enrollmentService: EnrollmentService, private router: Router) { }
+  constructor(private snackbar: MatSnackBar,private route: ActivatedRoute, private httpClient: HttpClient, private dialog: MatDialog, private enrollmentService: EnrollmentService, private router: Router) { }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   ngOnInit(): void {
@@ -38,13 +39,14 @@ export class StudentDetailsComponent implements OnInit{
         this.courseService.getPendingCoursesByStudentId(this.id).subscribe({
           next: (data: Course[]) => {
             this.courses = data;
-            //console.log(this.courses);
             this.dataSource.data = this.courses;
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
           },
           error: (error) => {
-            //console.log(error);
+            this.snackbar.open('Error fetching data', undefined, {
+              duration: 2000
+            });
           }
         });
       }
@@ -52,13 +54,14 @@ export class StudentDetailsComponent implements OnInit{
         this.courseService.getAcceptedCoursesByStudentId(this.id).subscribe({
           next: (data: Course[]) => {
             this.courses = data;
-            //console.log(this.courses);
             this.dataSource.data = this.courses;
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
           },
           error: (error) => {
-            //console.log(error);
+            this.snackbar.open('Error fetching data', undefined, {
+              duration: 2000
+            });
           }
         });
       }
@@ -76,7 +79,9 @@ export class StudentDetailsComponent implements OnInit{
         this.options = data;
       },
       error: (error) => {
-        //console.log(error);
+        this.snackbar.open('Error fetching data', undefined, {
+          duration: 2000
+        });
       }
     });
   }
@@ -114,14 +119,18 @@ export class StudentDetailsComponent implements OnInit{
                   this.dataSource.data = this.courses;
                 },
                 error: (error) => {
-                  //console.log(error);
+                  this.snackbar.open('Error fetching data', undefined, {
+                    duration: 2000
+                  });
                 }
               });
             }
           });
         },
         error: (error) => {
-          //console.log(error);
+          this.snackbar.open('Error fetching data', undefined, {
+            duration: 2000
+          });
         }
       });
     }

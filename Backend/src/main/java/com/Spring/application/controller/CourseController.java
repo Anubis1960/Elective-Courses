@@ -157,7 +157,7 @@ public class CourseController {
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=course_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
-        pdfGeneratorService.exportStudentsOfCourseToPDF(response.getOutputStream(), id);
+        courseService.export(response.getOutputStream(), id);
     }
     @GetMapping("/faculty-section")
     public ResponseEntity<List<String>> getAllFacultySections(){

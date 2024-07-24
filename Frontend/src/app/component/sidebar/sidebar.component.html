@@ -10,32 +10,36 @@
 <mat-sidenav-container class="sidenav-container" autosize>
   <mat-sidenav #sidenav mode="side" class="sidenav">
     <mat-nav-list>
-      <a mat-list-item routerLink="/admin/home">Home</a>
-      <a mat-list-item routerLink="/admin/courses">Courses & Students</a>
-      <!-- <ng-container *ngIf="status === 'true'; else elseBlock">
-        <button mat-raised-button color="primary" (click)="closePeriod()">Close Period</button>
-      </ng-container> -->
-      @if(status == 'true'){
-        <button mat-raised-button color="primary" (click)="closePeriod()">Close Period</button>
+      @if(userRole == "ADMIN"){
+        <a mat-list-item routerLink="/admin/home">Home</a>
+        <a mat-list-item routerLink="/admin/courses">Courses & Students</a>
+        @if(status == 'true'){
+          <button mat-raised-button color="primary" (click)="closePeriod()">Close Period</button>
+        }
+        @else{
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Open application period</mat-panel-title>
+            </mat-expansion-panel-header>
+            <form [formGroup] = "openPeriodForm">
+              <mat-form-field class="example-full-width">
+                <mat-label>Open application period</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="endDate">
+                <mat-hint>DD-MM-YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #picker></mat-datepicker>
+              </mat-form-field>
+              <button mat-raised-button color="primary" (click)="openPeriod()">Open Period</button>
+            </form>
+          </mat-expansion-panel>
+        }
+        <button mat-raised-button color="primary" (click)="onLogout()">Log out</button>
       }
       @else{
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>Open application period</mat-panel-title>
-          </mat-expansion-panel-header>
-          <form [formGroup] = "openPeriodForm">
-            <mat-form-field class="example-full-width">
-              <mat-label>Open application period</mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="endDate">
-              <mat-hint>DD-MM-YYYY</mat-hint>
-              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker touchUi #picker></mat-datepicker>
-            </mat-form-field>
-            <button mat-raised-button color="primary" (click)="openPeriod()">Open Period</button>
-          </form>
-        </mat-expansion-panel>
+        <a mat-list-item routerLink="/profile">Profile</a>
+        <a mat-list-item routerLink="/student/courses">Courses</a>
+        <button mat-raised-button color="primary" (click)="onLogout()">Log out</button>
       }
-      <button mat-raised-button color="primary" (click)="onLogout()">Log out</button>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

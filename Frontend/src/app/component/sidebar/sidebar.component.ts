@@ -29,6 +29,7 @@ export const DATE_FORMATS = {
 export class SidebarComponent implements OnInit {
   status: string | undefined;
   openPeriodForm!: FormGroup;
+  userRole = JSON.parse(sessionStorage.getItem('user') || '{}').role;
 
   constructor(
     private applicationPeriodService: ApplicationPeriodService,

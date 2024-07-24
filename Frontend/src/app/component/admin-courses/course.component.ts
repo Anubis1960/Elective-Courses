@@ -17,6 +17,7 @@ import { error } from 'console';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
 import { AdminService } from '../../service/admin.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class CourseComponent implements OnInit {
   @Input() courseId!: number | undefined;
   courses!: Course[];
   dataSource: MatTableDataSource<Course> = new MatTableDataSource<Course>();
-  displayedColumns: string[] = ['id', 'name', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year', 'action'];
+  displayedColumns: string[] = ['name', 'category', 'facultySection', 'maximumStudentsAllowed', 'numberOfStudents', 'teacherName', 'year', 'action'];
   status: string = localStorage.getItem('status') ?? '';
   years: number[] = [1, 2, 3];
   facultySections: string[] | undefined;
@@ -46,7 +47,8 @@ export class CourseComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private enrollmentService: EnrollmentService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackbar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -88,7 +90,9 @@ export class CourseComponent implements OnInit {
         this.facultySections = data;
       },
       error: (error) => {
-        //console.log(error);
+        this.snackbar.open('Error fetching data', undefined, {
+          duration: 2000
+        });
       }
     });
   }
@@ -100,7 +104,9 @@ export class CourseComponent implements OnInit {
         this.updateDataSource();
       },
       error: (error) => {
-        //console.log(error);
+        this.snackbar.open('Error deleting course', undefined, {
+          duration: 2000
+        });
       }
     });
   }
@@ -143,7 +149,9 @@ export class CourseComponent implements OnInit {
         this.dataSource.data = this.courses;
       },
       error: (error) => {
-        //console.log(error);
+        this.snackbar.open('Error refreshing', undefined, {
+          duration: 2000
+        });
       }
     });
   }
@@ -158,7 +166,9 @@ export class CourseComponent implements OnInit {
         this.scheduleDetails[courseId] = data;
       },
       error: (error)=>{
-        //console.log(error);
+        this.snackbar.open('Error displaying schedule details', undefined, {
+          duration: 2000
+        });
       }
     });
   }
@@ -223,7 +233,9 @@ export class CourseComponent implements OnInit {
         window.open(url);
       },
       error: (error) => {
-        //console.log(error);
+        this.snackbar.open('Error generating report', undefined, {
+          duration: 2000
+        });
       }
     });
   }
