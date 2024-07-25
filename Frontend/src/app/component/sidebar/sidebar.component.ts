@@ -55,8 +55,8 @@ export class SidebarComponent implements OnInit {
             location.reload();
           },
           error: (error) => {
-            console.error(error);
-          }
+            
+        }
         });
       },
       error: (error) => {
@@ -74,7 +74,7 @@ export class SidebarComponent implements OnInit {
           location.reload();
         },
         error: (error) => {
-          console.error(error);
+          
         }
       });
     }

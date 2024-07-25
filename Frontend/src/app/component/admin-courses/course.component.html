@@ -10,6 +10,50 @@
         </mat-card-subtitle>
       </mat-card-header>
 
+      @if(status == 'false'){
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Export enrollments</mat-panel-title>
+          </mat-expansion-panel-header>
+
+            <form [formGroup]="form">
+              <mat-form-field appearance="outline">
+                <mat-label>Faculty Section</mat-label>
+                <mat-select formControlName="facultySection">
+                  <mat-option value="">None</mat-option>
+                  <mat-option *ngFor="let section of facultySections" [value]="section">{{ section }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Year</mat-label>
+                <mat-select formControlName="year">
+                  <mat-option value="">None</mat-option>
+                  <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-checkbox formControlName="includeYear">Include year</mat-checkbox>
+              <mat-checkbox formControlName="includeSection">Include faculty section</mat-checkbox>
+              <mat-checkbox formControlName="includeCourseName">Include course name</mat-checkbox>
+              <mat-checkbox formControlName="includeStudentName">Include student name</mat-checkbox>
+              <mat-checkbox formControlName="includeTeacher">Include teacher name</mat-checkbox>
+              <mat-checkbox formControlName="includeStudentMail">Include student email</mat-checkbox>
+              <mat-checkbox formControlName="includeGrade">Include student grade</mat-checkbox>
+              <mat-checkbox formControlName="includeCategory">Include course category</mat-checkbox>
+              <mat-checkbox formControlName="includeNumOfStudents">Include number of students</mat-checkbox>
+              <mat-checkbox formControlName="includeAVGGrade">Include average grade of students</mat-checkbox>
+              <mat-form-field appearance="outline">
+                <mat-label>Extension</mat-label>
+                <mat-select formControlName="extension">
+                  <mat-option value="pdf">pdf</mat-option>
+                  <mat-option value="csv">csv</mat-option>
+                  <mat-option value="excel">excel</mat-option>
+                </mat-select> 
+              </mat-form-field>
+              <button mat-raised-button color="primary" (click)="exportPDF()">Export PDF</button>
+            </form>
+          </mat-expansion-panel>
+        }
+
       <mat-card-content style="margin: 30px auto; padding: 10px; border-radius: 2rem; border: 3px solid black; width: 98%; max-width: 98%; overflow-x: auto;">
         <table mat-table [dataSource]="dataSource" matSort style="padding: 5px; width: 100%;">
           <!-- NAME -->
