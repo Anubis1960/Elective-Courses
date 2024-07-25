@@ -13,11 +13,6 @@
     </mat-card-header>
     <mat-card-content style=" margin: 30px; padding: 10px; border-radius: 2rem;  border: 3px solid black;">
         <table matSort mat-table [dataSource]="dataSource">
-            <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef> ID </th>
-                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-            </ng-container>
-
             <ng-container matColumnDef="name">
                 <th mat-sort-header *matHeaderCellDef> Name </th>
                 <td mat-cell *matCellDef="let element"> 

@@ -20,7 +20,7 @@ export class StudentInfoComponent {
           this.student = data;
         },
         error: (error) => {
-          //console.log(error);
+          
         }
       });
     }

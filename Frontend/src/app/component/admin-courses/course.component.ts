@@ -217,8 +217,6 @@ export class CourseComponent implements OnInit {
     const includeNumOfStudents = this.form.get('includeNumOfStudents')?.value;
     const includeAVGGrade = this.form.get('includeAVGGrade')?.value;
     const extension = this.form.get('extension')?.value;
-    console.log(facultySection);
-    console.log(year);
     this.enrollmentService.exportEnrollmentsToPDF(includeYear, includeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory, includeNumOfStudents, includeAVGGrade, extension, facultySection, year).subscribe({
       next: (data) => {
         var fileType = 'application/pdf';

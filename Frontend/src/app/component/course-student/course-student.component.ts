@@ -55,20 +55,18 @@ export class CourseStudentComponent {
             this.dataSource.data = this.students;
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
-            //console.log(this.students);
-          },
+        },
           error: (error) => {
-            //console.log(error);
+            this.snackbar.open('Error fetching data', undefined, {
+              duration: 2000
+            });
           }
         });
       }
-      //console.log(this.students);
-
     });
   }
 
   ngAfterViewInit() {
-    //console.log('status: '+this.status)
     this.dataSource.paginator = this.paginator
     this.dataSource.sort = this.sort;
   }
