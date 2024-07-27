@@ -36,11 +36,6 @@ public class StudentServiceImpl implements StudentService{
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Transactional
-    public List<Student> executeQuery(String query) {
-        return entityManager.createQuery(query).getResultList();
-    }
-
     @Override
     public Student addStudent(String name, Float grade, String facultySection, Integer year, String email, String password) throws NoSuchAlgorithmException, InvalidInput {
         if (grade <= 0 || grade > 10){
@@ -124,24 +119,31 @@ public class StudentServiceImpl implements StudentService{
 
         query.append("SELECT");
 
+        int columnCount = 0;
+
         if (includeName) {
             query.append(" s.name,");
+            columnCount++;
         }
 
         if (includeEmail) {
             query.append(" s.email,");
+            columnCount++;
         }
 
         if (includeGrade) {
             query.append(" s.grade,");
+            columnCount++;
         }
 
         if (includeSection) {
             query.append(" s.facultySection,");
+            columnCount++;
         }
 
         if (includeYear) {
             query.append(" s.year,");
+            columnCount++;
         }
 
         query.deleteCharAt(query.length() - 1);
@@ -149,43 +151,46 @@ public class StudentServiceImpl implements StudentService{
         query.append(" FROM Student s");
 
         if (facultySection.isPresent() && year.isPresent()) {
-            query.append(" WHERE s.facultySection =").append(facultySection.get()).append(" AND s.year = ").append(year.get());
+            query.append(" WHERE s.facultySection = ").append(facultySection.get()).append(" AND s.year = ").append(year.get());
         } else if (facultySection.isPresent()) {
-            query.append(" WHERE s.facultySection =").append(facultySection.get());
-        } else year.ifPresent(integer -> query.append(" WHERE s.year =").append(integer));
+            query.append(" WHERE s.facultySection = ").append(facultySection.get());
+        } else year.ifPresent(integer -> query.append(" WHERE s.year = ").append(integer));
 
         List<Object> result = entityManager.createQuery(query.toString()).getResultList();
 
         students = new ArrayList<>();
 
         for (Object obj : result) {
-            Object[] arr = (Object[]) obj;
-            StudentExporter.Builder builder = new StudentExporter.Builder();
-            int index = 0;
+            StudentExporter.StudentBuilder studentBuilder = new StudentExporter.StudentBuilder();
 
-            if (includeName) builder.name((String) arr[index++]);
-            if (includeEmail) builder.email((String) arr[index++]);
-            if (includeGrade) builder.grade((Float) arr[index++]);
-            if (includeSection) builder.section(arr[index++].toString());
-            if (includeYear) builder.year((Integer) arr[index]);
+            if (columnCount == 1) {
+                if (includeName) studentBuilder.name((String) obj);
+                if (includeEmail) studentBuilder.email((String) obj);
+                if (includeGrade) studentBuilder.grade((Float) obj);
+                if (includeSection) studentBuilder.section(obj.toString());
+                if (includeYear) studentBuilder.year((Integer) obj);
+            } else {
+                Object[] arr = (Object[]) obj;
+                int index = 0;
 
-            students.add(builder.build());
+                if (includeName) studentBuilder.name((String) arr[index++]);
+                if (includeEmail) studentBuilder.email((String) arr[index++]);
+                if (includeGrade) studentBuilder.grade((Float) arr[index++]);
+                if (includeSection) studentBuilder.section(arr[index++].toString());
+                if (includeYear) studentBuilder.year((Integer) arr[index]);
+            }
+
+            students.add(studentBuilder.build());
         }
-
-//        for (StudentExporter student : students) {
-//            System.out.println(student.getName() + " " + student.getEmail() + " " + student.getGrade() + " " + student.getSection() + " " + student.getYear());
-//        }
 
         if (extension.equals("pdf")) {
             GeneratorMethods.writePDF(students, out);
         } else if (extension.equals("csv")) {
             GeneratorMethods.writeCSV(students, out);
-        }
-        else if (extension.equals("excel")) {
+        } else if (extension.equals("excel")) {
             GeneratorMethods.writeXLSX(students, out);
         }
-
-
     }
+
 
 }

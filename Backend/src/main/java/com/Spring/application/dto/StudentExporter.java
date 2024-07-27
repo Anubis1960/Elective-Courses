@@ -7,42 +7,42 @@ public class StudentExporter {
     protected String facultySection;
     protected Integer year;
 
-    public StudentExporter(Builder builder) {
-        this.studentName = builder.name;
-        this.email = builder.email;
-        this.grade = builder.grade;
-        this.facultySection = builder.section;
-        this.year = builder.year;
+    public StudentExporter(StudentBuilder studentBuilder) {
+        this.studentName = studentBuilder.name;
+        this.email = studentBuilder.email;
+        this.grade = studentBuilder.grade;
+        this.facultySection = studentBuilder.section;
+        this.year = studentBuilder.year;
     }
 
-    public static class Builder {
+    public static class StudentBuilder {
         protected String name = null;
         protected String email = null;
         protected Float grade = null;
         protected String section = null;
         protected Integer year = null;
 
-        public Builder name(String name) {
+        public StudentBuilder name(String name) {
             this.name = name;
             return this;
         }
 
-        public Builder email(String email) {
+        public StudentBuilder email(String email) {
             this.email = email;
             return this;
         }
 
-        public Builder grade(Float grade) {
+        public StudentBuilder grade(Float grade) {
             this.grade = grade;
             return this;
         }
 
-        public Builder section(String section) {
+        public StudentBuilder section(String section) {
             this.section = section;
             return this;
         }
 
-        public Builder year(Integer year) {
+        public StudentBuilder year(Integer year) {
             this.year = year;
             return this;
         }

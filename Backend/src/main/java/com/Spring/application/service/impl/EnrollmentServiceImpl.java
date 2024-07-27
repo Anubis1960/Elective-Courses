@@ -237,46 +237,58 @@ public class EnrollmentServiceImpl implements EnrollmentService{
 
         StringBuilder query = new StringBuilder();
 
+        int columnCount = 0;
+
         query.append("SELECT");
 
         if (includeCourseName) {
             query.append(" e.course.courseName,");
+            columnCount++;
         }
 
         if (includeCategory) {
             query.append(" e.course.category,");
+            columnCount++;
         }
 
         if (includeYear) {
             query.append(" e.student.year,");
+            columnCount++;
         }
 
         if (IncludeSection) {
             query.append(" e.student.facultySection,");
+            columnCount++;
         }
 
         if (includeTeacher) {
             query.append(" e.course.teacherName,");
+            columnCount++;
         }
 
         if (includeStudentName) {
             query.append(" e.student.name,");
+            columnCount++;
         }
 
         if (includeStudentMail) {
             query.append(" e.student.email,");
+            columnCount++;
         }
 
         if (includeGrade) {
             query.append(" e.student.grade,");
+            columnCount++;
         }
 
         if (includeNumOfStudents) {
             query.append(" n.numOfStudents,");
+            columnCount++;
         }
 
         if (includeAVGgrade) {
             query.append(" n.avgGrade,");
+            columnCount++;
         }
 
         query.deleteCharAt(query.length() - 1); // Remove the trailing comma
@@ -299,22 +311,37 @@ public class EnrollmentServiceImpl implements EnrollmentService{
         enrollments = new ArrayList<>();
 
         for (Object obj : result) {
-            Object[] arr = (Object[]) obj;
-            EnrollmentExporter.Builder builder = new EnrollmentExporter.Builder();
-            int index = 0;
+            EnrollmentExporter.EnrollmentBuilder enrollmentBuilder = new EnrollmentExporter.EnrollmentBuilder();
 
-            if (includeCourseName) builder.courseName((String) arr[index++]);
-            if (includeCategory) builder.category((String) arr[index++]);
-            if (includeYear) builder.year((Integer) arr[index++]);
-            if (IncludeSection) builder.section(arr[index++].toString());
-            if (includeTeacher) builder.teacher((String) arr[index++]);
-            if (includeStudentName) builder.name((String) arr[index++]);
-            if (includeStudentMail) builder.email((String) arr[index++]);
-            if (includeGrade) builder.grade((Float) arr[index++]);
-            if (includeNumOfStudents) builder.numberOfStudents((Long) arr[index++]);
-            if (includeAVGgrade) builder.avgGrade((Double) arr[index]);
+            if (columnCount == 1){
+                if (includeCourseName) enrollmentBuilder.courseName((String) obj);
+                if (includeCategory) enrollmentBuilder.category((String) obj);
+                if (includeYear) enrollmentBuilder.year((Integer) obj);
+                if (IncludeSection) enrollmentBuilder.section(obj.toString());
+                if (includeTeacher) enrollmentBuilder.teacher((String) obj);
+                if (includeStudentName) enrollmentBuilder.name((String) obj);
+                if (includeStudentMail) enrollmentBuilder.email((String) obj);
+                if (includeGrade) enrollmentBuilder.grade((Float) obj);
+                if (includeNumOfStudents) enrollmentBuilder.numberOfStudents((Long) obj);
+                if (includeAVGgrade) enrollmentBuilder.avgGrade((Double) obj);
+            } else {
+                Object[] arr = (Object[]) obj;
+                int index = 0;
 
-            enrollments.add(builder.build());
+                if (includeCourseName) enrollmentBuilder.courseName((String) arr[index++]);
+                if (includeCategory) enrollmentBuilder.category((String) arr[index++]);
+                if (includeYear) enrollmentBuilder.year((Integer) arr[index++]);
+                if (IncludeSection) enrollmentBuilder.section(arr[index++].toString());
+                if (includeTeacher) enrollmentBuilder.teacher((String) arr[index++]);
+                if (includeStudentName) enrollmentBuilder.name((String) arr[index++]);
+                if (includeStudentMail) enrollmentBuilder.email((String) arr[index++]);
+                if (includeGrade) enrollmentBuilder.grade((Float) arr[index++]);
+                if (includeNumOfStudents) enrollmentBuilder.numberOfStudents((Long) arr[index++]);
+                if (includeAVGgrade) enrollmentBuilder.avgGrade((Double) arr[index]);
+
+            }
+
+            enrollments.add(enrollmentBuilder.build());
         }
 
         if (extension.equals("pdf")) {

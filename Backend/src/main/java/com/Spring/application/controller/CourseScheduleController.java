@@ -22,8 +22,6 @@ import java.util.List;
 public class CourseScheduleController {
     @Autowired
     private CourseScheduleServiceImpl courseScheduleService;
-    @Autowired
-    private PDFGeneratorService pdfGeneratorService;
 
     @PostMapping("/")
     public ResponseEntity<CourseScheduleDTO> addCourseSchedule(@RequestBody CourseScheduleDTO courseScheduleDTO) throws ObjectNotFound, InvalidInput {

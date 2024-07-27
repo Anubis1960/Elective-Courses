@@ -27,15 +27,6 @@ public class StudentController {
     @Autowired
     private StudentServiceImpl studentService;
 
-    @Autowired
-    private ExcelGeneratorServiceImpl excelGeneratorService;
-
-    @Autowired
-    private PDFGeneratorServiceImpl pdfGeneratorService;
-
-    @Autowired
-    private CSVGeneratorServiceImpl csvGeneratorService;
-
     @PostMapping("/")
     public ResponseEntity<StudentDTO> addStudent(
             @RequestParam String name,

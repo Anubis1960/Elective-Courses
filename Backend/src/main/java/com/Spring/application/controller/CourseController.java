@@ -30,8 +30,6 @@ public class CourseController {
     @Autowired
     private EnrollmentServiceImpl enrollmentServiceImpl;
     @Autowired
-    private PDFGeneratorService pdfGeneratorService;
-    @Autowired
     private ApplicationPeriodService applicationPeriodService;
 
     @PostMapping("/")

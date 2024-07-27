@@ -6,43 +6,43 @@ public class EnrollmentExporter extends StudentExporter {
     private Long numberOfStudents;
     private Double avgGrade;
 
-    public EnrollmentExporter(Builder builder) {
-        super(builder); // This calls the StudentExporter constructor
-        this.courseName = builder.courseName;
-        this.category = builder.category;
-        this.teacher = builder.teacher;
-        this.numberOfStudents = builder.numberOfStudents;
-        this.avgGrade = builder.avgGrade;
+    public EnrollmentExporter(EnrollmentBuilder enrollmentBuilder) {
+        super(enrollmentBuilder); // This calls the StudentExporter constructor
+        this.courseName = enrollmentBuilder.courseName;
+        this.category = enrollmentBuilder.category;
+        this.teacher = enrollmentBuilder.teacher;
+        this.numberOfStudents = enrollmentBuilder.numberOfStudents;
+        this.avgGrade = enrollmentBuilder.avgGrade;
     }
 
-    public static class Builder extends StudentExporter.Builder {
+    public static class EnrollmentBuilder extends StudentBuilder {
         private String courseName = null;
         private String category = null;
         private String teacher = null;
         private Long numberOfStudents = null;
         private Double avgGrade = null;
 
-        public Builder courseName(String courseName) {
+        public EnrollmentBuilder courseName(String courseName) {
             this.courseName = courseName;
             return this;
         }
 
-        public Builder category(String category) {
+        public EnrollmentBuilder category(String category) {
             this.category = category;
             return this;
         }
 
-        public Builder teacher(String teacher) {
+        public EnrollmentBuilder teacher(String teacher) {
             this.teacher = teacher;
             return this;
         }
 
-        public Builder numberOfStudents(Long numberOfStudents) {
+        public EnrollmentBuilder numberOfStudents(Long numberOfStudents) {
             this.numberOfStudents = numberOfStudents;
             return this;
         }
 
-        public Builder avgGrade(Double avgGrade) {
+        public EnrollmentBuilder avgGrade(Double avgGrade) {
             this.avgGrade = avgGrade;
             return this;
         }
