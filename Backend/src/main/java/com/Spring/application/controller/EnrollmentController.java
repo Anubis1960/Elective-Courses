@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -91,7 +92,7 @@ public class EnrollmentController {
 
 
     @GetMapping("/export")
-    public void exportEnrollmentsToPDF(HttpServletResponse response, @RequestParam Optional<String> facultySection, @RequestParam Optional<Integer> year, @RequestParam boolean includeYear, @RequestParam boolean includeSection, @RequestParam boolean includeCourseName, @RequestParam boolean includeStudentName, @RequestParam boolean includeTeacher, @RequestParam boolean includeStudentMail, @RequestParam boolean includeGrade, @RequestParam boolean includeCategory, boolean includeNumOfStudents, boolean includeAVGGrade, @RequestParam String extension) throws IOException, IllegalAccessException {
+    public void exportEnrollmentsToPDF(HttpServletResponse response, @RequestParam Optional<String> facultySection, @RequestParam Optional<Integer> year, @RequestParam boolean includeYear, @RequestParam boolean includeSection, @RequestParam boolean includeCourseName, @RequestParam boolean includeStudentName, @RequestParam boolean includeTeacher, @RequestParam boolean includeStudentMail, @RequestParam boolean includeGrade, @RequestParam boolean includeCategory, boolean includeNumOfStudents, boolean includeAVGGrade, @RequestParam String extension) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormater.format(System.currentTimeMillis());
         String headerKey = "Content-Disposition";

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @Service
@@ -131,7 +132,7 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public void export(OutputStream out, Long id) throws IOException, IllegalAccessException {
+    public void export(OutputStream out, Long id) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         List<Student> students = studentRepository.findAcceptedStudentsByCourseId(id);
         List<StudentDTO> studentDTOs = StudentDTO.convertToDTO(students);
         Course course = courseRepository.findById(id).orElse(null);

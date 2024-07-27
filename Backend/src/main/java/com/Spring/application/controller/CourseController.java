@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import com.Spring.application.service.PDFGeneratorService;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -150,7 +151,7 @@ public class CourseController {
     }
 
     @GetMapping("/export/{id}")
-    public void exportCourseToPDF(HttpServletResponse response, @PathVariable("id") Long id) throws IOException, IllegalAccessException {
+    public void exportCourseToPDF(HttpServletResponse response, @PathVariable("id") Long id) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         response.setContentType("application/pdf");
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormater.format(System.currentTimeMillis());
