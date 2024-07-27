@@ -134,10 +134,6 @@ public class EnrollmentServiceImpl implements EnrollmentService{
         mapYearByNoCategories.put(2, courseRepository.countDistinctCategoriesByYear(2));
         mapYearByNoCategories.put(3, courseRepository.countDistinctCategoriesByYear(3));
 
-        for (Map.Entry<Integer, Integer> entry : mapYearByNoCategories.entrySet()) {
-            System.out.println("Year: " + entry.getKey() + " No of Categories: " + entry.getValue());
-        }
-
         if(enrollments.isEmpty()){
             Map<Student, List<String>> unassignedStudents = new HashMap<>();
             studentRepository.findStudentsNotEnrolled().forEach(student -> unassignedStudents.put(student, new ArrayList<>()));
@@ -150,10 +146,8 @@ public class EnrollmentServiceImpl implements EnrollmentService{
         Map<Student, List<String>> unassignedStudents = new HashMap<>();
 
         for (Enrollment enrollment : enrollments) {
-            System.out.println("Student: " + enrollment.getStudent().getId() + " Course: " + enrollment.getCourse().getCourseId() + " Category: " + enrollment.getCourse().getCategory());
             if (!enrollment.getStudent().getId().equals(currentStudentId)) {
                 if (categoriesTaken.size() < mapYearByNoCategories.get(studentRepository.findById(currentStudentId).orElse(null).getYear())) {
-                    System.out.println("Student: " + studentRepository.findById(currentStudentId).orElse(null) + " Categories Taken: " + categoriesTaken);
                     unassignedStudents.put(studentRepository.findById(currentStudentId).orElse(null), new ArrayList<>(categoriesTaken));
                 }
                 categoriesTaken.clear();
@@ -180,12 +174,6 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     }
 
     public void completeAssignment(Map<Student, List<String>> students,Map<Long, Integer> mapCourseIdByMaxStudents, Map<Integer, Integer> mapYearByNoCategories) throws ObjectNotFound {
-        for (Map.Entry<Student, List<String>> entry : students.entrySet()) {
-            System.out.println("student: " + entry.getKey());
-            for (String category : entry.getValue()) {
-                System.out.println("category: " + category);
-            }
-        }
 
         for (Map.Entry<Student, List<String>> studentEntry : students.entrySet()) {
             Student student = studentEntry.getKey();
