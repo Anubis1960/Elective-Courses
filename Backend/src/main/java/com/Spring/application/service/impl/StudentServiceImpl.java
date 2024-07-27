@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -116,7 +117,7 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public void export(OutputStream out, Optional<String> facultySection, Optional<Integer> year, boolean includeName, boolean includeEmail, boolean includeGrade, boolean includeSection, boolean includeYear, String extension) throws IOException, IllegalAccessException {
+    public void export(OutputStream out, Optional<String> facultySection, Optional<Integer> year, boolean includeName, boolean includeEmail, boolean includeGrade, boolean includeSection, boolean includeYear, String extension) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         List<StudentExporter> students;
 
         StringBuilder query = new StringBuilder();

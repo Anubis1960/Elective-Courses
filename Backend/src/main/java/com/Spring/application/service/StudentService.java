@@ -6,6 +6,7 @@ import com.Spring.application.exceptions.ObjectNotFound;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
@@ -21,5 +22,5 @@ public interface StudentService {
     Student getStudentByName(String name);
     List<Student> getAcceptedStudentsByCourseId(Long courseId);
     List<Student> executeQuery(String query);
-    void export(OutputStream out, Optional<String> facultySection, Optional<Integer> year, boolean includeName, boolean includeEmail, boolean includeGrade, boolean includeSection, boolean includeYear, String extension) throws IOException, IllegalAccessException;
+    void export(OutputStream out, Optional<String> facultySection, Optional<Integer> year, boolean includeName, boolean includeEmail, boolean includeGrade, boolean includeSection, boolean includeYear, String extension) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException;
 }

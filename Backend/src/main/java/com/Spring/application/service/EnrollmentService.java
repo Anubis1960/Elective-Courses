@@ -5,6 +5,7 @@ import com.Spring.application.exceptions.ObjectNotFound;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,5 +23,5 @@ public interface EnrollmentService {
     List<Enrollment> getEnrollmentsByFacultySectionAndStatusIsAccepted(String facultySection);
     Enrollment reassingStudent(Long studentId, Long courseId, Long newCourseId);
     Integer countByCourseIdAndStatusIsAccepted(Long courseId);
-    void export(OutputStream out, Optional<String> facultySection, Optional<Integer> year, boolean includeYear, boolean IncludeSection, boolean includeCourseName, boolean includeStudentName, boolean includeTeacher, boolean includeStudentMail, boolean includeGrade, boolean includeCategory, boolean includeNumOfStudents, boolean includeAVGgrade, String extension) throws IOException, IllegalAccessException;
+    void export(OutputStream out, Optional<String> facultySection, Optional<Integer> year, boolean includeYear, boolean IncludeSection, boolean includeCourseName, boolean includeStudentName, boolean includeTeacher, boolean includeStudentMail, boolean includeGrade, boolean includeCategory, boolean includeNumOfStudents, boolean includeAVGgrade, String extension) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException;
 }
