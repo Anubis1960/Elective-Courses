@@ -21,6 +21,5 @@ public interface StudentService {
     List<Student> getAllStudentsByCourseId(Long courseId);
     Student getStudentByName(String name);
     List<Student> getAcceptedStudentsByCourseId(Long courseId);
-    List<Student> executeQuery(String query);
     void export(OutputStream out, Optional<String> facultySection, Optional<Integer> year, boolean includeName, boolean includeEmail, boolean includeGrade, boolean includeSection, boolean includeYear, String extension) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException;
 }
