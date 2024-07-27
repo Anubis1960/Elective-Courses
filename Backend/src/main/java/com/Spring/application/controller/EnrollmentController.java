@@ -5,18 +5,15 @@ import com.Spring.application.entity.Course;
 import com.Spring.application.entity.Enrollment;
 import com.Spring.application.entity.Student;
 import com.Spring.application.exceptions.ObjectNotFound;
-import com.Spring.application.service.CourseService;
 import com.Spring.application.service.impl.*;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import com.Spring.application.service.PDFGeneratorService;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,23 +28,16 @@ public class EnrollmentController {
     @Autowired
     private EnrollmentServiceImpl enrollmentService;
     @Autowired
-    private PDFGeneratorService pdfGeneratorService;
-    @Autowired
     private StudentServiceImpl studentService;
     @Autowired
     private CourseServiceImpl courseService;
     @Autowired
     private MailServiceImpl mailService;
-    @Autowired
-    private ExcelGeneratorServiceImpl excelGeneratorService;
-    @Autowired
-    private CSVGeneratorServiceImpl csvGeneratorService;
 
     @PostMapping("/")
     public ResponseEntity<EnrollmentDTO> enroll(
             @RequestParam Long studentId,
             @RequestParam Long courseId) throws ObjectNotFound {
-        //System.out.println("studentId: " + studentId + " courseId: " + courseId + " priority: " + priority);
 
         Integer priority = enrollmentService.countByStudentId(studentId) + 1;
         System.out.println("priority: " + priority);
@@ -100,19 +90,16 @@ public class EnrollmentController {
             response.setContentType("application/pdf");
             String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".pdf";
             response.setHeader(headerKey, headerValue);
-//            pdfGeneratorService.exportEnrollments(response.getOutputStream(), facultySection, year, includeEnrollmentId, includeStudentId, includeCourseId, includeYear, includeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory);
         }
         else if (Objects.equals(extension, "excel")){
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".xlsx";
             response.setHeader(headerKey, headerValue);
-//            excelGeneratorService.exportEnrollmentsToExcel(response.getOutputStream(), facultySection, year, includeEnrollmentId, includeStudentId, includeCourseId, includeYear, includeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory);
         }
         else{
             response.setContentType("application/csv");
             String headerValue = "attachment; filename=enrollments_" + currentDateTime + ".csv";
             response.setHeader(headerKey, headerValue);
-//            csvGeneratorService.exportEnrollmentsToCSV(response.getOutputStream(), facultySection, year, includeEnrollmentId, includeStudentId, includeCourseId, includeYear, includeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory);
         }
 
         enrollmentService.export(response.getOutputStream(), facultySection, year, includeYear, includeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory, includeNumOfStudents, includeAVGGrade, extension);

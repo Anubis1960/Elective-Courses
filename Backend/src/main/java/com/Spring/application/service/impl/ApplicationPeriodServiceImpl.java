@@ -1,6 +1,7 @@
 package com.Spring.application.service.impl;
 
 import com.Spring.application.repository.ApplicationPeriodRepository;
+import com.Spring.application.repository.EnrollmentRepository;
 import com.Spring.application.service.ApplicationPeriodService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import java.time.LocalDate;
 public class ApplicationPeriodServiceImpl implements ApplicationPeriodService {
     @Autowired
     private ApplicationPeriodRepository applicationPeriodRepository;
+    @Autowired
+    private EnrollmentRepository enrollmentRepository;
 
     @Override
     public boolean getApplicationPeriod() {
@@ -35,6 +38,7 @@ public class ApplicationPeriodServiceImpl implements ApplicationPeriodService {
         applicationPeriodRepository.findAll().get(0).setEndDate(LocalDate.parse(endDate));
         applicationPeriodRepository.findAll().get(0).setIsOpen(true);
         applicationPeriodRepository.save(applicationPeriodRepository.findAll().get(0));
+        enrollmentRepository.deleteAll();
         return true;
     }
 
