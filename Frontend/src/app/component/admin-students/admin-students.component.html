@@ -25,11 +25,12 @@
               <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
             </mat-select>
           </mat-form-field>
-            <mat-checkbox formControlName="includeName">Include student name</mat-checkbox>
-            <mat-checkbox formControlName="includeGrade">Include student grade</mat-checkbox>
-            <mat-checkbox formControlName="includeSection">Include faculty section</mat-checkbox>
-            <mat-checkbox formControlName="includeYear">Include year</mat-checkbox>
-            <mat-checkbox formControlName="includeMail">Include student email</mat-checkbox>
+          <p>Include:</p>
+            <mat-checkbox formControlName="includeName">Name</mat-checkbox>
+            <mat-checkbox formControlName="includeGrade">Grade</mat-checkbox>
+            <mat-checkbox formControlName="includeSection">Faculty Section</mat-checkbox>
+            <mat-checkbox formControlName="includeYear">Year of Study</mat-checkbox>
+            <mat-checkbox formControlName="includeMail">Email</mat-checkbox>
             <mat-form-field appearance="outline">
               <mat-label>Extension</mat-label>
               <mat-select formControlName="extension">

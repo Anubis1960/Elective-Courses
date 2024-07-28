@@ -104,14 +104,16 @@ export class AdminStudentsComponent {
   exportPDF() {
     const facultySection = this.form.get('facultySection')?.value;
     const year = this.form.get('year')?.value;
-    const includeName = this.form.get('includeName')?.value;
-    const includeGrade = this.form.get('includeGrade')?.value;
-    const includeFacultySection = this.form.get('includeSection')?.value;
-    const includeYear = this.form.get('includeYear')?.value;
-    const includeEmail = this.form.get('includeMail')?.value;
+    const includeName = this.form.get('includeName')?.value ? 1 : 0;
+    const includeGrade = this.form.get('includeGrade')?.value? 1 : 0;
+    const includeFacultySection = this.form.get('includeSection')?.value? 1 : 0;
+    const includeYear = this.form.get('includeYear')?.value? 1 : 0;
+    const includeEmail = this.form.get('includeMail')?.value? 1 : 0;
     const extension = this.form.get('extension')?.value;
 
-    this.studentService.export(includeName, includeGrade, includeFacultySection, includeYear, includeEmail, extension, facultySection, year).subscribe({
+    let bitOptions = (includeName << 0) | (includeGrade << 1) | (includeFacultySection << 2) | (includeYear << 3) | (includeEmail << 4);
+
+    this.studentService.export(bitOptions, extension, facultySection, year).subscribe({
       next: (data) => {
         console.log(data);
         var fileType = 'application/pdf';

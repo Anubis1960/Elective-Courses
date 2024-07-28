@@ -220,18 +220,30 @@ export class CourseComponent implements OnInit {
   exportPDF() {
     const facultySection = this.form.get('facultySection')?.value;
     const year = this.form.get('year')?.value;
-    const includeYear = this.form.get('includeYear')?.value;
-    const includeSection = this.form.get('includeSection')?.value;
-    const includeCourseName = this.form.get('includeCourseName')?.value;
-    const includeStudentName = this.form.get('includeStudentName')?.value;
-    const includeTeacher = this.form.get('includeTeacher')?.value;
-    const includeStudentMail = this.form.get('includeStudentMail')?.value;
-    const includeGrade = this.form.get('includeGrade')?.value;
-    const includeCategory = this.form.get('includeCategory')?.value;
-    const includeNumOfStudents = this.form.get('includeNumOfStudents')?.value;
-    const includeAVGGrade = this.form.get('includeAVGGrade')?.value;
+    const includeYear = this.form.get('includeYear')?.value ? 1 : 0;
+    const includeSection = this.form.get('includeSection')?.value ? 1 : 0;
+    const includeCourseName = this.form.get('includeCourseName')?.value ? 1 : 0;
+    const includeStudentName = this.form.get('includeStudentName')?.value ? 1 : 0;
+    const includeTeacher = this.form.get('includeTeacher')?.value ? 1 : 0;
+    const includeStudentMail = this.form.get('includeStudentMail')?.value ? 1 : 0;
+    const includeGrade = this.form.get('includeGrade')?.value ? 1 : 0;
+    const includeCategory = this.form.get('includeCategory')?.value ? 1 : 0;
+    const includeNumOfStudents = this.form.get('includeNumOfStudents')?.value ? 1 : 0;
+    const includeAVGGrade = this.form.get('includeAVGGrade')?.value ? 1 : 0;
     const extension = this.form.get('extension')?.value;
-    this.enrollmentService.exportEnrollmentsToPDF(includeYear, includeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory, includeNumOfStudents, includeAVGGrade, extension, facultySection, year).subscribe({
+
+    let bitmask = (includeCourseName << 0) | 
+                  (includeCategory << 1) |
+                  (includeYear << 2) | 
+                  (includeSection << 3) | 
+                  (includeTeacher << 4) | 
+                  (includeStudentName << 5) | 
+                  (includeStudentMail << 6) | 
+                  (includeGrade << 7) | 
+                  (includeNumOfStudents << 8) | 
+                  (includeAVGGrade << 9);
+    console.log(bitmask);
+    this.enrollmentService.exportEnrollmentsToPDF(bitmask, extension, facultySection, year).subscribe({
       next: (data) => {
         var fileType = 'application/pdf';
         if (extension === 'excel') {

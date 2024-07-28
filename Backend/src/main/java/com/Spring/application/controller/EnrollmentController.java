@@ -82,7 +82,7 @@ public class EnrollmentController {
 
 
     @GetMapping("/export")
-    public void exportEnrollmentsToPDF(HttpServletResponse response, @RequestParam Optional<String> facultySection, @RequestParam Optional<Integer> year, @RequestParam boolean includeYear, @RequestParam boolean includeSection, @RequestParam boolean includeCourseName, @RequestParam boolean includeStudentName, @RequestParam boolean includeTeacher, @RequestParam boolean includeStudentMail, @RequestParam boolean includeGrade, @RequestParam boolean includeCategory, boolean includeNumOfStudents, boolean includeAVGGrade, @RequestParam String extension) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public void exportEnrollmentsToPDF(HttpServletResponse response, @RequestParam Optional<String> facultySection, @RequestParam Optional<Integer> year, @RequestParam int bitOptions, @RequestParam String extension) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormater.format(System.currentTimeMillis());
         String headerKey = "Content-Disposition";
@@ -102,7 +102,7 @@ public class EnrollmentController {
             response.setHeader(headerKey, headerValue);
         }
 
-        enrollmentService.export(response.getOutputStream(), facultySection, year, includeYear, includeSection, includeCourseName, includeStudentName, includeTeacher, includeStudentMail, includeGrade, includeCategory, includeNumOfStudents, includeAVGGrade, extension);
+        enrollmentService.export(response.getOutputStream(), facultySection, year, bitOptions, extension);
     }
 
     @PutMapping("/")
