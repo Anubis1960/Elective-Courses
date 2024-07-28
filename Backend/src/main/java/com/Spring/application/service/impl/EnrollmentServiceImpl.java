@@ -34,6 +34,17 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     @PersistenceContext
     private EntityManager entityManager;
 
+    private static final int COURSE_NAME_FLAG = 1 << 0; // 1
+    private static final int CATEGORY_FLAG = 1 << 1; // 2
+    private static final int YEAR_FLAG = 1 << 2; // 4
+    private static final int SECTION_FLAG = 1 << 3; // 8
+    private static final int TEACHER_FLAG = 1 << 4; //16
+    private static final int STUDENT_NAME_FLAG = 1 << 5; //32
+    private static final int STUDENT_MAIL_FLAG = 1 << 6; //64
+    private static final int GRADE_FLAG = 1 << 7; //128
+    private static final int NUM_OF_STUDENTS_FLAG = 1 << 8; //256
+    private static final int AVG_GRADE_FLAG = 1 << 9; //512
+
     @Override
     public Enrollment addEnrollment(Long studentId, Long courseId, Integer priority) throws ObjectNotFound {
         Student student = studentRepository.findById(studentId).orElse(null);
@@ -232,7 +243,7 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     }
 
     @Override
-    public void export(OutputStream out, Optional<String> facultySection, Optional<Integer> year, boolean includeYear, boolean IncludeSection, boolean includeCourseName, boolean includeStudentName, boolean includeTeacher, boolean includeStudentMail, boolean includeGrade, boolean includeCategory, boolean includeNumOfStudents, boolean includeAVGgrade, String extension) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public void export(OutputStream out, Optional<String> facultySection, Optional<Integer> year, int bitOptions, String extension) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         List<EnrollmentExporter> enrollments;
 
         StringBuilder query = new StringBuilder();
@@ -241,52 +252,52 @@ public class EnrollmentServiceImpl implements EnrollmentService{
 
         query.append("SELECT");
 
-        if (includeCourseName) {
+        if ((bitOptions & COURSE_NAME_FLAG) != 0) {
             query.append(" e.course.courseName,");
             columnCount++;
         }
 
-        if (includeCategory) {
+        if ((bitOptions & CATEGORY_FLAG) != 0) {
             query.append(" e.course.category,");
             columnCount++;
         }
 
-        if (includeYear) {
+        if ((bitOptions & YEAR_FLAG) != 0) {
             query.append(" e.student.year,");
             columnCount++;
         }
 
-        if (IncludeSection) {
+        if ((bitOptions & SECTION_FLAG) != 0) {
             query.append(" e.student.facultySection,");
             columnCount++;
         }
 
-        if (includeTeacher) {
+        if ((bitOptions & TEACHER_FLAG) != 0) {
             query.append(" e.course.teacherName,");
             columnCount++;
         }
 
-        if (includeStudentName) {
+        if ((bitOptions & STUDENT_NAME_FLAG) != 0) {
             query.append(" e.student.name,");
             columnCount++;
         }
 
-        if (includeStudentMail) {
+        if ((bitOptions & STUDENT_MAIL_FLAG) != 0) {
             query.append(" e.student.email,");
             columnCount++;
         }
 
-        if (includeGrade) {
+        if ((bitOptions & GRADE_FLAG) != 0) {
             query.append(" e.student.grade,");
             columnCount++;
         }
 
-        if (includeNumOfStudents) {
+        if ((bitOptions & NUM_OF_STUDENTS_FLAG) != 0) {
             query.append(" n.numOfStudents,");
             columnCount++;
         }
 
-        if (includeAVGgrade) {
+        if ((bitOptions & AVG_GRADE_FLAG) != 0) {
             query.append(" n.avgGrade,");
             columnCount++;
         }
@@ -314,30 +325,30 @@ public class EnrollmentServiceImpl implements EnrollmentService{
             EnrollmentExporter.EnrollmentBuilder enrollmentBuilder = new EnrollmentExporter.EnrollmentBuilder();
 
             if (columnCount == 1){
-                if (includeCourseName) enrollmentBuilder.courseName((String) obj);
-                if (includeCategory) enrollmentBuilder.category((String) obj);
-                if (includeYear) enrollmentBuilder.year((Integer) obj);
-                if (IncludeSection) enrollmentBuilder.section(obj.toString());
-                if (includeTeacher) enrollmentBuilder.teacher((String) obj);
-                if (includeStudentName) enrollmentBuilder.name((String) obj);
-                if (includeStudentMail) enrollmentBuilder.email((String) obj);
-                if (includeGrade) enrollmentBuilder.grade((Float) obj);
-                if (includeNumOfStudents) enrollmentBuilder.numberOfStudents((Long) obj);
-                if (includeAVGgrade) enrollmentBuilder.avgGrade((Double) obj);
+                if ((bitOptions & COURSE_NAME_FLAG) != 0) enrollmentBuilder.courseName((String) obj);
+                if ((bitOptions & CATEGORY_FLAG) != 0) enrollmentBuilder.category((String) obj);
+                if ((bitOptions & YEAR_FLAG) != 0) enrollmentBuilder.year((Integer) obj);
+                if ((bitOptions & SECTION_FLAG) != 0) enrollmentBuilder.section(obj.toString());
+                if ((bitOptions & TEACHER_FLAG) != 0) enrollmentBuilder.teacher((String) obj);
+                if ((bitOptions & STUDENT_NAME_FLAG) != 0) enrollmentBuilder.name((String) obj);
+                if ((bitOptions & STUDENT_MAIL_FLAG) != 0) enrollmentBuilder.email((String) obj);
+                if ((bitOptions & GRADE_FLAG) != 0) enrollmentBuilder.grade((Float) obj);
+                if ((bitOptions & NUM_OF_STUDENTS_FLAG) != 0) enrollmentBuilder.numberOfStudents((Long) obj);
+                if ((bitOptions & AVG_GRADE_FLAG) != 0) enrollmentBuilder.avgGrade((Double) obj);
             } else {
                 Object[] arr = (Object[]) obj;
                 int index = 0;
 
-                if (includeCourseName) enrollmentBuilder.courseName((String) arr[index++]);
-                if (includeCategory) enrollmentBuilder.category((String) arr[index++]);
-                if (includeYear) enrollmentBuilder.year((Integer) arr[index++]);
-                if (IncludeSection) enrollmentBuilder.section(arr[index++].toString());
-                if (includeTeacher) enrollmentBuilder.teacher((String) arr[index++]);
-                if (includeStudentName) enrollmentBuilder.name((String) arr[index++]);
-                if (includeStudentMail) enrollmentBuilder.email((String) arr[index++]);
-                if (includeGrade) enrollmentBuilder.grade((Float) arr[index++]);
-                if (includeNumOfStudents) enrollmentBuilder.numberOfStudents((Long) arr[index++]);
-                if (includeAVGgrade) enrollmentBuilder.avgGrade((Double) arr[index]);
+                if ((bitOptions & COURSE_NAME_FLAG) != 0) enrollmentBuilder.courseName((String) arr[index++]);
+                if ((bitOptions & CATEGORY_FLAG) != 0) enrollmentBuilder.category((String) arr[index++]);
+                if ((bitOptions & YEAR_FLAG) != 0) enrollmentBuilder.year((Integer) arr[index++]);
+                if ((bitOptions & SECTION_FLAG) != 0) enrollmentBuilder.section(arr[index++].toString());
+                if ((bitOptions & TEACHER_FLAG) != 0) enrollmentBuilder.teacher((String) arr[index++]);
+                if ((bitOptions & STUDENT_NAME_FLAG) != 0) enrollmentBuilder.name((String) arr[index++]);
+                if ((bitOptions & STUDENT_MAIL_FLAG) != 0) enrollmentBuilder.email((String) arr[index++]);
+                if ((bitOptions & GRADE_FLAG) != 0) enrollmentBuilder.grade((Float) arr[index++]);
+                if ((bitOptions & NUM_OF_STUDENTS_FLAG) != 0) enrollmentBuilder.numberOfStudents((Long) arr[index++]);
+                if ((bitOptions & AVG_GRADE_FLAG) != 0) enrollmentBuilder.avgGrade((Double) arr[index]);
 
             }
 

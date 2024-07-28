@@ -51,10 +51,8 @@ export class EnrollmentService {
     return this.http.get<Enrollment[]>(`${this.baseUrl}/assign`);
   }
 
-  exportEnrollmentsToPDF(includeYear: boolean, includeSection: boolean, includeCourseName: boolean, includeStudentName: boolean, includeTeacher: boolean, includeStudentMail: boolean, includeGrade: boolean, includeCategory: boolean, includeNumOfStudents: boolean, includeAVGGrade: boolean, extension: string, facultySection?: string, year?: string): Observable<any> {
+  exportEnrollmentsToPDF(bitOptions: number, extension: string, facultySection?: string, year?: string): Observable<any> {
     let params = new HttpParams();
-    // console.log(facultySection);
-    // console.log(year);
   
     if (facultySection) {
       params = params.set('facultySection', facultySection);
@@ -63,16 +61,7 @@ export class EnrollmentService {
       params = params.set('year', year);
     }
 
-    params = params.set('includeYear', includeYear);
-    params = params.set('includeSection', includeSection);
-    params = params.set('includeCourseName', includeCourseName);
-    params = params.set('includeStudentName', includeStudentName);
-    params = params.set('includeTeacher', includeTeacher);
-    params = params.set('includeStudentMail', includeStudentMail);
-    params = params.set('includeGrade', includeGrade);
-    params = params.set('includeCategory', includeCategory);
-    params = params.set('includeNumOfStudents', includeNumOfStudents);
-    params = params.set('includeAVGGrade', includeAVGGrade);
+    params = params.set('bitOptions', bitOptions);
     params = params.set('extension', extension);
   
     return this.http.get(`${this.baseUrl}/export`, { params, responseType: 'blob' });

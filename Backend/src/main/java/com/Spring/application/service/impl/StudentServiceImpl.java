@@ -13,7 +13,6 @@ import com.Spring.application.utils.Encrypt;
 import com.Spring.application.utils.GeneratorMethods;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +31,12 @@ public class StudentServiceImpl implements StudentService{
     private StudentRepository studentRepository;
     @Autowired
     private EnrollmentRepository enrollmentRepository;
+
+    private static final int NAME_FLAG = 1 << 0; // 1
+    private static final int GRADE_FLAG = 1 << 1; // 2
+    private static final int SECTION_FLAG = 1 << 2; // 4
+    private static final int YEAR_IDX = 1 << 3; //8
+    private static final int EMAIL_FLAG = 1 << 4; // 16
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -112,7 +117,7 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public void export(OutputStream out, Optional<String> facultySection, Optional<Integer> year, boolean includeName, boolean includeEmail, boolean includeGrade, boolean includeSection, boolean includeYear, String extension) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public void export(OutputStream out, Optional<String> facultySection, Optional<Integer> year, int bitOptions, String extension) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         List<StudentExporter> students;
 
         StringBuilder query = new StringBuilder();
@@ -121,27 +126,27 @@ public class StudentServiceImpl implements StudentService{
 
         int columnCount = 0;
 
-        if (includeName) {
+        if ((bitOptions & NAME_FLAG) != 0) {
             query.append(" s.name,");
             columnCount++;
         }
 
-        if (includeEmail) {
+        if ((bitOptions & EMAIL_FLAG) != 0) {
             query.append(" s.email,");
             columnCount++;
         }
 
-        if (includeGrade) {
+        if ((bitOptions & GRADE_FLAG) != 0) {
             query.append(" s.grade,");
             columnCount++;
         }
 
-        if (includeSection) {
+        if ((bitOptions & SECTION_FLAG) != 0) {
             query.append(" s.facultySection,");
             columnCount++;
         }
 
-        if (includeYear) {
+        if ((bitOptions & YEAR_IDX) != 0) {
             query.append(" s.year,");
             columnCount++;
         }
@@ -164,20 +169,20 @@ public class StudentServiceImpl implements StudentService{
             StudentExporter.StudentBuilder studentBuilder = new StudentExporter.StudentBuilder();
 
             if (columnCount == 1) {
-                if (includeName) studentBuilder.name((String) obj);
-                if (includeEmail) studentBuilder.email((String) obj);
-                if (includeGrade) studentBuilder.grade((Float) obj);
-                if (includeSection) studentBuilder.section(obj.toString());
-                if (includeYear) studentBuilder.year((Integer) obj);
+                if ((bitOptions & NAME_FLAG) != 0) studentBuilder.name((String) obj);
+                if ((bitOptions & EMAIL_FLAG) != 0) studentBuilder.email((String) obj);
+                if ((bitOptions & GRADE_FLAG) != 0) studentBuilder.grade((Float) obj);
+                if ((bitOptions & SECTION_FLAG) != 0) studentBuilder.section(obj.toString());
+                if ((bitOptions & YEAR_IDX) != 0) studentBuilder.year((Integer) obj);
             } else {
                 Object[] arr = (Object[]) obj;
                 int index = 0;
 
-                if (includeName) studentBuilder.name((String) arr[index++]);
-                if (includeEmail) studentBuilder.email((String) arr[index++]);
-                if (includeGrade) studentBuilder.grade((Float) arr[index++]);
-                if (includeSection) studentBuilder.section(arr[index++].toString());
-                if (includeYear) studentBuilder.year((Integer) arr[index]);
+                if ((bitOptions & NAME_FLAG) != 0) studentBuilder.name((String) arr[index++]);
+                if ((bitOptions & EMAIL_FLAG) != 0) studentBuilder.email((String) arr[index++]);
+                if ((bitOptions & GRADE_FLAG) != 0) studentBuilder.grade((Float) arr[index++]);
+                if ((bitOptions & SECTION_FLAG) != 0) studentBuilder.section(arr[index++].toString());
+                if ((bitOptions & YEAR_IDX) != 0) studentBuilder.year((Integer) arr[index]);
             }
 
             students.add(studentBuilder.build());

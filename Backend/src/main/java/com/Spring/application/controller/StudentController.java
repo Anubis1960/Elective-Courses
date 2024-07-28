@@ -111,7 +111,7 @@ public class StudentController {
     }
 
     @GetMapping("/export")
-    public void exportPDF(HttpServletResponse response, Optional<String> facultySection, Optional<Integer> year, @RequestParam boolean includeName, @RequestParam boolean includeGrade, @RequestParam boolean includeFacultySection, @RequestParam boolean includeYear, @RequestParam boolean includeEmail, @RequestParam String extension) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public void exportPDF(HttpServletResponse response, Optional<String> facultySection, Optional<Integer> year, @RequestParam int bitOptions, @RequestParam String extension) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormater.format(System.currentTimeMillis());
         String headerKey = "Content-Disposition";
@@ -134,7 +134,7 @@ public class StudentController {
 //            csvGeneratorService.exportStudentsToCSV(response.getOutputStream(), facultySection, year, includeId, includeName, includeEmail, includeGrade, includeFacultySection, includeYear);
         }
 
-        studentService.export(response.getOutputStream(), facultySection, year, includeName, includeEmail, includeGrade, includeFacultySection, includeYear, extension);
+        studentService.export(response.getOutputStream(), facultySection, year, bitOptions, extension);
 
     }
 }

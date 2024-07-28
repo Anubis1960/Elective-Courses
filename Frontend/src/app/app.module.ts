@@ -96,7 +96,7 @@ import { SidebarComponent } from './component/sidebar/sidebar.component';
   providers: [
     provideClientHydration(),
     provideHttpClient(withFetch()),
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
   ],
   bootstrap: [AppComponent]
 })
