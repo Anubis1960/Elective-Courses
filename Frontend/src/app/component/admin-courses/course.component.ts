@@ -183,11 +183,26 @@ export class CourseComponent implements OnInit {
     this.dataSource.filter = JSON.stringify(this.filterValues);
   }
 
+  applyNumberFilter(event: Event, column: string) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    const filterNumber = parseFloat(filterValue);
+
+    if (!isNaN(filterNumber)) {
+      this.filterValues[column] = filterNumber.toString();
+    } else {
+      this.filterValues[column] = '';
+    }
+    this.dataSource.filter = JSON.stringify(this.filterValues);
+  }
+
   createFilter() {
     return (data: any, filter: string): boolean => {
       const searchTerms = JSON.parse(filter);
       return Object.keys(searchTerms).every(column => {
-        return searchTerms[column] === '' || data[column].toString().toLowerCase().indexOf(searchTerms[column]) !== -1;
+        if ((column === 'numberOfStudents' || column === 'maximumStudentsAllowed') && searchTerms[column]) {
+          return data[column] <= parseFloat(searchTerms[column]);
+        }
+        return searchTerms[column] === '' || data[column].toString().toLowerCase().includes(searchTerms[column]);
       });
     };
   }

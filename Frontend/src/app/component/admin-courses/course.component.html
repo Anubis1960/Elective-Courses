@@ -118,7 +118,7 @@
               <div style="display: flex; flex-direction: column; align-items: center;">
                 <div mat-sort-header>Maximum Students</div>
                 <mat-form-field class="filter" style="width: 100px; margin-top: 20px;">
-                  <input matInput (keyup)="applyColumnFilter($event, 'maximumStudentsAllowed')" placeholder="Filter" style="height: 30px; text-align: center;">
+                  <input matInput (keyup)="applyNumberFilter($event, 'maximumStudentsAllowed')" placeholder="Filter" style="height: 30px; text-align: center;">
                 </mat-form-field>
               </div>
             </th>
@@ -131,7 +131,7 @@
               <div style="display: flex; flex-direction: column; align-items: center;">
                 <div mat-sort-header>{{ status === 'true' ? 'Students Number' : 'Students Accepted' }}</div>
                 <mat-form-field class="filter" style="width: 100px; margin-top: 20px;">
-                  <input matInput (keyup)="applyColumnFilter($event, 'numberOfStudents')" placeholder="Filter" style="height: 30px; text-align: center ;">
+                  <input matInput (keyup)="applyNumberFilter($event, 'numberOfStudents')" placeholder="Filter" style="height: 30px; text-align: center ;">
                 </mat-form-field>
               </div>
             </th>
