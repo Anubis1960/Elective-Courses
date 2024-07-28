@@ -1,12 +1,13 @@
 package com.Spring.application.entity;
 
+import com.Spring.application.audit.Auditable;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "ApplicationPeriod")
-public class ApplicationPeriod {
+public class ApplicationPeriod extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "application_period_id", nullable = false)
