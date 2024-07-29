@@ -3,6 +3,7 @@ import { Student } from '../../model/student.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
 import { StudentService } from '../../service/student.service';
+import { TemplateService } from '../../service/template.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { MatSort } from '@angular/material/sort';
@@ -24,8 +25,13 @@ export class AdminStudentsComponent {
   facultySections: string[] | undefined;
   form!: FormGroup;
   filterValues: any = {};
+  isCustomExport: boolean = true;
 
-  constructor(private http: HttpClient, private studentService: StudentService, private dialog: MatDialog, private router: Router, private courseService: CourseService, private fb: FormBuilder, private snackbar: MatSnackBar) { }
+  constructor(private http: HttpClient, private studentService: StudentService, 
+    private dialog: MatDialog, private router: Router, 
+    private courseService: CourseService, 
+    private fb: FormBuilder, private snackbar: MatSnackBar,
+    private templateService: TemplateService) { }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -133,5 +139,31 @@ export class AdminStudentsComponent {
     });
   }
 
+  createTemplate(): void {
+    const name = this.form.get('templateName')?.value;  
+    console.log("Input template name: " + name);
+    const year = this.form.get('year')?.value;
+    const facultySection = this.form.get('facultySection')?.value;
+    const includeName = this.form.get('includeName')?.value ? 1 : 0;
+    const includeGrade = this.form.get('includeGrade')?.value ? 1 : 0;
+    const includeSection = this.form.get('includeSection')?.value ? 1 : 0;
+    const includeYear = this.form.get('includeYear')?.value ? 1 : 0;
+    const includeMail = this.form.get('includeMail')?.value ? 1 : 0;
 
+    // Combine options into a single number
+    const options = (includeName << 0) | (includeGrade << 1) | (includeSection << 2) | (includeYear << 3) | (includeMail << 4);
+
+    this.templateService.createTemplate(name, year, facultySection, options).subscribe({
+      next: (response) => {
+        this.snackbar.open('Template created successfully', 'Close', { duration: 2000 });
+      },
+      error: (error) => {
+        this.snackbar.open('Error creating template', 'Close', { duration: 2000 });
+      }
+    });
+  }
+
+  onExportTypeChange(event: any) {
+    this.isCustomExport = event.value === 'custom';
+  }
 }

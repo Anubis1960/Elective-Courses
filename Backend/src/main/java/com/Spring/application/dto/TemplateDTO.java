@@ -1,5 +1,10 @@
 package com.Spring.application.dto;
 
+import com.Spring.application.entity.Template;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class TemplateDTO {
     private Long templateId;
     private String templateName;
@@ -66,5 +71,15 @@ public class TemplateDTO {
 
     public void setClassFlag(String classFlag) {
         this.classFlag = classFlag;
+    }
+
+    public static List<TemplateDTO> convertToDTO(List<Template> templateList) {
+        List<TemplateDTO> templateDTOList = new ArrayList<>();
+        templateList.forEach(template -> templateDTOList.add(
+                new TemplateDTO(template.getId(), template.getName(), template.getYear(),
+                        template.getFacultySection().toString(), template.getClassFlag().toString(), template.getOptions())
+        ));
+
+        return templateDTOList;
     }
 }

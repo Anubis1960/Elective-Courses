@@ -1,6 +1,8 @@
 package com.Spring.application.entity;
 
 import com.Spring.application.audit.Auditable;
+import com.Spring.application.enums.ClassFlag;
+import com.Spring.application.enums.FacultySection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -23,10 +25,10 @@ public class Template extends Auditable<String> {
     private Integer year;
 
     @Column(name = "faculty_section", nullable = true)
-    private String facultySection;
+    private FacultySection facultySection;
 
     @Column(name = "class_flag", nullable = false)
-    private String classFlag;
+    private ClassFlag classFlag;
 
     @Column(name = "options", nullable = false)
     private int options;
@@ -35,7 +37,7 @@ public class Template extends Auditable<String> {
 
     }
 
-    public Template(String name, Integer year, String facultySection, String classFlag, int options) {
+    public Template(String name, Integer year, FacultySection facultySection, ClassFlag classFlag, int options) {
         this.name = name;
         this.year = year;
         this.facultySection = facultySection;
@@ -67,11 +69,11 @@ public class Template extends Auditable<String> {
         this.year = year;
     }
 
-    public String getFacultySection() {
+    public FacultySection getFacultySection() {
         return facultySection;
     }
 
-    public void setFacultySection(String facultySection) {
+    public void setFacultySection(FacultySection facultySection) {
         this.facultySection = facultySection;
     }
 
@@ -83,11 +85,11 @@ public class Template extends Auditable<String> {
         this.options = options;
     }
 
-    public String getClassFlag() {
+    public ClassFlag getClassFlag() {
         return classFlag;
     }
 
-    public void setClassFlag(String classFlag) {
+    public void setClassFlag(ClassFlag classFlag) {
         this.classFlag = classFlag;
     }
 }
