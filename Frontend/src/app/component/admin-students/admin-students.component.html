@@ -74,7 +74,7 @@
             @if (form.get('exportType')?.value != 'template' && form.get('exportType')?.value != 'custom') {
                 <mat-form-field appearance="outline">
                     <mat-label>Template Name</mat-label>
-                    <input matInput formControlName="templateName" [value]="selectedTemplate?.name" placeholder="Template name">
+                    <input matInput formControlName="templateName" placeholder="Template name">
                 </mat-form-field>
     
                 <button mat-raised-button color="primary" (click)="updateTemplate(form.get('exportType')?.value.id)">Update</button>

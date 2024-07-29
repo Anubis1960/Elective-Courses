@@ -28,7 +28,6 @@ export class AdminStudentsComponent {
   form!: FormGroup;
   filterValues: any = {};
   templates: Template[] = [];
-  selectedTemplate: any = null;
 
   constructor(private http: HttpClient, private studentService: StudentService, 
     private dialog: MatDialog, private router: Router, 
@@ -180,8 +179,6 @@ export class AdminStudentsComponent {
   }
 
   onExportTypeChange(event: any) {
-    const selectedTemplate = event.value;
-
     const exportType = event.value;
     if (exportType === 'custom' || exportType === 'template') {
       this.form.get('extension')?.setValue(null);
@@ -192,6 +189,7 @@ export class AdminStudentsComponent {
       this.form.get('includeSection')?.setValue(false);
       this.form.get('includeYear')?.setValue(false);
       this.form.get('includeMail')?.setValue(false);
+      this.form.get('templateName')?.setValue(null);
       return;
     }
 
@@ -203,6 +201,7 @@ export class AdminStudentsComponent {
       this.form.get('includeMail')?.setValue(exportType.options & 16);
     }
 
+    this.form.get('templateName')?.setValue(exportType.name);
     this.form.get('year')?.setValue(exportType.year);
     this.form.get('facultySection')?.setValue(exportType.facultySection);
   }
