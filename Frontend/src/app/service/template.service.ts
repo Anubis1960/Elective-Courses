@@ -48,11 +48,11 @@ export class TemplateService {
     params = params.set('name', name);
     
     if (year) {
-      params.set('year', year);
+      params = params.set('year', year);
     }
 
     if (facultySection) {
-      params.set('facultySection', facultySection);
+      params = params.set('facultySection', facultySection);
     }
 
     params = params.set('options', options);
