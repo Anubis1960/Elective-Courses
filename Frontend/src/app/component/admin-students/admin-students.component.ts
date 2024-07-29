@@ -11,6 +11,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { CourseService } from '../../service/course.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Template } from '../../model/template.model';
+import { consumerMarkDirty } from '@angular/core/primitives/signals';
 
 @Component({
   selector: 'app-admin-students',
@@ -25,7 +27,7 @@ export class AdminStudentsComponent {
   facultySections: string[] | undefined;
   form!: FormGroup;
   filterValues: any = {};
-  isCustomExport: boolean = true;
+  templates: Template[] = [];
 
   constructor(private http: HttpClient, private studentService: StudentService, 
     private dialog: MatDialog, private router: Router, 
@@ -61,6 +63,8 @@ export class AdminStudentsComponent {
     });
 
     this.form = this.fb.group({
+      templateName: [''],
+      exportType: ['custom'],
       facultySection: [''],
       year: [''],
       includeName: [false],
@@ -76,6 +80,17 @@ export class AdminStudentsComponent {
     });
 
     this.dataSource.filterPredicate = this.createFilter();
+
+    this.templateService.getByClassFlag('STUDENT').subscribe({
+      next: (data) => {
+        this.templates = data;
+      },
+      error: (error) => {
+        this.snackbar.open('Error fetching data', undefined, {
+          duration: 2000
+        });
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -140,10 +155,9 @@ export class AdminStudentsComponent {
   }
 
   createTemplate(): void {
-    const name = this.form.get('templateName')?.value;  
-    console.log("Input template name: " + name);
-    const year = this.form.get('year')?.value;
     const facultySection = this.form.get('facultySection')?.value;
+    const year = this.form.get('year')?.value;
+    const name = this.form.get('templateName')?.value;  
     const includeName = this.form.get('includeName')?.value ? 1 : 0;
     const includeGrade = this.form.get('includeGrade')?.value ? 1 : 0;
     const includeSection = this.form.get('includeSection')?.value ? 1 : 0;
@@ -153,9 +167,10 @@ export class AdminStudentsComponent {
     // Combine options into a single number
     const options = (includeName << 0) | (includeGrade << 1) | (includeSection << 2) | (includeYear << 3) | (includeMail << 4);
 
-    this.templateService.createTemplate(name, year, facultySection, options).subscribe({
+    this.templateService.createTemplate(name, options, 'STUDENT', year, facultySection).subscribe({
       next: (response) => {
         this.snackbar.open('Template created successfully', 'Close', { duration: 2000 });
+        this.templates.push(response);
       },
       error: (error) => {
         this.snackbar.open('Error creating template', 'Close', { duration: 2000 });
@@ -164,6 +179,44 @@ export class AdminStudentsComponent {
   }
 
   onExportTypeChange(event: any) {
-    this.isCustomExport = event.value === 'custom';
+    const exportType = event.value;
+    if (exportType === 'custom' || exportType === 'template') {
+      this.form.get('extension')?.setValue(null);
+      this.form.get('facultySection')?.setValue(null);
+      this.form.get('year')?.setValue(null);
+      this.form.get('includeName')?.setValue(false);
+      this.form.get('includeGrade')?.setValue(false);
+      this.form.get('includeSection')?.setValue(false);
+      this.form.get('includeYear')?.setValue(false);
+      this.form.get('includeMail')?.setValue(false);
+      return;
+    }
+
+    if(exportType.options){
+      this.form.get('includeName')?.setValue(exportType.options & 1);
+      this.form.get('includeGrade')?.setValue(exportType.options & 2);
+      this.form.get('includeSection')?.setValue(exportType.options & 4);
+      this.form.get('includeYear')?.setValue(exportType.options & 8);
+      this.form.get('includeMail')?.setValue(exportType.options & 16);
+    }
+
+    this.form.get('year')?.setValue(exportType.year);
+    this.form.get('facultySection')?.setValue(exportType.facultySection);
   }
+
+  deleteTemplate(id: number) {
+    this.templateService.deleteTemplate(id).subscribe({
+      next: (response) => {
+        this.snackbar.open('Template deleted successfully', 'Close', { duration: 2000 });
+        this.templates = this.templates.filter(template => template.id !== id);
+      },
+      error: (error) => {
+        this.snackbar.open('Error deleting template', 'Close', { duration: 2000 });
+      }
+    });
+
+  
+    this.form.get('exportType')?.setValue('custom');
+  }
+
 }

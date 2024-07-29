@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Template } from '../model/template.model';
@@ -16,14 +16,53 @@ export class TemplateService {
     return this.http.get<Template>(`${this.baseUrl}/`)
   }
 
-  createTemplate(name: string, year: number, facultySection: string, options: number): Observable<Template> {
-    const params = {
-      name,
-      year,
-      facultySection,
-      options
-    };
+  createTemplate(name: string, options: number, classFlag: string, year?: number, facultySection?: string): Observable<Template> {
+    let params = new HttpParams()
     
-    return this.http.post<Template>(`${this.baseUrl}/`, null, { params });
+    params = params.set('name', name);
+    
+    if (year) {
+      params = params.set('year', year);
+    }
+
+    if (facultySection) {
+      params = params.set('facultySection', facultySection);
+    }
+
+    params = params.set('classFlag', classFlag);
+
+    params = params.set('options', options);
+
+    console.log(params);
+    
+    return this.http.post<Template>(`${this.baseUrl}/`,  params );
+  }
+
+  deleteTemplate(id: number): Observable<Template> {
+    return this.http.delete<Template>(`${this.baseUrl}/${id}`);
+  }
+
+  updateTemplate(id: number, name: string, options: number, year?: number, facultySection?: string): Observable<Template> {
+    let params = new HttpParams()
+    
+    params = params.set('name', name);
+    
+    if (year) {
+      params.set('year', year);
+    }
+
+    if (facultySection) {
+      params.set('facultySection', facultySection);
+    }
+
+    params = params.set('options', options);
+
+    return this.http.put<Template>(`${this.baseUrl}/${id}`,  params );
+  }
+
+  getByClassFlag(classFlag: string): Observable<Template[]> {
+    let params = new HttpParams()
+    params = params.set('classFlag', classFlag);
+    return this.http.get<Template[]>(`${this.baseUrl}/class-flag`, {params});
   }
 }

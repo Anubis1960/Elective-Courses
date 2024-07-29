@@ -9,6 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 @Entity
 @Table(name = "template")
@@ -25,8 +27,9 @@ public class Template extends Auditable<String> {
     private Integer year;
 
     @Column(name = "faculty_section", nullable = true)
-    private FacultySection facultySection;
+    private String facultySection;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "class_flag", nullable = false)
     private ClassFlag classFlag;
 
@@ -37,7 +40,7 @@ public class Template extends Auditable<String> {
 
     }
 
-    public Template(String name, Integer year, FacultySection facultySection, ClassFlag classFlag, int options) {
+    public Template(String name, Integer year, String facultySection, ClassFlag classFlag, int options) {
         this.name = name;
         this.year = year;
         this.facultySection = facultySection;
@@ -69,11 +72,11 @@ public class Template extends Auditable<String> {
         this.year = year;
     }
 
-    public FacultySection getFacultySection() {
+    public String getFacultySection() {
         return facultySection;
     }
 
-    public void setFacultySection(FacultySection facultySection) {
+    public void setFacultySection(String facultySection) {
         this.facultySection = facultySection;
     }
 

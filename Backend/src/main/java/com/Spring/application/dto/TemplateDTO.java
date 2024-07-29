@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TemplateDTO {
-    private Long templateId;
-    private String templateName;
+    private Long id;
+    private String name;
     private Integer year;
     private String facultySection;
     private String classFlag;
@@ -16,29 +16,29 @@ public class TemplateDTO {
     public TemplateDTO() {
     }
 
-    public TemplateDTO(Long templateId, String templateName, Integer year, String facultySection, String classFlag, int options) {
-        this.templateId = templateId;
-        this.templateName = templateName;
+    public TemplateDTO(Long id, String templateName, Integer year, String facultySection, String classFlag, int options) {
+        this.id = id;
+        this.name = templateName;
         this.year = year;
         this.facultySection = facultySection;
         this.classFlag = classFlag;
         this.options = options;
     }
 
-    public Long getTemplateId() {
-        return templateId;
+    public Long getId() {
+        return id;
     }
 
-    public void setTemplateId(Long templateId) {
-        this.templateId = templateId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getTemplateName() {
-        return templateName;
+    public String getName() {
+        return name;
     }
 
-    public void setTemplateName(String templateName) {
-        this.templateName = templateName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getYear() {
@@ -77,7 +77,7 @@ public class TemplateDTO {
         List<TemplateDTO> templateDTOList = new ArrayList<>();
         templateList.forEach(template -> templateDTOList.add(
                 new TemplateDTO(template.getId(), template.getName(), template.getYear(),
-                        template.getFacultySection().toString(), template.getClassFlag().toString(), template.getOptions())
+                        template.getFacultySection(), template.getClassFlag().toString(), template.getOptions())
         ));
 
         return templateDTOList;
