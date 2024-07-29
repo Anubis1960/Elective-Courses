@@ -28,6 +28,7 @@ export class AdminStudentsComponent {
   form!: FormGroup;
   filterValues: any = {};
   templates: Template[] = [];
+  selectedTemplate: any = null;
 
   constructor(private http: HttpClient, private studentService: StudentService, 
     private dialog: MatDialog, private router: Router, 
@@ -63,7 +64,7 @@ export class AdminStudentsComponent {
     });
 
     this.form = this.fb.group({
-      templateName: [''],
+      templateName: ['', Validators.required],
       exportType: ['custom'],
       facultySection: [''],
       year: [''],
@@ -179,6 +180,8 @@ export class AdminStudentsComponent {
   }
 
   onExportTypeChange(event: any) {
+    const selectedTemplate = event.value;
+
     const exportType = event.value;
     if (exportType === 'custom' || exportType === 'template') {
       this.form.get('extension')?.setValue(null);
@@ -204,6 +207,34 @@ export class AdminStudentsComponent {
     this.form.get('facultySection')?.setValue(exportType.facultySection);
   }
 
+  updateTemplate(id: number): void {
+    const name = this.form.get('templateName')?.value;
+    const facultySection = this.form.get('facultySection')?.value;
+    const year = this.form.get('year')?.value;
+
+    const includeName = this.form.get('includeName')?.value ? 1 : 0;
+    const includeGrade = this.form.get('includeGrade')?.value ? 1 : 0;
+    const includeSection = this.form.get('includeSection')?.value ? 1 : 0;
+    const includeYear = this.form.get('includeYear')?.value ? 1 : 0;
+    const includeMail = this.form.get('includeMail')?.value ? 1 : 0;
+
+    const options = (includeName << 0) | (includeGrade << 1) | (includeSection << 2) | (includeYear << 3) | (includeMail << 4);
+
+    this.templateService.updateTemplate(id, name, options, year, facultySection).subscribe({
+      next: (updatedTemplate: Template) => {
+        this.snackbar.open('Template updated successfully', 'Close', { duration: 2000 });
+        
+        const index = this.templates.findIndex(template => template.id === id);
+        if (index !== -1) {
+          this.templates[index] = updatedTemplate;
+        }
+      },
+      error: (error) => {
+        this.snackbar.open('Error updating template', 'Close', { duration: 2000 });
+      }
+    });
+  }
+
   deleteTemplate(id: number) {
     this.templateService.deleteTemplate(id).subscribe({
       next: (response) => {
@@ -215,8 +246,6 @@ export class AdminStudentsComponent {
       }
     });
 
-  
     this.form.get('exportType')?.setValue('custom');
   }
-
 }

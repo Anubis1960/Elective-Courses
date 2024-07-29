@@ -72,7 +72,24 @@
             }
 
             @if (form.get('exportType')?.value != 'template' && form.get('exportType')?.value != 'custom') {
+                <mat-form-field appearance="outline">
+                    <mat-label>Template Name</mat-label>
+                    <input matInput formControlName="templateName" [value]="selectedTemplate?.name" placeholder="Template name">
+                </mat-form-field>
+    
+                <button mat-raised-button color="primary" (click)="updateTemplate(form.get('exportType')?.value.id)">Update</button>
                 <button mat-raised-button color="primary" (click)="deleteTemplate(form.get('exportType')?.value.id)">Delete</button>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Extension</mat-label>
+                    <mat-select formControlName="extension">
+                        <mat-option value="pdf">pdf</mat-option>
+                        <mat-option value="csv">csv</mat-option>
+                        <mat-option value="excel">excel</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" (click)="exportPDF()">Export PDF</button>
             }
             
         </form>
