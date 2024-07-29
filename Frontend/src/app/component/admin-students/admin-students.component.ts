@@ -200,6 +200,13 @@ export class AdminStudentsComponent {
       this.form.get('includeYear')?.setValue(exportType.options & 8);
       this.form.get('includeMail')?.setValue(exportType.options & 16);
     }
+    else{
+      this.form.get('includeName')?.setValue(false);
+      this.form.get('includeGrade')?.setValue(false);
+      this.form.get('includeSection')?.setValue(false);
+      this.form.get('includeYear')?.setValue(false);
+      this.form.get('includeMail')?.setValue(false);
+    }
 
     this.form.get('templateName')?.setValue(exportType.name);
     this.form.get('year')?.setValue(exportType.year);
