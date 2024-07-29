@@ -59,7 +59,7 @@
                 </mat-form-field>
                 </div>
 
-                <button mat-raised-button color="primary" (click)="exportPDF()">Export PDF</button>
+                <button mat-raised-button color="primary" (click)="exportData()">Export Data</button>
             } 
             
             @if(form.get('exportType')?.value === 'template'){
@@ -89,7 +89,7 @@
                     </mat-select>
                 </mat-form-field>
 
-                <button mat-raised-button color="primary" (click)="exportPDF()">Export PDF</button>
+                <button mat-raised-button color="primary" (click)="exportData()">Export Data</button>
             }
             
         </form>
