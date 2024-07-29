@@ -8,17 +8,12 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { PopUpComponent } from '../course-pop-up/pop-up.component';
 import { Router } from '@angular/router';
-import { ApplicationPeriodService } from '../../service/application-period.service';
 import { EnrollmentService } from '../../service/enrollment.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CourseSchedule } from '../../model/course-schedule.model';
 import { CourseScheduleService } from '../../service/course-schedule.service';
 import { Template } from '../../model/template.model';
 import { TemplateService } from '../../service/template.service';
-import { error } from 'console';
-import { provideNativeDateAdapter } from '@angular/material/core';
-import { DatePipe } from '@angular/common';
-import { AdminService } from '../../service/admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 
@@ -259,7 +254,7 @@ export class CourseComponent implements OnInit {
                   (includeGrade << 7) | 
                   (includeNumOfStudents << 8) | 
                   (includeAVGGrade << 9);
-    console.log(bitmask);
+
     this.enrollmentService.exportEnrollmentsToPDF(bitmask, extension, facultySection, year).subscribe({
       next: (data) => {
         var fileType = 'application/pdf';
@@ -321,6 +316,7 @@ export class CourseComponent implements OnInit {
       this.form.get('extension')?.setValue(null);
       this.form.get('facultySection')?.setValue(null);
       this.form.get('year')?.setValue(null);
+      this.form.get('includeYear')?.setValue(false);
       this.form.get('includeSection')?.setValue(false);
       this.form.get('includeCourseName')?.setValue(false);
       this.form.get('includeStudentName')?.setValue(false);
@@ -334,15 +330,28 @@ export class CourseComponent implements OnInit {
     }
 
     if (exportType.options) {
-      this.form.get('includeSection')?.setValue(exportType.options & 1);
-      this.form.get('includeCourseName')?.setValue(exportType.options & 2);
-      this.form.get('includeStudentName')?.setValue(exportType.options & 4);
-      this.form.get('includeTeacher')?.setValue(exportType.options & 8);
-      this.form.get('includeStudentMail')?.setValue(exportType.options & 16);
-      this.form.get('includeGrade')?.setValue(exportType.options & 32);
-      this.form.get('includeCategory')?.setValue(exportType.options & 64);
-      this.form.get('includeNumOfStudents')?.setValue(exportType.options & 128);
-      this.form.get('includeAVGGrade')?.setValue(exportType.options & 256);
+      this.form.get('includeYear')?.setValue(exportType.options & 1);
+      this.form.get('includeSection')?.setValue(exportType.options & 2);
+      this.form.get('includeCourseName')?.setValue(exportType.options & 4);
+      this.form.get('includeStudentName')?.setValue(exportType.options & 8);
+      this.form.get('includeTeacher')?.setValue(exportType.options & 16);
+      this.form.get('includeStudentMail')?.setValue(exportType.options & 32);
+      this.form.get('includeGrade')?.setValue(exportType.options & 64);
+      this.form.get('includeCategory')?.setValue(exportType.options & 128);
+      this.form.get('includeNumOfStudents')?.setValue(exportType.options & 256);
+      this.form.get('includeAVGGrade')?.setValue(exportType.options & 512);
+    }
+    else{
+      this.form.get('includeYear')?.setValue(false);
+      this.form.get('includeSection')?.setValue(false);
+      this.form.get('includeCourseName')?.setValue(false);
+      this.form.get('includeStudentName')?.setValue(false);
+      this.form.get('includeTeacher')?.setValue(false);
+      this.form.get('includeStudentMail')?.setValue(false);
+      this.form.get('includeGrade')?.setValue(false);
+      this.form.get('includeCategory')?.setValue(false);
+      this.form.get('includeNumOfStudents')?.setValue(false);
+      this.form.get('includeAVGGrade')?.setValue(false);
     }
 
     this.form.get('templateName')?.setValue(exportType.name);
