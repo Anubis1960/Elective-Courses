@@ -122,7 +122,7 @@ export class AdminStudentsComponent {
     };
   }
   
-  exportPDF() {
+  exportData() {
     const facultySection = this.form.get('facultySection')?.value;
     const year = this.form.get('year')?.value;
     const includeName = this.form.get('includeName')?.value ? 1 : 0;
@@ -168,7 +168,7 @@ export class AdminStudentsComponent {
     const options = (includeName << 0) | (includeGrade << 1) | (includeSection << 2) | (includeYear << 3) | (includeMail << 4);
 
     this.templateService.createTemplate(name, options, 'STUDENT', year, facultySection).subscribe({
-      next: (response) => {
+      next: (response) => { 
         this.snackbar.open('Template created successfully', 'Close', { duration: 2000 });
         this.templates.push(response);
       },
@@ -219,7 +219,7 @@ export class AdminStudentsComponent {
 
     const options = (includeName << 0) | (includeGrade << 1) | (includeSection << 2) | (includeYear << 3) | (includeMail << 4);
 
-    this.templateService.updateTemplate(id, name, options, year, facultySection).subscribe({
+    this.templateService.updateTemplate(id, name, options, 'STUDENT', year, facultySection).subscribe({
       next: (updatedTemplate: Template) => {
         this.snackbar.open('Template updated successfully', 'Close', { duration: 2000 });
         

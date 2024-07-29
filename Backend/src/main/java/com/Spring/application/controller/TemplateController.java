@@ -51,10 +51,11 @@ public class TemplateController {
 													  @RequestParam String name,
 													  @RequestParam Optional<Integer> year,
 													  @RequestParam Optional<String> facultySection,
+													  @RequestParam String classFlag,
 													  @RequestParam int options)
 	{
 		templateService.updateTemplate(id, name, year,
-				facultySection, options);
+				facultySection, classFlag, options);
 		TemplateDTO templateDTO = new TemplateDTO(id, name, year.orElse(null),
 				facultySection.orElse(null), null, options);
 		return new ResponseEntity<>(templateDTO, HttpStatus.OK);

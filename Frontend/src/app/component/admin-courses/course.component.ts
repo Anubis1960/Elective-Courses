@@ -13,6 +13,8 @@ import { EnrollmentService } from '../../service/enrollment.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CourseSchedule } from '../../model/course-schedule.model';
 import { CourseScheduleService } from '../../service/course-schedule.service';
+import { Template } from '../../model/template.model';
+import { TemplateService } from '../../service/template.service';
 import { error } from 'console';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
@@ -35,6 +37,7 @@ export class CourseComponent implements OnInit {
   form!: FormGroup;
   scheduleDetails: { [key: number]: CourseSchedule } = {};
   filterValues: any = {};
+  templates: Template[] = [];
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -47,13 +50,16 @@ export class CourseComponent implements OnInit {
     private router: Router,
     private enrollmentService: EnrollmentService,
     private fb: FormBuilder,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private templateService: TemplateService
   ) { }
 
   ngOnInit(): void {
     this.status = localStorage.getItem('status') || '';
     this.refresh();
     this.form = this.fb.group({
+      templateName: ['', Validators.required],
+      exportType: ['custom'],
       facultySection: [''],
       year: [''],
       includeYear: [false],
@@ -76,6 +82,17 @@ export class CourseComponent implements OnInit {
     });
 
     this.dataSource.filterPredicate = this.createFilter();
+
+    this.templateService.getByClassFlag('ENROLLMENT').subscribe({
+      next: (data) => {
+        this.templates = data;
+      },
+      error: (error) => {
+        this.snackbar.open('Error fetching data', undefined, {
+          duration: 2000
+        });
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -217,7 +234,7 @@ export class CourseComponent implements OnInit {
     return this.status == 'false';
   }
 
-  exportPDF() {
+  exportData() {
     const facultySection = this.form.get('facultySection')?.value;
     const year = this.form.get('year')?.value;
     const includeYear = this.form.get('includeYear')?.value ? 1 : 0;
@@ -262,5 +279,128 @@ export class CourseComponent implements OnInit {
         });
       }
     });
+  }
+
+  createTemplate(): void {
+    const name = this.form.get('templateName')?.value;  
+    const facultySection = this.form.get('facultySection')?.value;
+    const year = this.form.get('year')?.value;
+    const includeYear = this.form.get('includeYear')?.value ? 1 : 0;
+    const includeSection = this.form.get('includeSection')?.value ? 1 : 0;
+    const includeCourseName = this.form.get('includeCourseName')?.value ? 1 : 0;
+    const includeStudentName = this.form.get('includeStudentName')?.value ? 1 : 0;
+    const includeTeacher = this.form.get('includeTeacher')?.value ? 1 : 0;
+    const includeStudentMail = this.form.get('includeStudentMail')?.value ? 1 : 0;
+    const includeGrade = this.form.get('includeGrade')?.value ? 1 : 0;
+    const includeCategory = this.form.get('includeCategory')?.value ? 1 : 0;
+    const includeNumOfStudents = this.form.get('includeNumOfStudents')?.value ? 1 : 0;
+    const includeAVGGrade = this.form.get('includeAVGGrade')?.value ? 1 : 0;
+
+    // Combine options into a single number
+    const options = (includeYear << 0) | (includeSection << 1) |
+              (includeCourseName << 2) | (includeStudentName << 3) |
+              (includeTeacher << 4) | (includeStudentMail << 5) |
+              (includeGrade << 6) | (includeCategory << 7) |
+              (includeNumOfStudents << 8) | (includeAVGGrade << 9);
+
+    this.templateService.createTemplate(name, options, 'ENROLLMENT', year, facultySection).subscribe({
+      next: (response) => {
+        this.snackbar.open('Template created successfully', 'Close', { duration: 2000 });
+        this.templates.push(response)
+      },
+      
+      error: (error) => {
+        this.snackbar.open('Error creating template', 'Close', { duration: 2000 });
+      }
+    });
+  }
+
+  onExportTypeChange(event: any) {
+    const exportType = event.value;
+    if(exportType === 'custom' || exportType === 'template') {
+      this.form.get('extension')?.setValue(null);
+      this.form.get('facultySection')?.setValue(null);
+      this.form.get('year')?.setValue(null);
+      this.form.get('includeSection')?.setValue(false);
+      this.form.get('includeCourseName')?.setValue(false);
+      this.form.get('includeStudentName')?.setValue(false);
+      this.form.get('includeTeacher')?.setValue(false);
+      this.form.get('includeStudentMail')?.setValue(false);
+      this.form.get('includeGrade')?.setValue(false);
+      this.form.get('includeCategory')?.setValue(false);
+      this.form.get('includeNumOfStudents')?.setValue(false);
+      this.form.get('includeAVGGrade')?.setValue(false);
+      return;
+    }
+
+    if (exportType.options) {
+      this.form.get('includeSection')?.setValue(exportType.options & 1);
+      this.form.get('includeCourseName')?.setValue(exportType.options & 2);
+      this.form.get('includeStudentName')?.setValue(exportType.options & 4);
+      this.form.get('includeTeacher')?.setValue(exportType.options & 8);
+      this.form.get('includeStudentMail')?.setValue(exportType.options & 16);
+      this.form.get('includeGrade')?.setValue(exportType.options & 32);
+      this.form.get('includeCategory')?.setValue(exportType.options & 64);
+      this.form.get('includeNumOfStudents')?.setValue(exportType.options & 128);
+      this.form.get('includeAVGGrade')?.setValue(exportType.options & 256);
+    }
+
+    this.form.get('templateName')?.setValue(exportType.name);
+    this.form.get('year')?.setValue(exportType.year);
+    this.form.get('facultySection')?.setValue(exportType.facultySection);
+  }
+
+  updateTemplate(id: number): void {
+    const name = this.form.get('templateName')?.value;
+    const facultySection = this.form.get('facultySection')?.value;
+    const year = this.form.get('year')?.value;
+
+    const includeYear = this.form.get('includeYear')?.value ? 1 : 0;
+    const includeSection = this.form.get('includeSection')?.value ? 1 : 0;
+    const includeCourseName = this.form.get('includeCourseName')?.value ? 1 : 0;
+    const includeStudentName = this.form.get('includeStudentName')?.value ? 1 : 0;
+    const includeTeacher = this.form.get('includeTeacher')?.value ? 1 : 0;
+    const includeStudentMail = this.form.get('includeStudentMail')?.value ? 1 : 0;
+    const includeGrade = this.form.get('includeGrade')?.value ? 1 : 0;
+    const includeCategory = this.form.get('includeCategory')?.value ? 1 : 0;
+    const includeNumOfStudents = this.form.get('includeNumOfStudents')?.value ? 1 : 0;
+    const includeAVGGrade = this.form.get('includeAVGGrade')?.value ? 1 : 0;
+
+    // Combine options into a single number
+    const options = (includeYear << 0) | (includeSection << 1) |
+              (includeCourseName << 2) | (includeStudentName << 3) |
+              (includeTeacher << 4) | (includeStudentMail << 5) |
+              (includeGrade << 6) | (includeCategory << 7) |
+              (includeNumOfStudents << 8) | (includeAVGGrade << 9);
+
+    this.templateService.updateTemplate(id, name, options, 'ENROLLMENT', year, facultySection).subscribe({
+      next: (updatedTemplate: Template) => {
+        this.snackbar.open('Template updated successfully', 'Close', { duration: 2000 });
+        
+        const index = this.templates.findIndex(template => template.id === id);
+        if (index !== -1) {
+          this.templates[index] = updatedTemplate;
+        }
+      },
+
+      error: (error) => {
+        this.snackbar.open('Error updating template', 'Close', { duration: 2000 });
+      }
+    });
+  }
+
+  deleteTemplate(id: number): void {
+    this.templateService.deleteTemplate(id).subscribe({
+      next: (response) => {
+        this.snackbar.open('Template deleted successfully', 'Close', { duration: 2000 });
+        this.templates = this.templates.filter(template => template.id !== id);
+      },
+
+      error: (error) => {
+        this.snackbar.open('Error deleting template', 'Close', { duration: 2000 });
+      }
+    });
+
+    this.form.get('exportType')?.setValue('custom');
   }
 }

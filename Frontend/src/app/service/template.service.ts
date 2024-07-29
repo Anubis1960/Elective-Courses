@@ -30,6 +30,7 @@ export class TemplateService {
     }
 
     params = params.set('classFlag', classFlag);
+    console.log(classFlag)
 
     params = params.set('options', options);
 
@@ -42,7 +43,7 @@ export class TemplateService {
     return this.http.delete<Template>(`${this.baseUrl}/${id}`);
   }
 
-  updateTemplate(id: number, name: string, options: number, year?: number, facultySection?: string): Observable<Template> {
+  updateTemplate(id: number, name: string, options: number, classFlag: string, year?: number, facultySection?: string): Observable<Template> {
     let params = new HttpParams()
     
     params = params.set('name', name);
@@ -54,6 +55,8 @@ export class TemplateService {
     if (facultySection) {
       params = params.set('facultySection', facultySection);
     }
+
+    params = params.set('classFlag', classFlag)
 
     params = params.set('options', options);
 

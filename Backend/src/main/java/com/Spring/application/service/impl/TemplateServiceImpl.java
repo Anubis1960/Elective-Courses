@@ -38,14 +38,14 @@ public class TemplateServiceImpl implements TemplateService {
 	}
 
 	@Override
-	public Template updateTemplate(Long id, String name, Optional<Integer> year, Optional<String> facultySection, int options) {
+	public Template updateTemplate(Long id, String name, Optional<Integer> year, Optional<String> facultySection, String classFlag, int options) {
 		// Check if template exists
 		Template template = templateRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
 		// Set new values
 		template.setName(name);
 		template.setYear(year.orElse(null));
-		template.setClassFlag(ClassFlag.STUDENT);
+		template.setClassFlag(ClassFlag.valueOf(classFlag));
 		template.setFacultySection(facultySection.orElse(null));
 		template.setOptions(options);
 

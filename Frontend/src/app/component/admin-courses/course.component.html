@@ -18,12 +18,22 @@
 
             <form [formGroup]="form">
               <mat-form-field appearance="outline">
+                <mat-label>Choose Export Type</mat-label>
+                <mat-select formControlName="exportType" (selectionChange)="onExportTypeChange($event)">
+                    <mat-option value="custom">Custom Export</mat-option>
+                    <mat-option value="template">Create Template</mat-option>
+                    <mat-option *ngFor="let template of templates" [value]="template">{{ template.name }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
                 <mat-label>Faculty Section</mat-label>
                 <mat-select formControlName="facultySection">
                   <mat-option value="">None</mat-option>
                   <mat-option *ngFor="let section of facultySections" [value]="section">{{ section }}</mat-option>
                 </mat-select>
               </mat-form-field>
+
               <mat-form-field appearance="outline">
                 <mat-label>Year</mat-label>
                 <mat-select formControlName="year">
@@ -31,27 +41,65 @@
                   <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
                 </mat-select>
               </mat-form-field>
-              <p>Include:</p>
-              <mat-checkbox formControlName="includeYear">Year of Study</mat-checkbox>
-              <mat-checkbox formControlName="includeSection">Faculty Section</mat-checkbox>
-              <mat-checkbox formControlName="includeCourseName">Course Name</mat-checkbox>
-              <mat-checkbox formControlName="includeStudentName">
-                Student Name</mat-checkbox>
-              <mat-checkbox formControlName="includeTeacher">Teacher Name</mat-checkbox>
-              <mat-checkbox formControlName="includeStudentMail">Student Email</mat-checkbox>
-              <mat-checkbox formControlName="includeGrade">Student Grade</mat-checkbox>
-              <mat-checkbox formControlName="includeCategory">Course Category</mat-checkbox>
-              <mat-checkbox formControlName="includeNumOfStudents">Number of Students</mat-checkbox>
-              <mat-checkbox formControlName="includeAVGGrade">Average Grade of Students</mat-checkbox>
-              <mat-form-field appearance="outline">
-                <mat-label>Extension</mat-label>
-                <mat-select formControlName="extension">
-                  <mat-option value="pdf">pdf</mat-option>
-                  <mat-option value="csv">csv</mat-option>
-                  <mat-option value="excel">excel</mat-option>
-                </mat-select> 
-              </mat-form-field>
-              <button mat-raised-button color="primary" (click)="exportPDF()">Export PDF</button>
+
+              <div>
+                <p>Include:</p>
+                <mat-checkbox formControlName="includeYear">Year of Study</mat-checkbox>
+                <mat-checkbox formControlName="includeSection">Faculty Section</mat-checkbox>
+                <mat-checkbox formControlName="includeCourseName">Course Name</mat-checkbox>
+                <mat-checkbox formControlName="includeStudentName">Student Name</mat-checkbox>
+                <mat-checkbox formControlName="includeTeacher">Teacher Name</mat-checkbox>
+                <mat-checkbox formControlName="includeStudentMail">Student Email</mat-checkbox>
+                <mat-checkbox formControlName="includeGrade">Student Grade</mat-checkbox>
+                <mat-checkbox formControlName="includeCategory">Course Category</mat-checkbox>
+                <mat-checkbox formControlName="includeNumOfStudents">Number of Students</mat-checkbox>
+                <mat-checkbox formControlName="includeAVGGrade">Average Grade of Students</mat-checkbox>
+              </div>
+              
+              @if(form.get('exportType')?.value === 'custom') {
+                <div>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Extension</mat-label>
+                    <mat-select formControlName="extension">
+                      <mat-option value="pdf">pdf</mat-option>
+                      <mat-option value="csv">csv</mat-option>
+                      <mat-option value="excel">excel</mat-option>
+                    </mat-select> 
+                  </mat-form-field>
+                </div>
+
+                <button mat-raised-button color="primary" (click)="exportData()">Export Data</button>
+              }
+              
+              @if(form.get('exportType')?.value === 'template'){
+                <mat-form-field appearance="outline">
+                <mat-label>Template Name</mat-label>
+                    <input matInput formControlName="templateName" placeholder="Enter template name">
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" (click)="createTemplate()">Create Template</button>
+              }
+              
+              @if (form.get('exportType')?.value != 'template' && form.get('exportType')?.value != 'custom') {
+                <mat-form-field appearance="outline">
+                    <mat-label>Template Name</mat-label>
+                    <input matInput formControlName="templateName" placeholder="Template name">
+                </mat-form-field>
+    
+                <button mat-raised-button color="primary" (click)="updateTemplate(form.get('exportType')?.value.id)">Update</button>
+                <button mat-raised-button color="primary" (click)="deleteTemplate(form.get('exportType')?.value.id)">Delete</button>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Extension</mat-label>
+                    <mat-select formControlName="extension">
+                        <mat-option value="pdf">pdf</mat-option>
+                        <mat-option value="csv">csv</mat-option>
+                        <mat-option value="excel">excel</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" (click)="exportData()">Export Data</button>
+              }
             </form>
           </mat-expansion-panel>
         }
