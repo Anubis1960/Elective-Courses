@@ -43,7 +43,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { SidebarComponent } from './component/sidebar/sidebar.component';
-
+import { MatGridListModule } from '@angular/material/grid-list';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { BaseChartDirective } from 'ng2-charts';
+import { CourseChartComponent } from './component/course-chart/course-chart.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,6 +66,7 @@ import { SidebarComponent } from './component/sidebar/sidebar.component';
     ReassignPopUpComponent,
     AdminHomeComponent,
     SidebarComponent,
+    CourseChartComponent,
     ],
   imports: [
     BrowserModule,
@@ -91,9 +95,11 @@ import { SidebarComponent } from './component/sidebar/sidebar.component';
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
-
+    MatGridListModule,
+    BaseChartDirective,
   ],
   providers: [
+    provideCharts(withDefaultRegisterables()),
     provideClientHydration(),
     provideHttpClient(withFetch()),
     provideAnimationsAsync(),
