@@ -1,6 +1,7 @@
 package com.Spring.application.controller;
 
 import com.Spring.application.dto.CourseDTO;
+import com.Spring.application.dto.CoursesCategory;
 import com.Spring.application.entity.Course;
 import com.Spring.application.enums.FacultySection;
 import com.Spring.application.exceptions.InvalidInput;
@@ -95,6 +96,14 @@ public class CourseController {
     public ResponseEntity<List<CourseDTO>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
         return getListResponseEntity(courses);
+    }
+    @GetMapping("/numberOfCoursesPerCategory")
+    public ResponseEntity<List<CoursesCategory>> getNumberOfCoursesPerCategory(){
+        List<CoursesCategory> coursesCategories = courseService.getNumberOfCoursesPerCategory();
+        if(coursesCategories.isEmpty()){
+            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(coursesCategories, HttpStatus.OK);
     }
 
     @GetMapping("/available")
