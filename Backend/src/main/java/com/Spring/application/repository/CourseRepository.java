@@ -1,5 +1,6 @@
 package com.Spring.application.repository;
 
+import com.Spring.application.dto.CoursesCategory;
 import com.Spring.application.entity.Course;
 import com.Spring.application.enums.FacultySection;
 import org.antlr.v4.runtime.misc.Pair;
@@ -33,4 +34,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     @Query("SELECT DISTINCT c.facultySection FROM Course c")
     List<String> findFacultySections();
+    @Query("SELECT new com.Spring.application.dto.CoursesCategory(c.category, COUNT(DISTINCT c.courseId)) FROM Course c GROUP BY c.category")
+    List<CoursesCategory>findNumberOfCoursesPerCategory();
 }

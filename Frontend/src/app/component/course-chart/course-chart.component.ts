@@ -1,10 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
+import { CoursesCategory } from '../../model/courses-category.model';
 
-interface CategoryData {
-  labels: string[];
-  data: number[];
-}
 
 @Component({
   selector: 'app-course-chart',
@@ -13,13 +10,13 @@ interface CategoryData {
 })
 export class CourseChartComponent implements OnChanges {
 
-  @Input() categoryData: CategoryData = { labels: [], data: [] };
+  @Input() categoryData: CoursesCategory[] = [];
 
   public barChartData: ChartConfiguration<'bar'>['data'] = {
     labels: [],
     datasets: [
       {
-        label: 'Number of courses',
+        label: 'Number of courses per category',
         data: [],
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgba(255, 99, 132, 1)',
@@ -29,20 +26,26 @@ export class CourseChartComponent implements OnChanges {
   };
 
   public barChartOptions: ChartOptions<'bar'> = {
-    responsive: true
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        beginAtZero: true
+      },
+      y: {
+        beginAtZero: true
+      }
+    }
   };
 
-  public barChartType: ChartConfiguration<'bar'>['type'] = 'bar';
-
-  constructor() {}
-  ngOnInit(): void {
-    this.barChartData.labels = this.categoryData.labels;
-    this.barChartData.datasets[0].data = this.categoryData.data;
-  }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['categoryData'] && this.categoryData) {
-      this.barChartData.labels = this.categoryData.labels;
-      this.barChartData.datasets[0].data = this.categoryData.data;
+      this.updateChart();
     }
+  }
+  
+  private updateChart(): void {
+    this.barChartData.labels = this.categoryData.map((category) => category.category || ''); 
+    this.barChartData.datasets[0].data = this.categoryData.map((category) => category.numberOfCoursesPerCategory || 0);
   }
 }

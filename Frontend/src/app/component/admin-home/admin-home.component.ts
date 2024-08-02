@@ -3,6 +3,7 @@ import { CourseService } from '../../service/course.service';
 import { error } from 'console';
 import { StudentService } from '../../service/student.service';
 import { Course } from '../../model/course.model';
+import { CoursesCategory } from '../../model/courses-category.model';
 
 @Component({
   selector: 'app-admin-home',
@@ -15,7 +16,7 @@ export class AdminHomeComponent implements OnInit{
   public numberOfCourses: number = 0;
   public numberOfStudents: number = 0;
   public numberOfCourseCategories: number = 0;
-  public categoryData: { labels: string[], data: number[] } = { labels: [], data: [] };    
+  public categoryData: CoursesCategory[] = [];    
   
   constructor(
     private courseService: CourseService,
@@ -25,9 +26,7 @@ export class AdminHomeComponent implements OnInit{
   ngOnInit():void{
     this.getNumberOfCourses();
     this.getNumberOfStudents();
-    this.courseService.getCoursesList().subscribe(courses => {
-      this.categoryData = this.processCourseData(courses);
-    });
+    this.processCourseData();
     
   }
   
@@ -55,16 +54,16 @@ export class AdminHomeComponent implements OnInit{
       }
     })
   }
-  processCourseData(courses: Course[]): { labels: string[], data: number[] } {
-    const categoryCounts: { [key: string]: number } = {};
-    courses.forEach(course => {
-      if (course.category) {
-        categoryCounts[course.category] = (categoryCounts[course.category] || 0) + 1;
+  processCourseData(): void {
+    this.courseService.getNumberOfCoursesPerCategory().subscribe({
+      next: (categories) => {
+        this.categoryData = categories;
+        console.log("Sunt in processCourseData");
+        
+      },
+      error: (err) => {
+        console.error('Error fetching course data:', err);
       }
     });
-    const labels = Object.keys(categoryCounts);
-    const data = Object.values(categoryCounts);
-
-    return { labels, data };
   }
 }
