@@ -1,0 +1,15 @@
+.chart-card {
+    margin: 20px; 
+    padding: 20px; 
+  }
+  
+  .chart-container {
+    position: relative;
+    height: 400px; 
+    width: 400px;
+  }
+  
+  canvas {
+    display: block; 
+  }
+  

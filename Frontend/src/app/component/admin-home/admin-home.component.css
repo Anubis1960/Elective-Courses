@@ -1,0 +1,15 @@
+.content {
+    padding: 16px; 
+  }
+  
+  mat-card {
+    margin: 16px; 
+  }
+  
+  mat-grid-list {
+    margin: 0;
+  }
+.chart-tile{
+    width: 200px;
+    height: auto;
+}
