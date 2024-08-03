@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Course } from '../model/course.model';
-import { CoursesCategory } from '../model/courses-category.model';
+import { CategoryCount } from '../model/category-count.model';
 
 @Injectable({
   providedIn: 'root'
@@ -85,7 +85,7 @@ export class CourseService {
     return this.http.get<Course[]>(`${this.baseUrl}/available`, {params});
   }
 
-  getNumberOfCoursesPerCategory(): Observable<CoursesCategory[]>{
-    return this.http.get<CoursesCategory[]>(`${this.baseUrl}/numberOfCoursesPerCategory`);
+  getNumberOfCoursesPerCategory(): Observable<CategoryCount[]>{
+    return this.http.get<CategoryCount[]>(`${this.baseUrl}/category-count`);
   }
 }

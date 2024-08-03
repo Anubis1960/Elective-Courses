@@ -1,6 +1,6 @@
 package com.Spring.application.service.impl;
 
-import com.Spring.application.dto.CoursesCategory;
+import com.Spring.application.dto.CategoryCount;
 import com.Spring.application.dto.StudentDTO;
 import com.Spring.application.entity.Course;
 import com.Spring.application.entity.Student;
@@ -144,7 +144,7 @@ public class CourseServiceImpl implements CourseService{
         GeneratorMethods.writePDF(studentDTOs, out);
     }
     @Override
-    public List<CoursesCategory> getNumberOfCoursesPerCategory(){
-        return courseRepository.findNumberOfCoursesPerCategory();
+    public List<CategoryCount> getCategoriesAndNumOfCourses(){
+        return courseRepository.findCategoriesAndNumOfCourses();
     }
 }

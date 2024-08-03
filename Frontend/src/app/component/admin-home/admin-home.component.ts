@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CourseService } from '../../service/course.service';
-import { error } from 'console';
 import { StudentService } from '../../service/student.service';
-import { Course } from '../../model/course.model';
-import { CoursesCategory } from '../../model/courses-category.model';
+import { CategoryCount } from '../../model/category-count.model';
 
 @Component({
   selector: 'app-admin-home',
@@ -15,8 +13,8 @@ export class AdminHomeComponent implements OnInit{
 
   public numberOfCourses: number = 0;
   public numberOfStudents: number = 0;
-  public numberOfCourseCategories: number = 0;
-  public categoryData: CoursesCategory[] = [];    
+  public numberOfCategories: number = 0;
+  public categoryCount: CategoryCount[] = [];    
   
   constructor(
     private courseService: CourseService,
@@ -27,43 +25,36 @@ export class AdminHomeComponent implements OnInit{
     this.getNumberOfCourses();
     this.getNumberOfStudents();
     this.processCourseData();
-    
   }
   
   getNumberOfCourses(){
     this.courseService.getCoursesList().subscribe({
       next: (courses) => {
         this.numberOfCourses = courses.length;
-        console.log("a mers maaaa");
       },
       error: (error) => {
-        console.error(error);
-        console.log("Eroare ba");
       }
     })
- }
+  }
+
   getNumberOfStudents(){
     this.studentService.getStudentsList().subscribe({
       next: (students)=>{
         this.numberOfStudents = students.length;
-        console.log("A mers baaaa")
       },
       error: (error) =>{
-        console.error(error);
-        console.log("Eroare ba");
       }
     })
   }
+
   processCourseData(): void {
     this.courseService.getNumberOfCoursesPerCategory().subscribe({
       next: (categories) => {
-        this.categoryData = categories;
-        console.log("Sunt in processCourseData");
-        
+        this.categoryCount = categories;
       },
       error: (err) => {
-        console.error('Error fetching course data:', err);
       }
     });
   }
+
 }

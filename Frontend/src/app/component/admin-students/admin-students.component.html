@@ -7,67 +7,62 @@
     </mat-card-header>
     <mat-expansion-panel>
         <mat-expansion-panel-header>
-            <mat-panel-title>Export students</mat-panel-title>
+          <mat-panel-title>Export students</mat-panel-title>
         </mat-expansion-panel-header>
-        <form [formGroup]="form">
-
-            <mat-form-field appearance="outline">
-                <mat-label>Choose Export Type</mat-label>
-                <mat-select formControlName="exportType" (selectionChange)="onExportTypeChange($event)">
-                    <mat-option value="custom">Custom Export</mat-option>
-                    <mat-option value="template">Create Template</mat-option>
-                    <mat-option *ngFor="let template of templates" [value]="template">{{ template.name }}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            
-            
-            <mat-form-field appearance="outline">
-                <mat-label>Faculty Section</mat-label>
-                <mat-select formControlName="facultySection">
-                    <mat-option value="">None</mat-option>
-                    <mat-option *ngFor="let section of facultySections" [value]="section">{{ section }}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            
-            <mat-form-field appearance="outline">
-                <mat-label>Year</mat-label>
-                <mat-select formControlName="year">
-                    <mat-option value="">None</mat-option>
-                    <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            
-            <div>
-                <p>Include:</p>
-                <mat-checkbox formControlName="includeName">Name</mat-checkbox>
-                <mat-checkbox formControlName="includeGrade">Grade</mat-checkbox>
-                <mat-checkbox formControlName="includeSection">Faculty Section</mat-checkbox>
-                <mat-checkbox formControlName="includeYear">Year of Study</mat-checkbox>
-                <mat-checkbox formControlName="includeMail">Email</mat-checkbox>
-            </div>
+        <form [formGroup]="form" class="form-container">
+          <mat-form-field appearance="outline">
+            <mat-label>Choose Export Type</mat-label>
+            <mat-select formControlName="exportType" (selectionChange)="onExportTypeChange($event)">
+              <mat-option value="custom">Custom Export</mat-option>
+              <mat-option value="template">Create Template</mat-option>
+              <mat-option *ngFor="let template of templates" [value]="template">{{ template.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+      
+          <mat-form-field appearance="outline">
+            <mat-label>Faculty Section</mat-label>
+            <mat-select formControlName="facultySection">
+              <mat-option value="">None</mat-option>
+              <mat-option *ngFor="let section of facultySections" [value]="section">{{ section }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+      
+          <mat-form-field appearance="outline">
+            <mat-label>Year</mat-label>
+            <mat-select formControlName="year">
+              <mat-option value="">None</mat-option>
+              <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+      
+          <div class="checkbox-container">
+            <p>Include:</p>
+            <mat-checkbox formControlName="includeName">Name</mat-checkbox>
+            <mat-checkbox formControlName="includeGrade">Grade</mat-checkbox>
+            <mat-checkbox formControlName="includeSection">Faculty Section</mat-checkbox>
+            <mat-checkbox formControlName="includeYear">Year of Study</mat-checkbox>
+            <mat-checkbox formControlName="includeMail">Email</mat-checkbox>
+          </div>
 
             @if(form.get('exportType')?.value === 'custom') {
-
-                <div>
                 <mat-form-field appearance="outline">
                     <mat-label>Extension</mat-label>
                     <mat-select formControlName="extension">
-                        <mat-option value="pdf">pdf</mat-option>
-                        <mat-option value="csv">csv</mat-option>
-                        <mat-option value="excel">excel</mat-option>
+                      <mat-option value="pdf">pdf</mat-option>
+                      <mat-option value="csv">csv</mat-option>
+                      <mat-option value="excel">excel</mat-option>
                     </mat-select>
-                </mat-form-field>
-                </div>
-
-                <button mat-raised-button color="primary" (click)="exportData()">Export Data</button>
+                  </mat-form-field>
+            
+                  <button mat-raised-button color="primary" (click)="exportData()">Export Data</button>
             } 
             
             @if(form.get('exportType')?.value === 'template'){
                 <mat-form-field appearance="outline">
-                <mat-label>Template Name</mat-label>
+                    <mat-label>Template Name</mat-label>
                     <input matInput formControlName="templateName" placeholder="Enter template name">
                 </mat-form-field>
-
+            
                 <button mat-raised-button color="primary" (click)="createTemplate()">Create Template</button>
             }
 
@@ -75,86 +70,86 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Template Name</mat-label>
                     <input matInput formControlName="templateName" placeholder="Template name">
-                </mat-form-field>
-    
-                <button mat-raised-button color="primary" (click)="updateTemplate(form.get('exportType')?.value.id)">Update</button>
-                <button mat-raised-button color="primary" (click)="deleteTemplate(form.get('exportType')?.value.id)">Delete</button>
-
-                <mat-form-field appearance="outline">
+                  </mat-form-field>
+            
+                  <button mat-raised-button color="primary" (click)="updateTemplate(form.get('exportType')?.value.id)">Update</button>
+                  <button mat-raised-button color="primary" (click)="deleteTemplate(form.get('exportType')?.value.id)">Delete</button>
+            
+                  <mat-form-field appearance="outline">
                     <mat-label>Extension</mat-label>
                     <mat-select formControlName="extension">
-                        <mat-option value="pdf">pdf</mat-option>
-                        <mat-option value="csv">csv</mat-option>
-                        <mat-option value="excel">excel</mat-option>
+                      <mat-option value="pdf">pdf</mat-option>
+                      <mat-option value="csv">csv</mat-option>
+                      <mat-option value="excel">excel</mat-option>
                     </mat-select>
-                </mat-form-field>
-
-                <button mat-raised-button color="primary" (click)="exportData()">Export Data</button>
+                  </mat-form-field>
+            
+                  <button mat-raised-button color="primary" (click)="exportData()">Export Data</button>
             }
             
         </form>
     </mat-expansion-panel>
 
-    <mat-card-content style="margin: 30px auto; padding: 10px; border-radius: 2rem; border: 3px solid black;width: 98%; max-width: 98%; overflow-x: auto;">
-        <table matSort mat-table [dataSource]="dataSource" style="padding: 5px; width: 100%;">
-            <!-- Name -->
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    <mat-form-field class="filter" appearance="fill" style="width: 300px; margin-top: 20px;">
-                        <input matInput (keyup)="applyColumnFilter($event, 'name')" placeholder="Filter Name" style="height: 30px; display: flex; text-align: center;">
-                    </mat-form-field>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    <button mat-button (click)="getDetails(element.id)" style="text-align: center;">{{ element.name }}</button>
-                </td>
-            </ng-container>
-    
-            <!-- Email -->
-            <ng-container matColumnDef="email">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    <mat-form-field class="filter" appearance="fill" style="width: 300px; margin-top: 20px;">
-                        <input matInput (keyup)="applyColumnFilter($event, 'email')" placeholder="Filter Email" style="height: 30px; display: flex; text-align: center;">
-                    </mat-form-field>
-                </th>
-                <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.email}} </td>
-            </ng-container>
-    
-            <!-- Faculty Section -->
-            <ng-container matColumnDef="facultySection">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    <mat-form-field class="filter" appearance="fill" style="width: 300px; margin-top: 20px;">
-                        <input matInput (keyup)="applyColumnFilter($event, 'facultySection')" placeholder="Filter Faculty Section" style="height: 30px; display: flex; text-align: center;">
-                    </mat-form-field>
-                </th>
-                <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.facultySection}} </td>
-            </ng-container>
-    
-            <!-- Year -->
-            <ng-container matColumnDef="year">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    <mat-form-field class="filter" appearance="fill" style="width: 300px; margin-top: 20px;">
-                        <input matInput (keyup)="applyColumnFilter($event, 'year')" placeholder="Filter Year" style="height: 30px; display: flex; text-align: center;">
-                    </mat-form-field>
-                </th>
-                <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.year}} </td>
-            </ng-container>
-    
-            <!-- Grade -->
-            <ng-container matColumnDef="grade">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    <mat-form-field class="filter" appearance="fill" style="width: 300px; margin-top: 20px;">
-                        <input matInput (keyup)="applyColumnFilter($event, 'grade')" placeholder="Filter Grade" style="height: 30px; display: flex; text-align: center;">
-                    </mat-form-field>
-                </th>
-                <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.grade}} </td>
-            </ng-container>
-    
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <mat-card-content class="table-container">
+        <table matSort mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <!-- Name -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <mat-form-field class="filter" appearance="fill">
+                <input matInput (keyup)="applyColumnFilter($event, 'name')" placeholder="Filter Name">
+              </mat-form-field>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-button (click)="getDetails(element.id)">{{ element.name }}</button>
+            </td>
+          </ng-container>
+      
+          <!-- Email -->
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <mat-form-field class="filter" appearance="fill">
+                <input matInput (keyup)="applyColumnFilter($event, 'email')" placeholder="Filter Email">
+              </mat-form-field>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+          </ng-container>
+      
+          <!-- Faculty Section -->
+          <ng-container matColumnDef="facultySection">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <mat-form-field class="filter" appearance="fill">
+                <input matInput (keyup)="applyColumnFilter($event, 'facultySection')" placeholder="Filter Faculty Section">
+              </mat-form-field>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.facultySection }}</td>
+          </ng-container>
+      
+          <!-- Year -->
+          <ng-container matColumnDef="year">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <mat-form-field class="filter" appearance="fill">
+                <input matInput (keyup)="applyColumnFilter($event, 'year')" placeholder="Filter Year">
+              </mat-form-field>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.year }}</td>
+          </ng-container>
+      
+          <!-- Grade -->
+          <ng-container matColumnDef="grade">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <mat-form-field class="filter" appearance="fill">
+                <input matInput (keyup)="applyColumnFilter($event, 'grade')" placeholder="Filter Grade">
+              </mat-form-field>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.grade }}</td>
+          </ng-container>
+      
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
-    </mat-card-content>    
-
-    <mat-card-footer style="margin-top: -30px;">
+      </mat-card-content>    
+      
+      <mat-card-footer class="paginator-container">
         <mat-paginator [pageSizeOptions]="[5,10,15]" showFirstLastButtons></mat-paginator>
-    </mat-card-footer>
+      </mat-card-footer>
 </mat-card>

@@ -1,15 +1,51 @@
+
 .chart-card {
-    margin: 20px; 
-    padding: 20px; 
-  }
-  
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 10px 0;
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chart-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+.chart-card mat-card {
+  background: transparent;
+  box-shadow: none;
+}
+
+
+.chart-card mat-card-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.chart-card mat-card-title {
+  font-size: 1.5em;
+  color: #333;
+  font-weight: bold;
+}
+
+
+.chart-container {
+  position: relative;
+  height: 400px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+
+@media (max-width: 768px) {
   .chart-container {
-    position: relative;
-    height: 400px; 
-    width: 400px;
+      height: 300px;
   }
-  
-  canvas {
-    display: block; 
-  }
-  
+}
+
+canvas {
+  border: 1px solid #ddd; 
+}

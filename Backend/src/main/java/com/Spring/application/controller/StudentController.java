@@ -112,8 +112,8 @@ public class StudentController {
 
     @GetMapping("/export")
     public void exportPDF(HttpServletResponse response, Optional<String> facultySection, Optional<Integer> year, @RequestParam int bitOptions, @RequestParam String extension) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormater.format(System.currentTimeMillis());
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(System.currentTimeMillis());
         String headerKey = "Content-Disposition";
         if(Objects.equals(extension, "pdf")){
             response.setContentType("application/pdf");
