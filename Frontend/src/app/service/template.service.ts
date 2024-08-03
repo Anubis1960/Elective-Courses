@@ -30,11 +30,8 @@ export class TemplateService {
     }
 
     params = params.set('classFlag', classFlag);
-    console.log(classFlag)
 
     params = params.set('options', options);
-
-    console.log(params);
     
     return this.http.post<Template>(`${this.baseUrl}/`,  params );
   }

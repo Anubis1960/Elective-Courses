@@ -20,11 +20,9 @@ export const canActivateAdminGuard: CanActivateFn = (
 ) => {
     if (typeof sessionStorage !== 'undefined') {
         const user = JSON.parse(sessionStorage.getItem('user') || '{}');
-        //console.error(user.role);
         if (user.role === 'ADMIN') {
             return true;
         }
     }
-    //inject(Router).navigateByUrl('/login');
     return false;
 };

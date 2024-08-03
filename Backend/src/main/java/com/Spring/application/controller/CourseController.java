@@ -1,7 +1,7 @@
 package com.Spring.application.controller;
 
 import com.Spring.application.dto.CourseDTO;
-import com.Spring.application.dto.CoursesCategory;
+import com.Spring.application.dto.CategoryCount;
 import com.Spring.application.entity.Course;
 import com.Spring.application.enums.FacultySection;
 import com.Spring.application.exceptions.InvalidInput;
@@ -97,9 +97,9 @@ public class CourseController {
         List<Course> courses = courseService.getAllCourses();
         return getListResponseEntity(courses);
     }
-    @GetMapping("/numberOfCoursesPerCategory")
-    public ResponseEntity<List<CoursesCategory>> getNumberOfCoursesPerCategory(){
-        List<CoursesCategory> coursesCategories = courseService.getNumberOfCoursesPerCategory();
+    @GetMapping("/category-count")
+    public ResponseEntity<List<CategoryCount>> getCategoriesAndNumOfCourses(){
+        List<CategoryCount> coursesCategories = courseService.getCategoriesAndNumOfCourses();
         if(coursesCategories.isEmpty()){
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
         }
@@ -159,8 +159,8 @@ public class CourseController {
     @GetMapping("/export/{id}")
     public void exportCourseToPDF(HttpServletResponse response, @PathVariable("id") Long id) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         response.setContentType("application/pdf");
-        DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormater.format(System.currentTimeMillis());
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(System.currentTimeMillis());
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=course_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);

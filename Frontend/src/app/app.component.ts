@@ -16,7 +16,6 @@ export class AppComponent {
   ) {
     this.applicationPeriodService.getApplicationPeriodStatus().subscribe({
       next: (data) => {
-        console.log(data);
         if (isPlatformBrowser(this.platformId)) {
             localStorage.setItem('status', data.toString());
         }

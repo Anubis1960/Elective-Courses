@@ -21,7 +21,7 @@ const routes: Routes = [
   {path: 'admin/courses/:id', component: CourseStudentComponent, canActivate: [canActivateAdminGuard]},
   {path: 'admin/students', component: AdminStudentsComponent, canActivate: [canActivateAdminGuard]},
   {path: 'admin/students/:id', component: StudentDetailsComponent, canActivate: [canActivateAdminGuard]},
-  {path: 'admin/home', component: AdminHomeComponent}
+  {path: 'admin/home', component: AdminHomeComponent, canActivate: [canActivateAdminGuard]}
 ];
 
 @NgModule({
