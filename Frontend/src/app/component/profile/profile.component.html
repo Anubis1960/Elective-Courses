@@ -1,5 +1,5 @@
 <app-sidebar></app-sidebar>
-<app-student-info [studentId]="user?.id"></app-student-info>
+<app-student-info [studentId]="user?.id" style="background-color: rgba(230, 227, 227, 0.986);"></app-student-info>
 <div class = priority-container [ngStyle]="status === 'false' ? {'pointer-events': 'none', 'user-select': 'none', 'opacity': '0.6'} : {}">
 <div class="dragAndDrop">
   <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
